@@ -1,0 +1,20 @@
+.wrapper {
+  @apply flex items-center justify-center w-full h-20 bg-white shadow-lg shadow-gray-300/30 
+  fixed top-0;
+}
+
+.logoWrapper {
+  @apply w-60 h-full flex items-center pl-1;
+}
+
+.searchWrapper {
+  @apply w-2/3 h-full mx-4 flex items-center justify-center;
+}
+
+.search {
+  @apply w-1/2 border border-gray-300 rounded-lg outline-none px-2 py-1 text-gray-800 bg-gray-200 bg-opacity-30;
+}
+
+.userPanel {
+  @apply flex items-center justify-evenly w-60 h-full border border-gray-300;
+}

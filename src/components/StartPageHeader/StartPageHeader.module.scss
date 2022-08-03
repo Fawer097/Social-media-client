@@ -1,0 +1,21 @@
+.header {
+  @apply w-full h-24 flex items-center justify-between pl-2.5 pr-12;
+}
+
+.logoWrapper {
+  @apply w-60 h-full flex items-center;
+}
+
+.buttonsWrapper {
+  @apply font-sans-serif w-72 h-full flex items-center justify-between text-lg;
+}
+
+.signInBtn {
+  @apply w-32 h-12 text-darkGreen border border-darkGreen border-solid 
+  rounded-full hover:bg-darkGreen hover:text-white ease-linear duration-200;
+}
+
+.signUpBtn {
+  @apply bg-darkGreen w-32 h-12 text-white border border-darkGreen border-solid 
+  rounded-full hover:shadow-lg active:scale-95 ease-linear duration-200;
+}

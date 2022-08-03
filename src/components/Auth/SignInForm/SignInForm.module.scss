@@ -1,0 +1,35 @@
+.wrapper {
+  @apply relative flex flex-col items-center justify-center w-[640px] h-[460px]
+   border border-gray-200 rounded-3xl bg-gray-100 bg-opacity-50;
+}
+
+.headerWrapper {
+  @apply text-center mt-6 text-2xl font-bold text-gray-800;
+}
+
+.emailInput {
+  @apply appearance-none rounded-none text-base block w-full px-3 py-2 border border-gray-300
+   placeholder-gray-500 text-black rounded-t-lg focus:outline-none focus:border-brightGreen;
+}
+
+.passwordInput {
+  @apply appearance-none rounded-none text-base block w-full px-3 py-2 border border-gray-300
+   placeholder-gray-500 text-black rounded-b-lg focus:outline-none focus:border-brightGreen;
+}
+
+.inputError {
+  @apply placeholder-red-400 border-red-400 focus:border-red-400;
+}
+
+.errorWrapper {
+  @apply mt-2 pl-2 h-5  text-red-500 text-sm;
+}
+
+.linkWrapper {
+  @apply mt-2 text-center text-sm text-gray-800;
+}
+
+.button {
+  @apply w-full bg-darkGreen flex justify-center py-2 text-base rounded-3xl text-white
+  hover:shadow-lg active:scale-95 duration-300;
+}
