@@ -12,9 +12,9 @@ module.exports = {
       },
       backgroundImage: {
         startPageImage:
-          "url('file:///Users/vadim.domnenko/Desktop/IT/Final Project/Social-network-project/client/src/images/startPage.jpeg')",
+          "url('file:///Users/vadim.domnenko/Desktop/IT/Social-Network-Project/client/src/images/startPage.jpeg')",
         signInImage:
-          "url('file:///Users/vadim.domnenko/Desktop/IT/Final Project/Social-network-project/client/src/images/signInImage4.jpeg')",
+          "url('file:///Users/vadim.domnenko/Desktop/IT/Social-Network-Project/client/src/images/signInImage4.jpeg')",
       },
     },
   },
