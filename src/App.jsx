@@ -13,11 +13,9 @@ import { useDispatch } from 'react-redux';
 import { getUserData } from './redux/slices/userSlice';
 
 const App = () => {
-  const [login, setLogin] = useState();
+  const [logIn, setLogIn] = useState(false);
   const auth = getAuth();
   const dispatch = useDispatch();
-
-  // после авторизации получаю данные авторизованного пользователя
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -25,11 +23,11 @@ const App = () => {
         axios
           .post(url + '/api/firestore', { uid: user.uid })
           .then((response) => {
-            setLogin('yes');
+            setLogIn(true);
             dispatch(getUserData(response.data._fieldsProto));
           })
           .catch((error) => console.error(error));
-      } else setLogin('no');
+      } else setLogIn(false);
     });
   }, []);
 
@@ -39,31 +37,19 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={
-              (login === 'yes' && <Navigate replace to="/feed" />) ||
-              (login === 'no' && <StartPage />)
-            }
+            element={logIn ? <Navigate replace to="/feed" /> : <StartPage />}
           />
           <Route
             path="signIn"
-            element={
-              (login === 'yes' && <Navigate replace to="/" />) ||
-              (login === 'no' && <SignInPage />)
-            }
+            element={logIn ? <Navigate replace to="/" /> : <SignInPage />}
           />
           <Route
             path="signUp"
-            element={
-              (login === 'yes' && <Navigate replace to="/" />) ||
-              (login === 'no' && <SignUpPage />)
-            }
+            element={logIn ? <Navigate replace to="/" /> : <SignUpPage />}
           />
           <Route
             path="feed"
-            element={
-              (login === 'yes' && <Feed />) ||
-              (login === 'no' && <Navigate replace to="/" />)
-            }
+            element={logIn ? <Feed /> : <Navigate replace to="/" />}
           />
         </Routes>
       </BrowserRouter>
