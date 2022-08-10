@@ -3,14 +3,15 @@ import StartPage from './pages/StartPage/StartPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './pages/SignInPage/SignInPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
-import Feed from './pages/MainPage/Feed/Feed';
+import FeedPage from './pages/MainPage/FeedPage/FeedPage';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { useState } from 'react';
 import axios from 'axios';
 import { url } from './config/config';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getUserData } from './redux/slices/userSlice';
+import { getUserData } from './redux/slices/userDataSlice';
+import ProfilePage from './pages/MainPage/ProfilePage/ProfilePage';
 
 const App = () => {
   const [logIn, setLogIn] = useState(false);
@@ -49,7 +50,11 @@ const App = () => {
           />
           <Route
             path="feed"
-            element={logIn ? <Feed /> : <Navigate replace to="/" />}
+            element={logIn ? <FeedPage /> : <Navigate replace to="/" />}
+          />
+          <Route
+            path="profile"
+            element={logIn ? <ProfilePage /> : <Navigate replace to="/" />}
           />
         </Routes>
       </BrowserRouter>
