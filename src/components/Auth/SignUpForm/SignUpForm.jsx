@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './SignUpForm.module.scss';
 import logo from '../../../images/logo_black.png';
-import axios from 'axios';
-import { url } from '../../../config/config';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import { API_URL } from '../../../http';
+import axios from 'axios';
 
 const SignUpForm = () => {
   const {
@@ -17,14 +17,13 @@ const SignUpForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    delete data.createPassword;
     axios
-      .post(url + '/api/signUp', data)
+      .post(API_URL + '/auth/signUp', data, { withCredentials: true })
       .then((response) => {
+        console.log(response);
         reset();
-        alert(response.data.message);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.log(error));
   };
 
   const upperFirstLetter = (event) => {
@@ -273,8 +272,8 @@ const SignUpForm = () => {
                       message: 'Minimum 6 characters',
                     },
                     maxLength: {
-                      value: 28,
-                      message: 'No more than 28 characters',
+                      value: 128,
+                      message: 'No more than 128 characters',
                     },
                     pattern: {
                       value: /^\S*$/,

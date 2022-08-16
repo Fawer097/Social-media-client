@@ -2,16 +2,19 @@ import React from 'react';
 import styles from './SignInForm.module.scss';
 import { useForm } from 'react-hook-form';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import { auth } from '../../../firebase';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../images/logo_black.png';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_URL } from '../../../http';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../../../redux/slices/userSlice';
+import { setAuthStatus } from '../../../redux/slices/authSlice';
 
 const SignInForm = () => {
   const [signError, setSignError] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -21,20 +24,16 @@ const SignInForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {
+    axios
+      .post(API_URL + '/auth/signIn', data, { withCredentials: true })
+      .then((response) => {
+        localStorage.setItem('token', response.data.accessToken);
         reset();
-        setSignError();
+        dispatch(setAuthStatus(true));
+        dispatch(setUserData(response.data.userData));
         navigate('/feed');
       })
-      .catch((error) => {
-        const errorCode = error.code;
-        if (errorCode === 'auth/user-not-found') {
-          setSignError('User is not found');
-        } else if (errorCode === 'auth/wrong-password') {
-          setSignError('Invalid password');
-        } else setSignError('Authorisation error');
-      });
+      .catch((error) => console.log(error));
   };
 
   return (

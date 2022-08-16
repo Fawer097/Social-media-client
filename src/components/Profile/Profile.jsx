@@ -10,8 +10,8 @@ const Profile = () => {
       <div className="flex absolute top-24 left-10">
         <div className="w-32 h-32 rounded-full bg-cover bg-center bg-[url('https://emalis.org/wp-content/uploads/Anon1.jpg')]"></div>
         <div className="ml-5 mt-4 tracking-wide">
-          <p className="text-2xl text-gray-800">{`${state.firstName.stringValue} ${state.lastName.stringValue}`}</p>
-          <p className="text-sm ml-1 text-gray-100">{`${state.email.stringValue}`}</p>
+          <p className="text-2xl text-gray-800">{`${state.firstName} ${state.lastName}`}</p>
+          <p className="text-sm ml-1 text-gray-100">{`${state.email}`}</p>
         </div>
       </div>
     </div>

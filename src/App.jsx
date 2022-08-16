@@ -4,32 +4,27 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import SignInPage from './pages/SignInPage/SignInPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
 import FeedPage from './pages/MainPage/FeedPage/FeedPage';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { useState } from 'react';
-import axios from 'axios';
-import { url } from './config/config';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getUserData } from './redux/slices/userDataSlice';
 import ProfilePage from './pages/MainPage/ProfilePage/ProfilePage';
+import { useEffect } from 'react';
+import AuthService from './services/AuthService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserData } from './redux/slices/userSlice';
+import { setAuthStatus } from './redux/slices/authSlice';
 
 const App = () => {
-  const [logIn, setLogIn] = useState(false);
-  const auth = getAuth();
   const dispatch = useDispatch();
+  const token = localStorage.getItem('token');
+  const loggedIn = useSelector((state) => state.authStatus);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        axios
-          .post(url + '/api/firestore', { uid: user.uid })
-          .then((response) => {
-            setLogIn(true);
-            dispatch(getUserData(response.data._fieldsProto));
-          })
-          .catch((error) => console.error(error));
-      } else setLogIn(false);
-    });
+    if (token) {
+      AuthService.checkAuth()
+        .then((response) => {
+          dispatch(setAuthStatus(true));
+          dispatch(setUserData(response.data));
+        })
+        .catch((error) => console.log(error));
+    }
   }, []);
 
   return (
@@ -38,24 +33,31 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={logIn ? <Navigate replace to="/feed" /> : <StartPage />}
+            element={
+              !loggedIn || !token ? <StartPage /> : <Navigate to="feed" />
+            }
           />
           <Route
             path="signIn"
-            element={logIn ? <Navigate replace to="/" /> : <SignInPage />}
+            element={
+              !loggedIn || !token ? <SignInPage /> : <Navigate to="feed" />
+            }
           />
           <Route
             path="signUp"
-            element={logIn ? <Navigate replace to="/" /> : <SignUpPage />}
+            element={
+              !loggedIn || !token ? <SignUpPage /> : <Navigate to="feed" />
+            }
           />
           <Route
             path="feed"
-            element={logIn ? <FeedPage /> : <Navigate replace to="/" />}
+            element={loggedIn || token ? <FeedPage /> : <Navigate to="/" />}
           />
           <Route
             path="profile"
-            element={logIn ? <ProfilePage /> : <Navigate replace to="/" />}
+            element={loggedIn || token ? <ProfilePage /> : <Navigate to="/" />}
           />
+          <Route path="*" element={<Navigate replace to="/" />} />
         </Routes>
       </BrowserRouter>
     </div>

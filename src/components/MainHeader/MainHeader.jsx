@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './MainHeader.module.scss';
 import logo from '../../images/logo_black.png';
-import { getAuth, signOut } from 'firebase/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   UserIcon,
@@ -9,18 +8,23 @@ import {
   CogIcon,
   LogoutIcon,
 } from '@heroicons/react/outline';
+import AuthService from '../../services/AuthService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuthStatus } from '../../redux/slices/authSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
-  const auth = getAuth();
-  const logOut = () => {
-    signOut(auth)
-      .then(() => {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.userData);
+
+  const logout = () => {
+    AuthService.logout(state.email)
+      .then((response) => {
+        localStorage.removeItem('token');
+        dispatch(setAuthStatus(false));
         navigate('/');
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -45,7 +49,7 @@ const MainHeader = () => {
             <CogIcon />
           </div>
           <div className="w-7 h-7 text-gray-500 cursor-pointer hover:scale-110 duration-500">
-            <LogoutIcon onClick={logOut} />
+            <LogoutIcon onClick={logout} />
           </div>
         </div>
       </div>
