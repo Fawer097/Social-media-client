@@ -10,7 +10,6 @@ import {
 } from '@heroicons/react/outline';
 import AuthService from '../../services/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthStatus } from '../../redux/slices/authSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -21,7 +20,6 @@ const MainHeader = () => {
     AuthService.logout(state.email)
       .then((response) => {
         localStorage.removeItem('token');
-        dispatch(setAuthStatus(false));
         navigate('/');
       })
       .catch((error) => console.log(error));
@@ -29,7 +27,7 @@ const MainHeader = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className="flex items-center justify-center w-full max-w-[1920px] h-full">
+      <div className="flex items-center justify-center w-full max-w-[1520px] h-full">
         <div className={styles.logoWrapper}>
           <Link to="/">
             <img src={logo} alt="logo" className="w-60 cursor-pointer"></img>
@@ -39,7 +37,7 @@ const MainHeader = () => {
           <input type="search" className={styles.search}></input>
         </div>
         <div className={styles.userPanel}>
-          <div className="w-9 h-9 rounded-full bg-gray-200 p-1.5 text-gray-500">
+          <div className={styles.userIconWrapper}>
             <UserIcon />
           </div>
           <div className="w-7 h-7 text-gray-500">
@@ -48,7 +46,7 @@ const MainHeader = () => {
           <div className="w-7 h-7 text-gray-500">
             <CogIcon />
           </div>
-          <div className="w-7 h-7 text-gray-500 cursor-pointer hover:scale-110 duration-500">
+          <div className={styles.logoIconWrapper}>
             <LogoutIcon onClick={logout} />
           </div>
         </div>

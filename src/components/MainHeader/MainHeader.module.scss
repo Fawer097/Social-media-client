@@ -18,3 +18,11 @@
 .userPanel {
   @apply flex items-center justify-evenly min-w-[240px] h-full border border-gray-300;
 }
+
+.userIconWrapper {
+  @apply w-9 h-9 rounded-full bg-gray-200 p-1.5 text-gray-500;
+}
+
+.logoIconWrapper {
+  @apply w-7 h-7 text-gray-500 cursor-pointer hover:scale-110 duration-500;
+}

@@ -5,11 +5,9 @@ import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../images/logo_black.png';
-import axios from 'axios';
-import { API_URL } from '../../../http';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
-import { setAuthStatus } from '../../../redux/slices/authSlice';
+import AuthService from '../../../services/AuthService';
 
 const SignInForm = () => {
   const [signError, setSignError] = useState();
@@ -24,16 +22,14 @@ const SignInForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    axios
-      .post(API_URL + '/auth/signIn', data, { withCredentials: true })
+    AuthService.signIn(data)
       .then((response) => {
         localStorage.setItem('token', response.data.accessToken);
         reset();
-        dispatch(setAuthStatus(true));
         dispatch(setUserData(response.data.userData));
         navigate('/feed');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => setSignError(error.response.data));
   };
 
   return (
@@ -54,7 +50,7 @@ const SignInForm = () => {
             type="email"
             placeholder="Email address"
             className={
-              errors.email
+              errors.email || signError
                 ? [styles.emailInput, styles.inputError].join(' ')
                 : styles.emailInput
             }

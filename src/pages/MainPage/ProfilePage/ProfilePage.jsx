@@ -3,13 +3,14 @@ import Footer from '../../../components/Footer/Footer';
 import MainHeader from '../../../components/MainHeader/MainHeader';
 import Menu from '../../../components/Menu/Menu';
 import Profile from '../../../components/Profile/Profile';
+import styles from './ProfilePage.module.scss';
 
 const ProfilePage = () => {
   return (
-    <div className="relative w-full max-w-[1920px] min-h-full">
+    <div className="relative max-w-[1520px] min-h-full">
       <MainHeader />
       <div className="flex flex-col w-screen items-center mt-24">
-        <div className="flex w-full max-w-[1920px] min-h-[700px]">
+        <div className="flex w-full max-w-[1520px] min-h-[700px]">
           <Menu />
           <div className="mx-4 w-full h-full">
             <Profile />

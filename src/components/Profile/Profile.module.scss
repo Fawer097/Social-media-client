@@ -1,3 +1,43 @@
 .header {
-  @apply w-full h-[200px] bg-gradient-to-r from-brightGreen to-[#028390] rounded-t-xl;
+  @apply relative w-full h-[200px] bg-gradient-to-r from-brightGreen to-[#028390] rounded-t-xl;
+}
+
+.editBtn {
+  @apply absolute top-5 right-8 text-gray-200 border border-brightGreen rounded-lg px-2 py-1 font-light;
+}
+
+.empty {
+  @apply max-w-[250px] w-1/2 h-full;
+}
+
+.allCountsWrapper {
+  @apply flex ml-8 h-full;
+}
+
+.countWrapper {
+  @apply border border-gray-300 w-20 h-full mr-4;
+}
+
+.personInfoWrapper {
+  @apply max-w-[250px] w-1/2 h-[500px] border border-gray-300 p-2;
+}
+
+.postsWrapper {
+  @apply ml-8 w-full border border-gray-300;
+}
+
+.infoListWrapper {
+  @apply mt-4 w-full font-light;
+}
+
+.listItemWrapper {
+  @apply flex items-center mb-4;
+}
+
+.iconWrapper {
+  @apply w-6 mr-4 text-gray-500;
+}
+
+.textListWrapper {
+  @apply text-gray-700 text-sm;
 }

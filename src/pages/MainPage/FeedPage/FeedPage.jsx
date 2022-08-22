@@ -6,10 +6,10 @@ import styles from './FeedPage.module.scss';
 
 const Feed = () => {
   return (
-    <div className="relative w-full max-w-[1920px] min-h-full">
+    <div className="relative w-full max-w-[1520px] min-h-full">
       <MainHeader />
       <div className="flex flex-col w-screen items-center mt-24">
-        <div className="flex w-full max-w-[1920px] min-h-[700px]">
+        <div className="flex w-full max-w-[1520px] min-h-[700px]">
           <Menu />
           <div className="mx-4 w-full h-full border border-gray-300 rounded-t-lg">
             Feed

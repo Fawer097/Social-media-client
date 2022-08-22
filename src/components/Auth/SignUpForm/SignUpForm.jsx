@@ -4,8 +4,20 @@ import logo from '../../../images/logo_black.png';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
-import { API_URL } from '../../../http';
-import axios from 'axios';
+import AuthService from '../../../services/AuthService';
+
+const upperFirstLetter = (event) => {
+  const arr = event.target.value.split('');
+  arr[0] = arr[0].toUpperCase();
+  event.target.value = arr.join('');
+};
+
+const minDate = `${new Date().getFullYear() - 120}-0${
+  new Date().getMonth() + 1
+}-${new Date().getDate()}`;
+const maxDate = `${new Date().getFullYear()}-0${
+  new Date().getMonth() + 1
+}-${new Date().getDate()}`;
 
 const SignUpForm = () => {
   const {
@@ -17,19 +29,12 @@ const SignUpForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    axios
-      .post(API_URL + '/auth/signUp', data, { withCredentials: true })
+    AuthService.signUp(data)
       .then((response) => {
         console.log(response);
         reset();
       })
       .catch((error) => console.log(error));
-  };
-
-  const upperFirstLetter = (event) => {
-    const arr = event.target.value.split('');
-    arr[0] = arr[0].toUpperCase();
-    event.target.value = arr.join('');
   };
 
   return (
@@ -145,12 +150,8 @@ const SignUpForm = () => {
                   type="date"
                   name="date-of-birth"
                   id="date-of-birth"
-                  min={`${new Date().getFullYear() - 120}-0${
-                    new Date().getMonth() + 1
-                  }-0${new Date().getDate()}`}
-                  max={`${new Date().getFullYear()}-0${
-                    new Date().getMonth() + 1
-                  }-0${new Date().getDate()}`}
+                  min={minDate}
+                  max={maxDate}
                   className={
                     errors.dateOfBirth
                       ? [styles.input, styles.inputError, 'w-full'].join(' ')

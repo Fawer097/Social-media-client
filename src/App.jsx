@@ -7,25 +7,32 @@ import FeedPage from './pages/MainPage/FeedPage/FeedPage';
 import ProfilePage from './pages/MainPage/ProfilePage/ProfilePage';
 import { useEffect } from 'react';
 import AuthService from './services/AuthService';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserData } from './redux/slices/userSlice';
-import { setAuthStatus } from './redux/slices/authSlice';
+import { useState } from 'react';
+import LoadingPage from './pages/LoadingPage/LoadingPage';
+
+const token = localStorage.getItem('token');
 
 const App = () => {
   const dispatch = useDispatch();
-  const token = localStorage.getItem('token');
-  const loggedIn = useSelector((state) => state.authStatus);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) {
+      setLoading(true);
       AuthService.checkAuth()
         .then((response) => {
-          dispatch(setAuthStatus(true));
           dispatch(setUserData(response.data));
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error))
+        .finally(() => setLoading(false));
     }
   }, []);
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="w-screen h-screen font-sans-serif">
@@ -33,31 +40,34 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={
-              !loggedIn || !token ? <StartPage /> : <Navigate to="feed" />
-            }
+            element={!token ? <StartPage /> : <Navigate to="feed" />}
           />
           <Route
             path="signIn"
-            element={
-              !loggedIn || !token ? <SignInPage /> : <Navigate to="feed" />
-            }
+            element={!token ? <SignInPage /> : <Navigate to="feed" />}
           />
           <Route
             path="signUp"
-            element={
-              !loggedIn || !token ? <SignUpPage /> : <Navigate to="feed" />
-            }
+            element={!token ? <SignUpPage /> : <Navigate to="feed" />}
           />
           <Route
             path="feed"
-            element={loggedIn || token ? <FeedPage /> : <Navigate to="/" />}
+            element={token ? <FeedPage /> : <Navigate to="/" />}
           />
           <Route
             path="profile"
-            element={loggedIn || token ? <ProfilePage /> : <Navigate to="/" />}
+            element={token ? <ProfilePage /> : <Navigate to="/" />}
           />
-          <Route path="*" element={<Navigate replace to="/" />} />
+          <Route
+            path="*"
+            element={
+              token ? (
+                <Navigate replace to="/feed" />
+              ) : (
+                <Navigate replace to="/" />
+              )
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
