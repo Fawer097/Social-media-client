@@ -2,12 +2,8 @@
   @apply relative w-full h-[200px] bg-gradient-to-r from-brightGreen to-[#028390] rounded-t-xl;
 }
 
-.editBtn {
-  @apply absolute top-5 right-8 text-gray-200 border border-brightGreen rounded-lg px-2 py-1 font-light;
-}
-
 .empty {
-  @apply max-w-[250px] w-1/2 h-full;
+  @apply max-w-[300px] w-1/2 h-full;
 }
 
 .allCountsWrapper {
@@ -19,7 +15,7 @@
 }
 
 .personInfoWrapper {
-  @apply max-w-[250px] w-1/2 h-[500px] border border-gray-300 p-2;
+  @apply max-w-[300px] w-1/2 h-[500px] border border-gray-300 p-2;
 }
 
 .postsWrapper {

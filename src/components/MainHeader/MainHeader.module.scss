@@ -4,7 +4,7 @@
 }
 
 .logoWrapper {
-  @apply min-w-[240px] h-full flex items-center pl-1;
+  @apply max-w-[250px] h-full flex items-center pl-1;
 }
 
 .searchWrapper {
@@ -21,6 +21,10 @@
 
 .userIconWrapper {
   @apply w-9 h-9 rounded-full bg-gray-200 p-1.5 text-gray-500;
+}
+
+.settingsIconWrapper {
+  @apply w-7 h-7 text-gray-500 cursor-pointer hover:scale-110 duration-500;
 }
 
 .logoIconWrapper {

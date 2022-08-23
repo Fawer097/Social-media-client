@@ -1,0 +1,7 @@
+.sectionName {
+  @apply pb-2 cursor-pointer text-gray-400;
+}
+
+.activeSection {
+  @apply pb-2 cursor-pointer border-b-2 border-y-darkGreen;
+}

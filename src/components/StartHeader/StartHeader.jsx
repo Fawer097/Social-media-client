@@ -1,15 +1,15 @@
 import React from 'react';
 import logo from '../../images/logo_black.png';
-import styles from './StartPageHeader.module.scss';
+import styles from './StartHeader.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 
-const StartPageHeader = () => {
+const StartHeader = () => {
   const navigate = useNavigate();
   return (
     <div className={styles.header}>
       <div className={styles.logoWrapper}>
         <Link to="/">
-          <img src={logo} alt="logo" className="hover:scale-105 duration-500" />
+          <img src={logo} alt="logo" />
         </Link>
       </div>
       <div className={styles.buttonsWrapper}>
@@ -30,4 +30,4 @@ const StartPageHeader = () => {
   );
 };
 
-export default StartPageHeader;
+export default StartHeader;

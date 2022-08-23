@@ -1,0 +1,22 @@
+.label {
+  @apply text-gray-700 mr-2;
+}
+
+.input {
+  @apply text-sm border border-gray-300 rounded-md px-2 h-7 focus:outline-none
+  focus:border-brightGreen;
+}
+
+.aboutInput {
+  @apply text-sm border border-gray-300 rounded-md px-2 py-1 h-12 w-full focus:outline-none
+  focus:border-brightGreen;
+}
+
+.sectionHeader {
+  @apply text-sm text-gray-500;
+}
+
+.button {
+  @apply flex justify-center items-center py-2.5 px-4 w-48 bg-darkGreen text-sm rounded-2xl
+  hover:shadow-lg active:scale-95 text-white duration-300;
+}

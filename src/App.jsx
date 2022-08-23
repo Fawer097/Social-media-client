@@ -7,15 +7,21 @@ import FeedPage from './pages/MainPage/FeedPage/FeedPage';
 import ProfilePage from './pages/MainPage/ProfilePage/ProfilePage';
 import { useEffect } from 'react';
 import AuthService from './services/AuthService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from './redux/slices/userSlice';
 import { useState } from 'react';
 import LoadingPage from './pages/LoadingPage/LoadingPage';
+import { setAuthStatus } from './redux/slices/authSlice';
+import SettingsPage from './pages/MainPage/SettingsPage/SettingsPage';
+import MainHeader from './components/MainHeader/MainHeader';
+import Menu from './components/Menu/Menu';
+import styles from './App.module.scss';
 
 const token = localStorage.getItem('token');
 
 const App = () => {
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.authStatus);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -24,6 +30,7 @@ const App = () => {
       AuthService.checkAuth()
         .then((response) => {
           dispatch(setUserData(response.data));
+          dispatch(setAuthStatus(true));
         })
         .catch((error) => console.log(error))
         .finally(() => setLoading(false));
@@ -37,38 +44,50 @@ const App = () => {
   return (
     <div className="w-screen h-screen font-sans-serif">
       <BrowserRouter>
-        <Routes>
-          <Route
-            path="/"
-            element={!token ? <StartPage /> : <Navigate to="feed" />}
-          />
-          <Route
-            path="signIn"
-            element={!token ? <SignInPage /> : <Navigate to="feed" />}
-          />
-          <Route
-            path="signUp"
-            element={!token ? <SignUpPage /> : <Navigate to="feed" />}
-          />
-          <Route
-            path="feed"
-            element={token ? <FeedPage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="profile"
-            element={token ? <ProfilePage /> : <Navigate to="/" />}
-          />
-          <Route
-            path="*"
-            element={
-              token ? (
-                <Navigate replace to="/feed" />
-              ) : (
-                <Navigate replace to="/" />
-              )
-            }
-          />
-        </Routes>
+        {auth && <MainHeader />}
+        <div className={auth ? styles.mainWrapper : styles.startWrapper}>
+          {auth && <Menu />}
+          <Routes>
+            <Route
+              path="/"
+              element={!auth || !token ? <StartPage /> : <Navigate to="feed" />}
+            />
+            <Route
+              path="signIn"
+              element={
+                !auth || !token ? <SignInPage /> : <Navigate to="feed" />
+              }
+            />
+            <Route
+              path="signUp"
+              element={
+                !auth || !token ? <SignUpPage /> : <Navigate to="feed" />
+              }
+            />
+            <Route
+              path="feed"
+              element={auth || token ? <FeedPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="profile"
+              element={auth || token ? <ProfilePage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="settings"
+              element={auth || token ? <SettingsPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="*"
+              element={
+                auth || token ? (
+                  <Navigate replace to="/feed" />
+                ) : (
+                  <Navigate replace to="/" />
+                )
+              }
+            />
+          </Routes>
+        </div>
       </BrowserRouter>
     </div>
   );

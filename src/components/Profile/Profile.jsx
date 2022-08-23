@@ -10,7 +10,6 @@ import whiteBg from '../../images/whiteBg.jpeg';
 import {
   BriefcaseIcon,
   CalendarIcon,
-  DotsHorizontalIcon,
   GlobeAltIcon,
   LocationMarkerIcon,
 } from '@heroicons/react/outline';
@@ -54,57 +53,46 @@ const Profile = () => {
       .finally(() => setAvatarLoad(false));
   }, []);
 
-  const uploadAvatar = (event) => {
-    const avatar = event.target.files[0];
-    if (state) {
-      const metadata = {
-        contentType: avatar.type,
-        name: 'avatar',
-      };
-      uploadBytes(avatarRef, avatar, metadata)
-        .then(() => {
-          getDownloadURL(avatarRef)
-            .then((url) => {
-              setAvatarDb(url);
-            })
-            .catch((error) => {})
-            .finally(() => setAvatarLoad(false));
-        })
-        .catch((error) => console.log(error));
-    }
-  };
+  // const uploadAvatar = (event) => {
+  //   const avatar = event.target.files[0];
+  //   if (state) {
+  //     const metadata = {
+  //       contentType: avatar.type,
+  //       name: 'avatar',
+  //     };
+  //     uploadBytes(avatarRef, avatar, metadata)
+  //       .then(() => {
+  //         getDownloadURL(avatarRef)
+  //           .then((url) => {
+  //             setAvatarDb(url);
+  //           })
+  //           .catch((error) => {})
+  //           .finally(() => setAvatarLoad(false));
+  //       })
+  //       .catch((error) => console.log(error));
+  //   }
+  // };
 
   return (
-    <div className="w-full h-full relative">
-      <div className={styles.header}>
-        <button className={styles.editBtn}>Edit profile</button>
-      </div>
+    <div className="w-full relative">
+      <div className={styles.header}></div>
       <div className="flex absolute top-24 left-10">
         <div>
-          <label htmlFor="uploadAvatar">
-            <img
-              className="w-32 h-32 rounded-full cursor-pointer"
-              src={
-                (avatarLoad && whiteBg) ||
-                avatarDb ||
-                (!avatarDb && defaultAvatar)
-              }
-              alt="avatar"
-            />
-          </label>
+          <img
+            className="w-32 h-32 rounded-full cursor-pointer"
+            src={
+              (avatarLoad && whiteBg) ||
+              avatarDb ||
+              (!avatarDb && defaultAvatar)
+            }
+            alt="avatar"
+          />
         </div>
-        <input
-          type="file"
-          name="uploadAvatar"
-          id="uploadAvatar"
-          className="hidden"
-          onChange={uploadAvatar}
-        />
         <div className="ml-5 mt-4 tracking-wide">
-          <p className="text-2xl text-gray-800">
+          <p className="text-2xl text-gray-700">
             {state.firstName} {state.lastName}
           </p>
-          <p className="text-sm ml-1 text-gray-100">{state.email}</p>
+          <p className="text-sm ml-0.5 text-gray-100">{state.email}</p>
         </div>
       </div>
       <div className="flex w-full h-16">
@@ -116,13 +104,10 @@ const Profile = () => {
           <div className={styles.countWrapper}></div>
         </div>
       </div>
-      <div className="flex w-full h-full mt-4">
+      <div className="flex w-full mt-4">
         <div className={styles.personInfoWrapper}>
           <div className="text-lg flex justify-between items-center">
             <h4>About me</h4>
-            <div className={styles.iconWrapper}>
-              <DotsHorizontalIcon />
-            </div>
           </div>
           <div className="font-light text-sm text-gray-700 mt-4 mb-4">
             <p>
@@ -160,13 +145,13 @@ const Profile = () => {
                 <div className={styles.textListWrapper}>instagram.com</div>
               </div>
             )}
-            {state.job && (
+            {state.company && state.jobTitle && (
               <div className={styles.listItemWrapper}>
                 <div className={styles.iconWrapper}>
                   <BriefcaseIcon />
                 </div>
                 <div className={styles.textListWrapper}>
-                  Working at {state.job}
+                  {state.jobTitle} at {state.company}
                 </div>
               </div>
             )}

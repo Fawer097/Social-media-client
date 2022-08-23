@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/outline';
 import AuthService from '../../services/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
+import { setAuthStatus } from '../../redux/slices/authSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const MainHeader = () => {
     AuthService.logout(state.email)
       .then((response) => {
         localStorage.removeItem('token');
+        dispatch(setAuthStatus(false));
         navigate('/');
       })
       .catch((error) => console.log(error));
@@ -29,8 +31,8 @@ const MainHeader = () => {
     <div className={styles.wrapper}>
       <div className="flex items-center justify-center w-full max-w-[1520px] h-full">
         <div className={styles.logoWrapper}>
-          <Link to="/">
-            <img src={logo} alt="logo" className="w-60 cursor-pointer"></img>
+          <Link to="/feed">
+            <img src={logo} alt="logo" className="w-full cursor-pointer"></img>
           </Link>
         </div>
         <div className={styles.searchWrapper}>
@@ -43,8 +45,10 @@ const MainHeader = () => {
           <div className="w-7 h-7 text-gray-500">
             <BellIcon />
           </div>
-          <div className="w-7 h-7 text-gray-500">
-            <CogIcon />
+          <div className={styles.settingsIconWrapper}>
+            <Link to="/settings">
+              <CogIcon />
+            </Link>
           </div>
           <div className={styles.logoIconWrapper}>
             <LogoutIcon onClick={logout} />

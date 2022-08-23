@@ -14,7 +14,7 @@ const Menu = () => {
                 to={`/${item.name.toLowerCase()}`}
                 className="flex items-center cursor-pointer"
               >
-                <div className="w-6 mr-4 text-gray-600">{item.icon}</div>
+                <div className="w-6 mr-4 text-gray-500">{item.icon}</div>
                 <p className="tracking-wide text-lg text-gray-800">
                   {item.name}
                 </p>
