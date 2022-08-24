@@ -14,10 +14,10 @@ const AuthService = {
     });
   },
 
-  async logout(email) {
+  async logout(uid) {
     return axios.post(
       API_URL + '/auth/logout',
-      { email },
+      { uid },
       { withCredentials: true }
     );
   },

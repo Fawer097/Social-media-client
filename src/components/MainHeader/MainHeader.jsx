@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/outline';
 import AuthService from '../../services/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAuthStatus } from '../../redux/slices/authSlice';
+import { setUserData } from '../../redux/slices/userSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -18,10 +18,10 @@ const MainHeader = () => {
   const state = useSelector((state) => state.userData);
 
   const logout = () => {
-    AuthService.logout(state.email)
+    AuthService.logout(state.uid)
       .then((response) => {
         localStorage.removeItem('token');
-        dispatch(setAuthStatus(false));
+        dispatch(setUserData(false));
         navigate('/');
       })
       .catch((error) => console.log(error));

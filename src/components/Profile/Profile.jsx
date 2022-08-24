@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Profile.module.scss';
 import { useSelector } from 'react-redux';
 import defaultAvatar from '../../images/defaultAvatar.jpeg';
-import { ref, getDownloadURL, uploadBytes } from 'firebase/storage';
+import { ref } from 'firebase/storage';
 import { storage } from '../../firebase.js';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -13,65 +13,17 @@ import {
   GlobeAltIcon,
   LocationMarkerIcon,
 } from '@heroicons/react/outline';
-
-const dateConversion = (date) => {
-  const mounthArr = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-  ];
-  const dateArr = date.split('-');
-  const dayNumberArr = dateArr[2].split('');
-  if (dayNumberArr[0] === '0') {
-    dateArr[2] = dayNumberArr[1];
-  }
-  return `${mounthArr[dateArr[1] - 1]} ${dateArr[2]}, ${dateArr[0]}`;
-};
+import UserService from '../../services/UserService';
 
 const Profile = () => {
   const state = useSelector((state) => state.userData);
-  const avatarRef = ref(storage, `${state.email}/avatar/avatar`);
-  const [avatarDb, setAvatarDb] = useState();
+  const avatarRef = ref(storage, `${state.uid}/avatar/avatar`);
+  const [avatarUrl, setAvatarUrl] = useState();
   const [avatarLoad, setAvatarLoad] = useState();
 
   useEffect(() => {
-    setAvatarLoad(true);
-    getDownloadURL(avatarRef)
-      .then((url) => {
-        setAvatarDb(url);
-      })
-      .catch((error) => {})
-      .finally(() => setAvatarLoad(false));
+    UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad);
   }, []);
-
-  // const uploadAvatar = (event) => {
-  //   const avatar = event.target.files[0];
-  //   if (state) {
-  //     const metadata = {
-  //       contentType: avatar.type,
-  //       name: 'avatar',
-  //     };
-  //     uploadBytes(avatarRef, avatar, metadata)
-  //       .then(() => {
-  //         getDownloadURL(avatarRef)
-  //           .then((url) => {
-  //             setAvatarDb(url);
-  //           })
-  //           .catch((error) => {})
-  //           .finally(() => setAvatarLoad(false));
-  //       })
-  //       .catch((error) => console.log(error));
-  //   }
-  // };
 
   return (
     <div className="w-full relative">
@@ -82,8 +34,8 @@ const Profile = () => {
             className="w-32 h-32 rounded-full cursor-pointer"
             src={
               (avatarLoad && whiteBg) ||
-              avatarDb ||
-              (!avatarDb && defaultAvatar)
+              avatarUrl ||
+              (!avatarUrl && defaultAvatar)
             }
             alt="avatar"
           />
@@ -110,51 +62,54 @@ const Profile = () => {
             <h4>About me</h4>
           </div>
           <div className="font-light text-sm text-gray-700 mt-4 mb-4">
-            <p>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Autem
-              quidem animi culpa dolores?
-            </p>
+            <p>{state.about}</p>
           </div>
           <hr />
           <div className={styles.infoListWrapper}>
-            {state.dateOfBirth && (
-              <div className={styles.listItemWrapper}>
-                <div className={styles.iconWrapper}>
-                  <CalendarIcon />
-                </div>
-                <div className={styles.textListWrapper}>
-                  Born on {dateConversion(state.dateOfBirth)}
-                </div>
+            <div className={styles.listItemWrapper}>
+              <div className={styles.iconWrapper}>
+                <CalendarIcon />
               </div>
-            )}
-            {state.city && state.country && (
+              <div className={styles.textListWrapper}>
+                Born on {UserService.dateConversion(state.dateOfBirth)}
+              </div>
+            </div>
+            {state.city || state.country ? (
               <div className={styles.listItemWrapper}>
                 <div className={styles.iconWrapper}>
                   <LocationMarkerIcon />
                 </div>
                 <div className={styles.textListWrapper}>
-                  {state.city}, {state.country}
+                  {state.city}
+                  {state.city && state.country && ', '}
+                  {state.country}
                 </div>
               </div>
-            )}
+            ) : null}
             {state.site && (
               <div className={styles.listItemWrapper}>
                 <div className={styles.iconWrapper}>
                   <GlobeAltIcon />
                 </div>
-                <div className={styles.textListWrapper}>instagram.com</div>
+                <div className={styles.textListWrapper}>
+                  <a href="state.site" target="_blank">
+                    {state.site}
+                  </a>
+                </div>
               </div>
             )}
-            {state.company && state.jobTitle && (
+            {state.company || state.post ? (
               <div className={styles.listItemWrapper}>
                 <div className={styles.iconWrapper}>
                   <BriefcaseIcon />
                 </div>
                 <div className={styles.textListWrapper}>
-                  {state.jobTitle} at {state.company}
+                  {state.post}
+                  {state.company && state.post && ' at '}
+                  {state.company}
                 </div>
               </div>
-            )}
+            ) : null}
           </div>
           <hr />
           <div>

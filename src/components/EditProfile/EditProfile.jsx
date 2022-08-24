@@ -1,18 +1,60 @@
+import { ref, uploadBytes } from 'firebase/storage';
 import React from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { storage } from '../../firebase';
 import styles from './EditProfile.module.scss';
+import whiteBg from '../../images/whiteBg.jpeg';
+import defaultAvatar from '../../images/defaultAvatar.jpeg';
+import UserService from '../../services/UserService';
+import { useForm } from 'react-hook-form';
+import ValidationService from '../../services/ValidationService';
+import { $api } from '../../http';
+import { setUserData } from '../../redux/slices/userSlice';
 
 const EditProfile = () => {
   const state = useSelector((state) => state.userData);
-  const [firstName, setFirstName] = useState(state.firstName);
-  const [lastName, setLastName] = useState(state.lastName);
-  const [about, setAbout] = useState(state.about);
-  const [site, setSite] = useState(state.site);
-  const [city, setCity] = useState(state.city);
-  const [country, setCountry] = useState(state.country);
-  const [company, setCompany] = useState(state.company);
-  const [jobTitle, setJobTitle] = useState(state.jobTitle);
+  const dispatch = useDispatch();
+
+  const avatarRef = ref(storage, `${state.uid}/avatar/avatar`);
+  const [avatarUrl, setAvatarUrl] = useState();
+  const [avatarLoad, setAvatarLoad] = useState();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({ mode: 'onSubmit' });
+
+  useEffect(() => {
+    UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad);
+  }, []);
+
+  const changeAvatar = (event) => {
+    const avatar = event.target.files[0];
+    if (state.uid) {
+      const metadata = {
+        contentType: avatar.type,
+        name: 'avatar',
+      };
+      uploadBytes(avatarRef, avatar, metadata)
+        .then(() =>
+          UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad)
+        )
+        .catch((error) => console.log(error));
+    }
+  };
+
+  const onSubmit = (data) => {
+    $api
+      .post('/updateUserData', data)
+      .then((response) => {
+        dispatch(setUserData(response.data));
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div className="px-6 pt-4">
@@ -21,7 +63,11 @@ const EditProfile = () => {
           <label htmlFor="uploadAvatar">
             <img
               className="w-32 h-32 rounded-full cursor-pointer border border-gray-400"
-              src=""
+              src={
+                (avatarLoad && whiteBg) ||
+                avatarUrl ||
+                (!avatarUrl && defaultAvatar)
+              }
               alt="avatar"
             />
           </label>
@@ -30,12 +76,13 @@ const EditProfile = () => {
             name="uploadAvatar"
             id="uploadAvatar"
             className="hidden"
+            onChange={changeAvatar}
           />
           <p className="text-xs mt-5 text-gray-400">
             Click on the avatar to change it
           </p>
         </div>
-        <div className="w-[550px] mt-10">
+        <form className="w-[550px] mt-10" onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.sectionHeader}>
             <h4>Personal information</h4>
           </div>
@@ -49,9 +96,9 @@ const EditProfile = () => {
                 type="text"
                 name="first-name"
                 id="first-name"
-                className={[styles.input, 'w-42'].join(' ')}
-                value={firstName}
-                onChange={(event) => setFirstName(event.target.value)}
+                className={[styles.input, 'w-40'].join(' ')}
+                {...setValue('firstName', state.firstName)}
+                {...register('firstName', ValidationService.nameValidation())}
               />
             </div>
             <div className="flex items-center">
@@ -63,8 +110,8 @@ const EditProfile = () => {
                 name="last-name"
                 id="last-name"
                 className={[styles.input, 'w-42'].join(' ')}
-                value={lastName}
-                onChange={(event) => setLastName(event.target.value)}
+                {...setValue('lastName', state.lastName)}
+                {...register('lastName', ValidationService.nameValidation())}
               />
             </div>
           </div>
@@ -79,9 +126,10 @@ const EditProfile = () => {
               type="date"
               name="date-of-birth"
               id="date-of-birth"
-              value={state.dateOfBirth}
-              disabled
               className={[styles.input, 'w-full'].join(' ')}
+              disabled
+              {...register('dateOfBirth')}
+              {...setValue('dateOfBirth', state.dateOfBirth)}
             />
           </div>
           <div className="flex items-center mt-6">
@@ -92,9 +140,10 @@ const EditProfile = () => {
               type="email"
               name="email"
               id="email"
-              disabled
-              value={state.email}
               className={[styles.input, 'w-full'].join(' ')}
+              disabled
+              {...register('email')}
+              {...setValue('email', state.email)}
             />
           </div>
           <div className="flex items-center mt-6">
@@ -108,8 +157,8 @@ const EditProfile = () => {
               name="about"
               id="about"
               className={styles.aboutInput}
-              value={about}
-              onChange={(event) => setAbout(event.target.value)}
+              {...register('about')}
+              {...setValue('about', state.about)}
             />
           </div>
           <div className="flex items-center mt-6 mb-8">
@@ -124,8 +173,8 @@ const EditProfile = () => {
               name="personal-site"
               id="personal-site"
               className={[styles.input, 'w-full'].join(' ')}
-              value={site}
-              onChange={(event) => setSite(event.target.value)}
+              {...register('site')}
+              {...setValue('site', state.site)}
             />
           </div>
           <div className={styles.sectionHeader}>
@@ -142,8 +191,8 @@ const EditProfile = () => {
                 name="city"
                 id="city"
                 className={[styles.input, 'w-42'].join(' ')}
-                value={city}
-                onChange={(event) => setCity(event.target.value)}
+                {...register('city', ValidationService.inputValidation())}
+                {...setValue('city', state.city)}
               />
             </div>
             <div className="flex items-center">
@@ -155,8 +204,8 @@ const EditProfile = () => {
                 name="country"
                 id="country"
                 className={[styles.input, 'w-42'].join(' ')}
-                value={country}
-                onChange={(event) => setCountry(event.target.value)}
+                {...register('country', ValidationService.inputValidation())}
+                {...setValue('country', state.country)}
               />
             </div>
           </div>
@@ -174,30 +223,30 @@ const EditProfile = () => {
                 name="company"
                 id="company"
                 className={[styles.input, 'w-42'].join(' ')}
-                value={company}
-                onChange={(event) => setCompany(event.target.value)}
+                {...register('company', ValidationService.inputValidation())}
+                {...setValue('company', state.company)}
               />
             </div>
             <div className="flex items-center">
-              <label htmlFor="job-title" className={styles.label}>
-                Job title:
+              <label htmlFor="post" className={styles.label}>
+                Post:
               </label>
               <input
                 type="text"
-                name="job-title"
-                id="job-title"
+                name="post"
+                id="post"
                 className={[styles.input, 'w-42'].join(' ')}
-                value={jobTitle}
-                onChange={(event) => setJobTitle(event.target.value)}
+                {...register('post', ValidationService.inputValidation())}
+                {...setValue('post', state.post)}
               />
             </div>
           </div>
-        </div>
-        <div>
-          <button type="submit" className={styles.button}>
-            Save
-          </button>
-        </div>
+          <div>
+            <button type="submit" className={styles.button}>
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import logo from '../../../images/logo_black.png';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
 import AuthService from '../../../services/AuthService';
-import { setAuthStatus } from '../../../redux/slices/authSlice';
 
 const SignInForm = () => {
   const [signError, setSignError] = useState();
@@ -26,9 +25,8 @@ const SignInForm = () => {
     AuthService.signIn(data)
       .then((response) => {
         localStorage.setItem('token', response.data.accessToken);
-        reset();
         dispatch(setUserData(response.data.userData));
-        dispatch(setAuthStatus(true));
+        reset();
         navigate('/feed');
       })
       .catch((error) => setSignError(error.response.data));

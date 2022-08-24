@@ -5,19 +5,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import AuthService from '../../../services/AuthService';
-
-const upperFirstLetter = (event) => {
-  const arr = event.target.value.split('');
-  arr[0] = arr[0].toUpperCase();
-  event.target.value = arr.join('');
-};
-
-const minDate = `${new Date().getFullYear() - 120}-0${
-  new Date().getMonth() + 1
-}-${new Date().getDate()}`;
-const maxDate = `${new Date().getFullYear()}-0${
-  new Date().getMonth() + 1
-}-${new Date().getDate()}`;
+import ValidationService from '../../../services/ValidationService';
 
 const SignUpForm = () => {
   const {
@@ -72,18 +60,7 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-4/5'].join(' ')
                       : [styles.input, 'w-4/5'].join(' ')
                   }
-                  {...register('firstName', {
-                    required: 'This field must be filled',
-                    minLength: {
-                      value: 2,
-                      message: 'Minimum of 2 characters',
-                    },
-                    pattern: {
-                      value: /^[A-Za-z]*$/,
-                      message: 'Invalid characters',
-                    },
-                    onChange: (event) => upperFirstLetter(event),
-                  })}
+                  {...register('firstName', ValidationService.nameValidation())}
                 />
                 <div className={styles.errorWrapper}>
                   {errors.firstName && (
@@ -112,18 +89,7 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-4/5'].join(' ')
                       : [styles.input, 'w-4/5'].join(' ')
                   }
-                  {...register('lastName', {
-                    required: 'This field must be filled',
-                    minLength: {
-                      value: 2,
-                      message: 'Minimum of 2 characters',
-                    },
-                    pattern: {
-                      value: /^[A-Za-z]*$/,
-                      message: 'Invalid characters',
-                    },
-                    onChange: (event) => upperFirstLetter(event),
-                  })}
+                  {...register('lastName', ValidationService.nameValidation())}
                 />
                 <div className={styles.errorWrapper}>
                   {errors.lastName && (
@@ -150,8 +116,8 @@ const SignUpForm = () => {
                   type="date"
                   name="date-of-birth"
                   id="date-of-birth"
-                  min={minDate}
-                  max={maxDate}
+                  min={ValidationService.minDate()}
+                  max={ValidationService.maxDate()}
                   className={
                     errors.dateOfBirth
                       ? [styles.input, styles.inputError, 'w-full'].join(' ')
@@ -340,7 +306,7 @@ const SignUpForm = () => {
             </Link>
           </p>
 
-          <div className={styles.buttonWrapper}>
+          <div className="mt-7">
             <button type="submit" className={styles.button}>
               Create account
             </button>

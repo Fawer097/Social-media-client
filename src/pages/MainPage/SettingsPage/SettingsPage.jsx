@@ -7,7 +7,7 @@ const SettingsPage = () => {
   const [section, setSection] = useState('profile');
 
   return (
-    <div className="mx-4 w-full max-w-[1270px]">
+    <div className="mx-4 pb-10 w-full">
       <div className="text-xl text-gray-800 tracking-wide ml-6 mb-4">
         <h2>Settings</h2>
       </div>
