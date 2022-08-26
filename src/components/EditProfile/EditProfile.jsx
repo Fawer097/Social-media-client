@@ -1,36 +1,42 @@
-import { ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import React from 'react';
-import { useEffect } from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { storage } from '../../firebase';
 import styles from './EditProfile.module.scss';
-import whiteBg from '../../images/whiteBg.jpeg';
 import defaultAvatar from '../../images/defaultAvatar.jpeg';
-import UserService from '../../services/UserService';
 import { useForm } from 'react-hook-form';
 import ValidationService from '../../services/ValidationService';
 import { $api } from '../../http';
 import { setUserData } from '../../redux/slices/userSlice';
+import FormErrorParagraph from '../FormErrorParagraph/FormErrorParagraph';
 
 const EditProfile = () => {
-  const state = useSelector((state) => state.userData);
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.userData);
 
   const avatarRef = ref(storage, `${state.uid}/avatar/avatar`);
   const [avatarUrl, setAvatarUrl] = useState();
-  const [avatarLoad, setAvatarLoad] = useState();
 
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
-  } = useForm({ mode: 'onSubmit' });
-
-  useEffect(() => {
-    UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad);
-  }, []);
+  } = useForm({
+    mode: 'onSubmit',
+    defaultValues: {
+      firstName: state.firstName,
+      lastName: state.lastName,
+      dateOfBirth: state.dateOfBirth,
+      email: state.email,
+      about: state.about,
+      site: state.site,
+      city: state.city,
+      country: state.country,
+      company: state.company,
+      post: state.post,
+    },
+  });
 
   const changeAvatar = (event) => {
     const avatar = event.target.files[0];
@@ -40,16 +46,20 @@ const EditProfile = () => {
         name: 'avatar',
       };
       uploadBytes(avatarRef, avatar, metadata)
-        .then(() =>
-          UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad)
-        )
+        .then(() => {
+          getDownloadURL(avatarRef)
+            .then((url) => {
+              setAvatarUrl(url);
+            })
+            .catch((error) => {});
+        })
         .catch((error) => console.log(error));
     }
   };
 
   const onSubmit = (data) => {
     $api
-      .post('/updateUserData', data)
+      .post('/updateUserData', { ...data, avatarUrl })
       .then((response) => {
         dispatch(setUserData(response.data));
       })
@@ -62,11 +72,11 @@ const EditProfile = () => {
         <div className="flex flex-col items-center">
           <label htmlFor="uploadAvatar">
             <img
-              className="w-32 h-32 rounded-full cursor-pointer border border-gray-400"
+              className="w-32 h-32 rounded-full cursor-pointer border border-gray-300"
               src={
-                (avatarLoad && whiteBg) ||
                 avatarUrl ||
-                (!avatarUrl && defaultAvatar)
+                state.avatarUrl ||
+                (!state.avatarUrl && defaultAvatar)
               }
               alt="avatar"
             />
@@ -88,34 +98,60 @@ const EditProfile = () => {
           </div>
           <hr />
           <div className="flex justify-between mt-6">
-            <div className="flex items-center">
-              <label htmlFor="first-name" className={styles.label}>
+            <div className="flex">
+              <label
+                htmlFor="first-name"
+                className={[styles.label, 'mt-1'].join(' ')}
+              >
                 First Name:
               </label>
-              <input
-                type="text"
-                name="first-name"
-                id="first-name"
-                className={[styles.input, 'w-40'].join(' ')}
-                {...setValue('firstName', state.firstName)}
-                {...register('firstName', ValidationService.nameValidation())}
-              />
+              <div>
+                <input
+                  type="text"
+                  name="first-name"
+                  id="first-name"
+                  className={
+                    errors.firstName
+                      ? [styles.input, styles.inputError, 'w-40'].join(' ')
+                      : [styles.input, 'w-40'].join(' ')
+                  }
+                  {...register('firstName', ValidationService.nameValidation())}
+                />
+                {errors.firstName ? (
+                  <FormErrorParagraph message={errors.firstName.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
+              </div>
             </div>
-            <div className="flex items-center">
-              <label htmlFor="last-name" className={styles.label}>
+            <div className="flex">
+              <label
+                htmlFor="last-name"
+                className={[styles.label, 'mt-1'].join(' ')}
+              >
                 Last Name:
               </label>
-              <input
-                type="text"
-                name="last-name"
-                id="last-name"
-                className={[styles.input, 'w-42'].join(' ')}
-                {...setValue('lastName', state.lastName)}
-                {...register('lastName', ValidationService.nameValidation())}
-              />
+              <div>
+                <input
+                  type="text"
+                  name="last-name"
+                  id="last-name"
+                  className={
+                    errors.lastName
+                      ? [styles.input, styles.inputError, 'w-42'].join(' ')
+                      : [styles.input, 'w-42'].join(' ')
+                  }
+                  {...register('lastName', ValidationService.nameValidation())}
+                />
+                {errors.lastName ? (
+                  <FormErrorParagraph message={errors.lastName.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
+              </div>
             </div>
           </div>
-          <div className="flex items-center mt-6">
+          <div className="flex items-center mt-2">
             <label
               htmlFor="date-of-birth"
               className={[styles.label, 'w-32'].join(' ')}
@@ -129,7 +165,6 @@ const EditProfile = () => {
               className={[styles.input, 'w-full'].join(' ')}
               disabled
               {...register('dateOfBirth')}
-              {...setValue('dateOfBirth', state.dateOfBirth)}
             />
           </div>
           <div className="flex items-center mt-6">
@@ -143,7 +178,6 @@ const EditProfile = () => {
               className={[styles.input, 'w-full'].join(' ')}
               disabled
               {...register('email')}
-              {...setValue('email', state.email)}
             />
           </div>
           <div className="flex items-center mt-6">
@@ -158,7 +192,6 @@ const EditProfile = () => {
               id="about"
               className={styles.aboutInput}
               {...register('about')}
-              {...setValue('about', state.about)}
             />
           </div>
           <div className="flex items-center mt-6 mb-8">
@@ -174,7 +207,6 @@ const EditProfile = () => {
               id="personal-site"
               className={[styles.input, 'w-full'].join(' ')}
               {...register('site')}
-              {...setValue('site', state.site)}
             />
           </div>
           <div className={styles.sectionHeader}>
@@ -192,7 +224,6 @@ const EditProfile = () => {
                 id="city"
                 className={[styles.input, 'w-42'].join(' ')}
                 {...register('city', ValidationService.inputValidation())}
-                {...setValue('city', state.city)}
               />
             </div>
             <div className="flex items-center">
@@ -205,7 +236,6 @@ const EditProfile = () => {
                 id="country"
                 className={[styles.input, 'w-42'].join(' ')}
                 {...register('country', ValidationService.inputValidation())}
-                {...setValue('country', state.country)}
               />
             </div>
           </div>
@@ -224,7 +254,6 @@ const EditProfile = () => {
                 id="company"
                 className={[styles.input, 'w-42'].join(' ')}
                 {...register('company', ValidationService.inputValidation())}
-                {...setValue('company', state.company)}
               />
             </div>
             <div className="flex items-center">
@@ -237,7 +266,6 @@ const EditProfile = () => {
                 id="post"
                 className={[styles.input, 'w-42'].join(' ')}
                 {...register('post', ValidationService.inputValidation())}
-                {...setValue('post', state.post)}
               />
             </div>
           </div>

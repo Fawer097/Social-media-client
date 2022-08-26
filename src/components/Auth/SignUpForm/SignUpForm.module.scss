@@ -35,7 +35,3 @@
   @apply flex justify-center m-auto py-2.5 px-4 w-2/5 bg-darkGreen text-sm rounded-3xl
   hover:shadow-lg active:scale-95 text-white duration-300;
 }
-
-.errorWrapper {
-  @apply flex items-center text-xs h-6  text-red-500;
-}

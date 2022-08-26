@@ -29,7 +29,8 @@ $api.interceptors.response.use(
           withCredentials: true,
         })
         .then((response) => {
-          localStorage.setItem('token', response.data.accessToken);
+          localStorage.setItem('token', response.data.tokens.accessToken);
+          window.location.reload();
           return $api.request(originalRequest);
         })
         .catch((error) => console.log('You are not authorized!'));

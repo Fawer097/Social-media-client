@@ -2,11 +2,6 @@ import React from 'react';
 import styles from './Profile.module.scss';
 import { useSelector } from 'react-redux';
 import defaultAvatar from '../../images/defaultAvatar.jpeg';
-import { ref } from 'firebase/storage';
-import { storage } from '../../firebase.js';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import whiteBg from '../../images/whiteBg.jpeg';
 import {
   BriefcaseIcon,
   CalendarIcon,
@@ -17,13 +12,6 @@ import UserService from '../../services/UserService';
 
 const Profile = () => {
   const state = useSelector((state) => state.userData);
-  const avatarRef = ref(storage, `${state.uid}/avatar/avatar`);
-  const [avatarUrl, setAvatarUrl] = useState();
-  const [avatarLoad, setAvatarLoad] = useState();
-
-  useEffect(() => {
-    UserService.showAvatar(avatarRef, setAvatarUrl, setAvatarLoad);
-  }, []);
 
   return (
     <div className="w-full relative">
@@ -32,11 +20,7 @@ const Profile = () => {
         <div>
           <img
             className="w-32 h-32 rounded-full cursor-pointer"
-            src={
-              (avatarLoad && whiteBg) ||
-              avatarUrl ||
-              (!avatarUrl && defaultAvatar)
-            }
+            src={state.avatarUrl || (!state.avatarUrl && defaultAvatar)}
             alt="avatar"
           />
         </div>

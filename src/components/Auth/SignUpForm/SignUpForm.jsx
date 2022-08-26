@@ -3,11 +3,17 @@ import styles from './SignUpForm.module.scss';
 import logo from '../../../images/logo_black.png';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import AuthService from '../../../services/AuthService';
 import ValidationService from '../../../services/ValidationService';
+import { useDispatch } from 'react-redux';
+import {
+  setSuccessModal,
+  setErrorModal,
+} from '../../../redux/slices/modalsSlice';
+import FormErrorParagraph from '../../FormErrorParagraph/FormErrorParagraph';
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -19,10 +25,12 @@ const SignUpForm = () => {
   const onSubmit = (data) => {
     AuthService.signUp(data)
       .then((response) => {
-        console.log(response);
+        dispatch(setSuccessModal({ active: true }));
         reset();
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        dispatch(setErrorModal({ active: true, message: error.response.data }));
+      });
   };
 
   return (
@@ -62,14 +70,11 @@ const SignUpForm = () => {
                   }
                   {...register('firstName', ValidationService.nameValidation())}
                 />
-                <div className={styles.errorWrapper}>
-                  {errors.firstName && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.firstName.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.firstName ? (
+                  <FormErrorParagraph message={errors.firstName.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
             <div className="w-[45%]">
@@ -91,14 +96,11 @@ const SignUpForm = () => {
                   }
                   {...register('lastName', ValidationService.nameValidation())}
                 />
-                <div className={styles.errorWrapper}>
-                  {errors.lastName && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.lastName.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.lastName ? (
+                  <FormErrorParagraph message={errors.lastName.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
           </div>
@@ -127,14 +129,11 @@ const SignUpForm = () => {
                     required: 'This field must be filled',
                   })}
                 />
-                <div className={styles.errorWrapper}>
-                  {errors.dateOfBirth && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.dateOfBirth.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.dateOfBirth ? (
+                  <FormErrorParagraph message={errors.dateOfBirth.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
             <div className="flex w-[45%]">
@@ -166,14 +165,11 @@ const SignUpForm = () => {
                   <option>Male</option>
                   <option>Female</option>
                 </select>
-                <div className={styles.errorWrapper}>
-                  {errors.gender && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.gender.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.gender ? (
+                  <FormErrorParagraph message={errors.gender.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
           </div>
@@ -203,14 +199,11 @@ const SignUpForm = () => {
                   },
                 })}
               />
-              <div className={styles.errorWrapper}>
-                {errors.email && (
-                  <div className="flex items-center">
-                    <ExclamationCircleIcon width={20} />
-                    <p className="ml-1">{errors.email.message}</p>
-                  </div>
-                )}
-              </div>
+              {errors.email ? (
+                <FormErrorParagraph message={errors.email.message} />
+              ) : (
+                <div className="h-6"></div>
+              )}
             </div>
           </div>
 
@@ -248,14 +241,11 @@ const SignUpForm = () => {
                     },
                   })}
                 />
-                <div className={styles.errorWrapper}>
-                  {errors.createPassword && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.createPassword.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.createPassword ? (
+                  <FormErrorParagraph message={errors.createPassword.message} />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
             <div className="w-[45%]">
@@ -287,14 +277,13 @@ const SignUpForm = () => {
                     },
                   })}
                 />
-                <div className={styles.errorWrapper}>
-                  {errors.confirmPassword && (
-                    <div className="flex items-center">
-                      <ExclamationCircleIcon width={20} />
-                      <p className="ml-1">{errors.confirmPassword.message}</p>
-                    </div>
-                  )}
-                </div>
+                {errors.confirmPassword ? (
+                  <FormErrorParagraph
+                    message={errors.confirmPassword.message}
+                  />
+                ) : (
+                  <div className="h-6"></div>
+                )}
               </div>
             </div>
           </div>

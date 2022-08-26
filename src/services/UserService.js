@@ -1,16 +1,4 @@
-import { getDownloadURL } from 'firebase/storage';
-
 const UserService = {
-  async showAvatar(ref, action, loading) {
-    loading(true);
-    getDownloadURL(ref)
-      .then((url) => {
-        action(url);
-      })
-      .catch((error) => {})
-      .finally(() => loading(false));
-  },
-
   dateConversion(date) {
     const mounthArr = [
       'January',
@@ -26,6 +14,9 @@ const UserService = {
       'November',
       'December',
     ];
+    if (!date) {
+      return;
+    }
     const dateArr = date.split('-');
     const dayNumberArr = dateArr[2].split('');
     if (dayNumberArr[0] === '0') {

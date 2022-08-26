@@ -8,9 +8,10 @@ import { useState } from 'react';
 import LoadingPage from './pages/LoadingPage/LoadingPage';
 import MainHeader from './components/MainHeader/MainHeader';
 import Menu from './components/Menu/Menu';
-import styles from './App.module.scss';
 import PrivateRouter from './router/PrivateRouter';
 import PublicRouter from './router/PublicRouter';
+
+const token = localStorage.getItem('token');
 
 const App = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (token) {
       setLoading(true);
       AuthService.checkAuth()
         .then((response) => {
@@ -33,14 +34,24 @@ const App = () => {
     return <LoadingPage />;
   }
 
+  if (user) {
+    return (
+      <div className="w-screen h-screen font-sans-serif">
+        <BrowserRouter>
+          <MainHeader />
+          <div className="flex m-auto max-w-[1520px] min-h-[940px] mt-24">
+            <Menu />
+            <PrivateRouter />
+          </div>
+        </BrowserRouter>
+      </div>
+    );
+  }
+
   return (
     <div className="w-screen h-screen font-sans-serif">
       <BrowserRouter>
-        {user && <MainHeader />}
-        <div className={user ? styles.mainWrapper : styles.startWrapper}>
-          {user && <Menu />}
-          {user ? <PrivateRouter /> : <PublicRouter />}
-        </div>
+        <PublicRouter />
       </BrowserRouter>
     </div>
   );

@@ -19,7 +19,7 @@ const ValidationService = {
     }-${new Date().getDate()}`;
   },
 
-  nameValidation() {
+  nameValidation(clearErrors) {
     return {
       required: 'This field must be filled',
       minLength: {
