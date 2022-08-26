@@ -21,7 +21,7 @@ const MainHeader = () => {
     AuthService.logout(state.uid)
       .then((response) => {
         localStorage.removeItem('token');
-        dispatch(setUserData(false));
+        dispatch(setUserData(null));
         navigate('/');
       })
       .catch((error) => console.log(error));
