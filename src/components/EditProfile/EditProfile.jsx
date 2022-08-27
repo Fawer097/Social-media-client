@@ -101,8 +101,8 @@ const EditProfile = () => {
         </div>
         <div className={styles.sectionHeader}>
           <h4>Personal information</h4>
+          <hr />
         </div>
-        <hr />
         <div className="flex justify-between mt-6">
           <div className="flex">
             <label
@@ -200,7 +200,7 @@ const EditProfile = () => {
             {...register('about')}
           />
         </div>
-        <div className="flex items-center mt-6 mb-8">
+        <div className="flex items-center mt-6 mb-10">
           <label
             htmlFor="personal-site"
             className={[styles.label, 'w-32'].join(' ')}
@@ -217,62 +217,112 @@ const EditProfile = () => {
         </div>
         <div className={styles.sectionHeader}>
           <h4>Location information</h4>
+          <hr />
         </div>
-        <hr />
-        <div className="flex justify-between mt-6 mb-8">
-          <div className="flex items-center">
-            <label htmlFor="city" className={styles.label}>
+        <div className="flex justify-between mt-6 mb-3">
+          <div className="flex">
+            <label htmlFor="city" className={[styles.label, 'mt-1'].join(' ')}>
               City:
             </label>
-            <input
-              type="text"
-              name="city"
-              id="city"
-              className={[styles.input, 'w-42'].join(' ')}
-              {...register('city', ValidationService.inputValidation())}
-            />
+            <div>
+              <input
+                type="text"
+                name="city"
+                id="city"
+                className={
+                  errors.city
+                    ? [styles.input, styles.inputError, 'w-42'].join(' ')
+                    : [styles.input, 'w-42'].join(' ')
+                }
+                {...register('city', ValidationService.latinValidation())}
+              />
+              {errors.city ? (
+                <FormErrorParagraph message={errors.city.message} />
+              ) : (
+                <div className="h-6"></div>
+              )}
+            </div>
           </div>
-          <div className="flex items-center">
-            <label htmlFor="country" className={styles.label}>
+          <div className="flex">
+            <label
+              htmlFor="country"
+              className={[styles.label, 'mt-1'].join(' ')}
+            >
               Country:
             </label>
-            <input
-              type="text"
-              name="country"
-              id="country"
-              className={[styles.input, 'w-42'].join(' ')}
-              {...register('country', ValidationService.inputValidation())}
-            />
+            <div>
+              <input
+                type="text"
+                name="country"
+                id="country"
+                className={
+                  errors.country
+                    ? [styles.input, styles.inputError, 'w-42'].join(' ')
+                    : [styles.input, 'w-42'].join(' ')
+                }
+                {...register('country', ValidationService.latinValidation())}
+              />
+              {errors.country ? (
+                <FormErrorParagraph message={errors.country.message} />
+              ) : (
+                <div className="h-6"></div>
+              )}
+            </div>
           </div>
         </div>
         <div className={styles.sectionHeader}>
           <h4>Job information</h4>
+          <hr />
         </div>
-        <hr />
         <div className="flex justify-between mt-6 mb-10">
-          <div className="flex items-center">
-            <label htmlFor="company" className={styles.label}>
+          <div className="flex">
+            <label
+              htmlFor="company"
+              className={[styles.label, 'mt-1'].join(' ')}
+            >
               Company:
             </label>
-            <input
-              type="text"
-              name="company"
-              id="company"
-              className={[styles.input, 'w-42'].join(' ')}
-              {...register('company', ValidationService.inputValidation())}
-            />
+            <div>
+              <input
+                type="text"
+                name="company"
+                id="company"
+                className={
+                  errors.company
+                    ? [styles.input, styles.inputError, 'w-42'].join(' ')
+                    : [styles.input, 'w-42'].join(' ')
+                }
+                {...register('company', ValidationService.latinValidation())}
+              />
+              {errors.company ? (
+                <FormErrorParagraph message={errors.company.message} />
+              ) : (
+                <div className="h-6"></div>
+              )}
+            </div>
           </div>
-          <div className="flex items-center">
-            <label htmlFor="post" className={styles.label}>
+          <div className="flex">
+            <label htmlFor="post" className={[styles.label, 'mt-1'].join(' ')}>
               Post:
             </label>
-            <input
-              type="text"
-              name="post"
-              id="post"
-              className={[styles.input, 'w-42'].join(' ')}
-              {...register('post', ValidationService.inputValidation())}
-            />
+            <div>
+              <input
+                type="text"
+                name="post"
+                id="post"
+                className={
+                  errors.post
+                    ? [styles.input, styles.inputError, 'w-42'].join(' ')
+                    : [styles.input, 'w-42'].join(' ')
+                }
+                {...register('post', ValidationService.latinValidation())}
+              />
+              {errors.post ? (
+                <FormErrorParagraph message={errors.post.message} />
+              ) : (
+                <div className="h-6"></div>
+              )}
+            </div>
           </div>
         </div>
         <div>

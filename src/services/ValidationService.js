@@ -19,7 +19,7 @@ const ValidationService = {
     }-${new Date().getDate()}`;
   },
 
-  nameValidation(clearErrors) {
+  nameValidation() {
     return {
       required: 'This field must be filled',
       minLength: {
@@ -38,7 +38,46 @@ const ValidationService = {
     };
   },
 
-  inputValidation() {
+  emailValidation() {
+    return {
+      required: 'This field must be filled',
+      pattern: {
+        value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/,
+        message: 'Invalid characters',
+      },
+    };
+  },
+
+  passwordValidation() {
+    return {
+      required: 'This field must be filled',
+      minLength: {
+        value: 6,
+        message: 'Minimum 6 characters',
+      },
+      maxLength: {
+        value: 128,
+        message: 'No more than 128 characters',
+      },
+      pattern: {
+        value: /^\S*$/,
+        message: 'Password must be without spaces',
+      },
+    };
+  },
+
+  passwordsMatchValidation(value) {
+    return {
+      required: 'This field must be filled',
+      validate: () => {
+        if (value('createPassword') !== value('confirmPassword')) {
+          return 'Password do not match';
+        }
+      },
+    };
+  },
+
+  latinValidation() {
     return {
       pattern: {
         value: /^[-A-Za-z ]*$/,

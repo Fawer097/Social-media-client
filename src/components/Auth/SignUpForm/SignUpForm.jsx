@@ -191,13 +191,7 @@ const SignUpForm = () => {
                     ? [styles.input, styles.inputError, 'w-64'].join(' ')
                     : [styles.input, 'w-64'].join(' ')
                 }
-                {...register('email', {
-                  required: 'This field must be filled',
-                  pattern: {
-                    value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/,
-                    message: 'Invalid characters',
-                  },
-                })}
+                {...register('email', ValidationService.emailValidation())}
               />
               {errors.email ? (
                 <FormErrorParagraph message={errors.email.message} />
@@ -206,7 +200,6 @@ const SignUpForm = () => {
               )}
             </div>
           </div>
-
           <div className={styles.formSection}>
             <div className="w-[45%]">
               <label
@@ -225,21 +218,10 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-full'].join(' ')
                       : [styles.input, 'w-full'].join(' ')
                   }
-                  {...register('createPassword', {
-                    required: 'This field must be filled',
-                    minLength: {
-                      value: 6,
-                      message: 'Minimum 6 characters',
-                    },
-                    maxLength: {
-                      value: 128,
-                      message: 'No more than 128 characters',
-                    },
-                    pattern: {
-                      value: /^\S*$/,
-                      message: 'Password must be without spaces',
-                    },
-                  })}
+                  {...register(
+                    'createPassword',
+                    ValidationService.passwordValidation()
+                  )}
                 />
                 {errors.createPassword ? (
                   <FormErrorParagraph message={errors.createPassword.message} />
@@ -265,17 +247,10 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-full'].join(' ')
                       : [styles.input, 'w-full'].join(' ')
                   }
-                  {...register('confirmPassword', {
-                    required: 'This field must be filled',
-                    validate: () => {
-                      if (
-                        getValues('createPassword') !==
-                        getValues('confirmPassword')
-                      ) {
-                        return 'Password do not match';
-                      }
-                    },
-                  })}
+                  {...register(
+                    'confirmPassword',
+                    ValidationService.passwordsMatchValidation(getValues)
+                  )}
                 />
                 {errors.confirmPassword ? (
                   <FormErrorParagraph

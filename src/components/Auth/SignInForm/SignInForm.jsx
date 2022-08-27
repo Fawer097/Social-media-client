@@ -8,6 +8,7 @@ import logo from '../../../images/logo_black.png';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
 import AuthService from '../../../services/AuthService';
+import ValidationService from '../../../services/ValidationService';
 
 const SignInForm = () => {
   const [signError, setSignError] = useState();
@@ -54,13 +55,7 @@ const SignInForm = () => {
                 ? [styles.emailInput, styles.inputError].join(' ')
                 : styles.emailInput
             }
-            {...register('email', {
-              required: 'Fields must be filled',
-              pattern: {
-                value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/,
-                message: 'Invalid characters!',
-              },
-            })}
+            {...register('email', ValidationService.emailValidation())}
           />
         </div>
         <div>
@@ -74,21 +69,7 @@ const SignInForm = () => {
                 ? [styles.passwordInput, styles.inputError].join(' ')
                 : styles.passwordInput
             }
-            {...register('password', {
-              required: 'Fields must be filled',
-              minLength: {
-                value: 6,
-                message: 'Minimum 6 characters',
-              },
-              maxLength: {
-                value: 28,
-                message: 'No more than 28 characters',
-              },
-              pattern: {
-                value: /^\S*$/,
-                message: 'Password must be without spaces',
-              },
-            })}
+            {...register('password', ValidationService.passwordValidation())}
           />
         </div>
 
