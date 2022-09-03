@@ -1,0 +1,4 @@
+.dialogWrapper {
+  @apply w-[600px] flex flex-col items-center transform overflow-hidden rounded-lg
+   bg-white text-left align-middle shadow-xl transition-all;
+}

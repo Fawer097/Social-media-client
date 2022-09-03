@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import EditProfile from '../../../components/EditProfile/EditProfile';
-import Security from '../../../components/Security/Security';
+import EditProfileForm from '../../../components/Settings/EditProfileForm/EditProfileForm';
+import Security from '../../../components/Settings/Security/Security';
 import styles from './SettingsPage.module.scss';
 
 const SettingsPage = () => {
@@ -33,7 +33,7 @@ const SettingsPage = () => {
         </ul>
       </div>
       <hr />
-      {section === 'profile' && <EditProfile />}
+      {section === 'profile' && <EditProfileForm />}
       {section === 'security' && <Security />}
     </div>
   );

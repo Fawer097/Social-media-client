@@ -1,0 +1,12 @@
+.searchInput {
+  @apply w-full border border-gray-300 rounded-lg outline-none pl-10 pr-3 py-1 text-gray-800 bg-gray-200 bg-opacity-30;
+}
+
+.searchOptions {
+  @apply absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg 
+  ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm;
+}
+
+.optionItem {
+  @apply relative cursor-pointer select-none py-2 pl-10 pr-4 text-gray-800 hover:bg-darkGreen hover:text-white;
+}

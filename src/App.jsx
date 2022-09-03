@@ -1,15 +1,16 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useEffect } from 'react';
-import AuthService from './services/AuthService';
+import ApiService from './services/ApiService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from './redux/slices/userSlice';
 import { useState } from 'react';
 import LoadingPage from './pages/LoadingPage/LoadingPage';
-import MainHeader from './components/MainHeader/MainHeader';
+import MainHeader from './components/Headers/MainHeader/MainHeader';
 import Menu from './components/Menu/Menu';
 import PrivateRouter from './router/PrivateRouter';
 import PublicRouter from './router/PublicRouter';
+import Modals from './components/Modals/Modals';
 
 const token = localStorage.getItem('token');
 
@@ -21,7 +22,7 @@ const App = () => {
   useEffect(() => {
     if (token) {
       setLoading(true);
-      AuthService.checkAuth()
+      ApiService.checkAuth()
         .then((response) => {
           dispatch(setUserData(response.data));
         })
@@ -39,6 +40,7 @@ const App = () => {
       <div className="w-screen h-screen font-sans-serif">
         <BrowserRouter>
           <MainHeader />
+          <Modals />
           <div className="flex m-auto max-w-[1520px] min-h-[940px] mt-24">
             <Menu />
             <PrivateRouter />
@@ -51,6 +53,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen font-sans-serif">
       <BrowserRouter>
+        <Modals />
         <PublicRouter />
       </BrowserRouter>
     </div>

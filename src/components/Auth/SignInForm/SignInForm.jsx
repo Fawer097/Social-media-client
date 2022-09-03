@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../images/logo_black.png';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
-import AuthService from '../../../services/AuthService';
+import ApiService from '../../../services/ApiService';
 import ValidationService from '../../../services/ValidationService';
 
 const SignInForm = () => {
@@ -23,7 +23,7 @@ const SignInForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    AuthService.signIn(data)
+    ApiService.signIn(data)
       .then((response) => {
         localStorage.setItem('token', response.data.accessToken);
         dispatch(setUserData(response.data.userData));

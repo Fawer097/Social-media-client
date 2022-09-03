@@ -1,0 +1,19 @@
+.userInfoWrapper {
+  @apply max-w-[300px] w-1/2 h-[500px] p-2;
+}
+
+.infoListWrapper {
+  @apply mt-4 w-full font-light border-t border-b border-gray-200 pt-4;
+}
+
+.listItemWrapper {
+  @apply flex items-center mb-4;
+}
+
+.iconWrapper {
+  @apply w-6 mr-4 text-gray-500;
+}
+
+.textListWrapper {
+  @apply text-gray-700 text-sm;
+}

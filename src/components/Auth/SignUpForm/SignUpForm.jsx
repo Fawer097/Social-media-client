@@ -3,7 +3,7 @@ import styles from './SignUpForm.module.scss';
 import logo from '../../../images/logo_black.png';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import AuthService from '../../../services/AuthService';
+import ApiService from '../../../services/ApiService';
 import ValidationService from '../../../services/ValidationService';
 import { useDispatch } from 'react-redux';
 import {
@@ -23,7 +23,7 @@ const SignUpForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    AuthService.signUp(data)
+    ApiService.signUp(data)
       .then((response) => {
         dispatch(setSuccessModal({ active: true }));
         reset();

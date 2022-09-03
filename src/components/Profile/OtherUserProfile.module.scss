@@ -1,0 +1,5 @@
+.button {
+  @apply flex justify-center items-center text-sm mt-2 w-32 h-8 bg-darkGreen rounded-lg
+    hover:shadow-lg active:scale-95 text-white duration-300 
+    disabled:hover:shadow-none disabled:active:scale-100 disabled:bg-darkGreen disabled:bg-opacity-70;
+}

@@ -7,6 +7,7 @@ export const modalsSlice = createSlice({
       active: false,
     },
     errorModal: { active: false },
+    avatarModal: { active: false },
   },
   reducers: {
     setSuccessModal: (state, action) => {
@@ -15,9 +16,13 @@ export const modalsSlice = createSlice({
     setErrorModal: (state, action) => {
       return { ...state, errorModal: action.payload };
     },
+    setAvatarModal: (state, action) => {
+      return { ...state, avatarModal: action.payload };
+    },
   },
 });
 
 export const { setSuccessModal } = modalsSlice.actions;
 export const { setErrorModal } = modalsSlice.actions;
+export const { setAvatarModal } = modalsSlice.actions;
 export default modalsSlice.reducer;
