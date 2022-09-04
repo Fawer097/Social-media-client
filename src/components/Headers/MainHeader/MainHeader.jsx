@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import HeaderSearch from '../../Searches/HeaderSearch/HeaderSearch';
+import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const MainHeader = () => {
       .then((response) => {
         localStorage.removeItem('token');
         dispatch(setUserData(null));
+        dispatch(setOtherUserData(null));
         navigate('/');
       })
       .catch((error) => console.log(error));
