@@ -12,7 +12,7 @@ const SettingsPage = () => {
       <div className="text-xl text-gray-800 tracking-wide ml-6 mb-4">
         <h2>Settings</h2>
       </div>
-      <div className="ml-6">
+      <div className="mx-6">
         <ul className="flex justify-between w-36 tracking-wide">
           <li
             onClick={() => setSection('profile')}

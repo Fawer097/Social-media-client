@@ -11,6 +11,13 @@ import Menu from './components/Menu/Menu';
 import PrivateRouter from './router/PrivateRouter';
 import PublicRouter from './router/PublicRouter';
 import Modals from './components/Modals/Modals';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from './firebase';
+import {
+  setAllFriendsData,
+  setFriends,
+  setIncomingRequests,
+} from './redux/slices/friendsSlice';
 
 const token = localStorage.getItem('token');
 
@@ -30,6 +37,20 @@ const App = () => {
         .finally(() => setLoading(false));
     }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      onSnapshot(doc(db, 'Friends', user.uid), (doc) => {
+        dispatch(setAllFriendsData(doc.data()));
+        if (doc.data()) {
+          ApiService.getFriendsData().then((data) => {
+            dispatch(setIncomingRequests(data.data.candidatesData));
+            dispatch(setFriends(data.data.friendsData));
+          });
+        }
+      });
+    }
+  }, [user]);
 
   if (loading) {
     return <LoadingPage />;

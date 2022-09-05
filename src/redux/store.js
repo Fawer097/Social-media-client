@@ -3,12 +3,14 @@ import userReducer from './slices/userSlice';
 import otherUserReducer from './slices/otherUserSlice';
 import modalsReducer from './slices/modalsSlice';
 import { usersApi } from './api/usersApi';
+import friendsReducer from './slices/friendsSlice';
 
 export const store = configureStore({
   reducer: {
     userData: userReducer,
     otherUserData: otherUserReducer,
     modals: modalsReducer,
+    friendsData: friendsReducer,
     // [usersApi.reducerPath]: usersApi.reducer,
   },
   // middleware: (getDefaultMiddleware) =>

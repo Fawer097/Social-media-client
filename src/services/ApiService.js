@@ -30,14 +30,18 @@ const ApiService = {
     return $api.get(API_URL + `/users/searchUsers?q=${query}`);
   },
 
-  async getUserData(uid) {
+  async getOtherUserData(uid) {
     return $api.get(API_URL + '/users/oneUser', {
       headers: { data: uid },
     });
   },
 
-  async friendRequest(uid) {
-    return $api.post(API_URL + '/friends/candidate', { acceptUid: uid });
+  async friendsRequest(uid) {
+    return $api.post(API_URL + '/friends/request', { receiverUid: uid });
+  },
+
+  async getFriendsData() {
+    return $api.get(API_URL + '/friends/friendsData');
   },
 };
 

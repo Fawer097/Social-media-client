@@ -1,18 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const OtherUserSlice = createSlice({
+export const otherUserSlice = createSlice({
   name: 'otherUserData',
   initialState: null,
   reducers: {
     setOtherUserData: (state, action) => {
       return action.payload;
     },
-    setFriendCandidate: (state, action) => {
-      return { ...state, friendsCandidates: action.payload };
-    },
   },
 });
 
-export const { setOtherUserData } = OtherUserSlice.actions;
-export const { setFriendCandidate } = OtherUserSlice.actions;
-export default OtherUserSlice.reducer;
+export const { setOtherUserData } = otherUserSlice.actions;
+export default otherUserSlice.reducer;

@@ -25,8 +25,8 @@ const HeaderSearch = () => {
     }
   }, [query]);
 
-  const getUserData = (uid) => {
-    ApiService.getUserData(uid)
+  const openUserProfile = (uid) => {
+    ApiService.getOtherUserData(uid)
       .then((data) => {
         dispatch(setOtherUserData(data.data));
         navigate(`profile${data.data.uid}`);
@@ -58,7 +58,7 @@ const HeaderSearch = () => {
               <Combobox.Option
                 className={styles.optionItem}
                 key={user.uid}
-                onClick={() => getUserData(user.uid)}
+                onClick={() => openUserProfile(user.uid)}
               >
                 <div className="flex items-center">
                   <div>

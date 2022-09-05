@@ -1,11 +1,12 @@
 import React from 'react';
-import defaultAvatar from '../../../images/defaultAvatar.jpeg';
-import { useNavigate } from 'react-router-dom';
-import ApiService from '../../../services/ApiService';
-import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import defaultAvatar from '../../../images/defaultAvatar.jpeg';
+import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
+import ApiService from '../../../services/ApiService';
+import FriendsService from '../../../services/FriendsService';
 
-const FriendCard = (props) => {
+const FriendRequestCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -44,11 +45,14 @@ const FriendCard = (props) => {
         </p>
       </div>
       <div className="flex flex-col absolute right-10">
-        <button>Message</button>
-        <button>Remove</button>
+        <button
+          onClick={() => FriendsService.friendsRequest(props.userData.uid)}
+        >
+          Add as Friend
+        </button>
       </div>
     </div>
   );
 };
 
-export default FriendCard;
+export default FriendRequestCard;
