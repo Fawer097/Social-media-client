@@ -4,13 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import ApiService from '../../../services/ApiService';
 import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
 import { useDispatch } from 'react-redux';
+import { setMessageModal } from '../../../redux/slices/modalsSlice';
 
 const FriendCard = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const openUserProfile = (uid) => {
-    ApiService.getOtherUserData(uid)
+  const openMessageModal = () => {
+    ApiService.getOtherUserData(props.data.uid)
+      .then((data) => {
+        dispatch(setOtherUserData(data.data));
+        dispatch(setMessageModal({ active: true }));
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const openOtherUserProfile = () => {
+    ApiService.getOtherUserData(props.data.uid)
       .then((data) => {
         dispatch(setOtherUserData(data.data));
         navigate(`/profile${data.data.uid}`);
@@ -18,33 +28,35 @@ const FriendCard = (props) => {
       .catch((error) => console.log(error));
   };
 
+  if (!props.data) {
+    return null;
+  }
+
   return (
     <div className="flex items-center w-full h-28 border-b px-6 border-gray-200 relative">
       <div>
         <img
-          className="w-20 h-20 rounded-full border border-gray-300 cursor-pointer"
-          src={
-            props.userData.avatarUrl ? props.userData.avatarUrl : defaultAvatar
-          }
+          className="w-20 h-20 rounded-full cursor-pointer"
+          src={props.data.avatarUrl ? props.data.avatarUrl : defaultAvatar}
           alt="avatar"
-          onClick={() => openUserProfile(props.userData.uid)}
+          onClick={openOtherUserProfile}
         />
       </div>
       <div className="h-full ml-6 pt-6">
         <p
           className="text-darkGreen cursor-pointer hover:text-gray-800"
-          onClick={() => openUserProfile(props.userData.uid)}
+          onClick={openOtherUserProfile}
         >
-          {props.userData.fullName}
+          {props.data.fullName}
         </p>
         <p className="text-gray-500 text-sm mt-0.5">
-          {props.userData.city}
-          {props.userData.city && props.userData.country && ', '}
-          {props.userData.country}
+          {props.data.city}
+          {props.data.city && props.data.country && ', '}
+          {props.data.country}
         </p>
       </div>
       <div className="flex flex-col absolute right-10">
-        <button>Message</button>
+        <button onClick={openMessageModal}>Message</button>
         <button>Remove</button>
       </div>
     </div>

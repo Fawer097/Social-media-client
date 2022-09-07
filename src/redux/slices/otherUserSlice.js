@@ -7,8 +7,12 @@ export const otherUserSlice = createSlice({
     setOtherUserData: (state, action) => {
       return action.payload;
     },
+    resetOtherUserData: (state, action) => {
+      return null;
+    },
   },
 });
 
 export const { setOtherUserData } = otherUserSlice.actions;
+export const { resetOtherUserData } = otherUserSlice.actions;
 export default otherUserSlice.reducer;

@@ -10,10 +10,12 @@ import {
 } from '@heroicons/react/outline';
 import ApiService from '../../../services/ApiService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserData } from '../../../redux/slices/userSlice';
+import { resetUserData } from '../../../redux/slices/userSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import HeaderSearch from '../../Searches/HeaderSearch/HeaderSearch';
-import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
+import { resetOtherUserData } from '../../../redux/slices/otherUserSlice';
+import { resetFriendsData } from '../../../redux/slices/friendsSlice';
+import { resetChatsData } from '../../../redux/slices/messagerSlice';
 
 const MainHeader = () => {
   const navigate = useNavigate();
@@ -24,8 +26,10 @@ const MainHeader = () => {
     ApiService.logout(userData.uid)
       .then((response) => {
         localStorage.removeItem('token');
-        dispatch(setUserData(null));
-        dispatch(setOtherUserData(null));
+        dispatch(resetUserData());
+        dispatch(resetOtherUserData());
+        dispatch(resetFriendsData());
+        dispatch(resetChatsData());
         navigate('/');
       })
       .catch((error) => console.log(error));

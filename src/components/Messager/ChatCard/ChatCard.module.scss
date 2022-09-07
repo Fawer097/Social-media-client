@@ -1,0 +1,4 @@
+.wrapper {
+  @apply flex items-center w-full h-24 px-6 relative cursor-pointer border-b border-gray-200
+  hover:bg-darkGreen hover:bg-opacity-50 rounded-xl;
+}

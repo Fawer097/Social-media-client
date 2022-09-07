@@ -1,0 +1,14 @@
+.dialogWrapper {
+  @apply w-[600px] h-[420px] flex flex-col px-6 py-4 items-center transform overflow-hidden rounded-3xl
+     bg-white text-left align-middle shadow-xl transition-all;
+}
+
+.messageInput {
+  @apply border border-gray-300 rounded-lg px-2 py-1 h-44 w-full focus:outline-none
+  focus:border-brightGreen;
+}
+
+.button {
+  @apply absolute right-0 flex justify-center cursor-pointer items-center py-2 px-4 w-36 bg-darkGreen text-sm rounded-xl
+  hover:shadow-lg active:scale-95 text-white duration-300;
+}

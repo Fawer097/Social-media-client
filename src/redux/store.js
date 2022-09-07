@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './slices/userSlice';
 import otherUserReducer from './slices/otherUserSlice';
 import modalsReducer from './slices/modalsSlice';
-import { usersApi } from './api/usersApi';
 import friendsReducer from './slices/friendsSlice';
+import messagerReducer from './slices/messagerSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,8 +11,6 @@ export const store = configureStore({
     otherUserData: otherUserReducer,
     modals: modalsReducer,
     friendsData: friendsReducer,
-    // [usersApi.reducerPath]: usersApi.reducer,
+    messagerData: messagerReducer,
   },
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware().concat(usersApi.middleware),
 });

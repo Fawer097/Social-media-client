@@ -1,14 +1,29 @@
 import { EmojiSadIcon } from '@heroicons/react/outline';
 import React from 'react';
 import FriendCard from '../FriendCard/FriendCard';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import ApiService from '../../../services/ApiService';
+import { useState } from 'react';
 
 const FriendsBoard = () => {
-  const { friends } = useSelector((state) => state.friendsData);
+  const [friendsData, setFriendsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    ApiService.getFriendsData()
+      .then((data) => setFriendsData(data.data))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
-      {friends.length ? (
+      {friendsData.length ? (
         <div className="mt-6">
           <div className="w-full border-b border-gray-200 mb-4 h-10">
             <input
@@ -17,9 +32,9 @@ const FriendsBoard = () => {
               className="w-full h-3/4 px-6 outline-none"
             />
           </div>
-          {friends.map((friend, index) => {
-            return <FriendCard key={friend.uid} userData={friend} />;
-          })}
+          {friendsData.map((friend) => (
+            <FriendCard key={friend.uid} data={friend} />
+          ))}
         </div>
       ) : (
         <div className="flex flex-col items-center text-center mt-8 text-gray-400">

@@ -5,6 +5,10 @@ import UserInfo from './UserInfo/UserInfo';
 import UserBoard from './UserBoard/UserBoard';
 
 const UserProfile = (props) => {
+  if (!props.userData) {
+    return null;
+  }
+
   return (
     <div className="w-full relative">
       <Header userData={props.userData} />

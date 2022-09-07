@@ -31,17 +31,36 @@ const ApiService = {
   },
 
   async getOtherUserData(uid) {
-    return $api.get(API_URL + '/users/oneUser', {
+    return $api.get(API_URL + '/users/otherUser', {
       headers: { data: uid },
     });
   },
 
-  async friendsRequest(uid) {
-    return $api.post(API_URL + '/friends/request', { receiverUid: uid });
+  async friendsRequest(receiverUid) {
+    return $api.post(API_URL + '/friends/friendRequest', { receiverUid });
+  },
+
+  async sendMessage(receiverUid, message) {
+    return $api.post(API_URL + '/messager/message', {
+      receiverUid,
+      ...message,
+    });
+  },
+
+  async getAllFriendsData() {
+    return $api.get(API_URL + '/friends/allData');
   },
 
   async getFriendsData() {
     return $api.get(API_URL + '/friends/friendsData');
+  },
+
+  async getCandidatesData() {
+    return $api.get(API_URL + '/friends/candidatesData');
+  },
+
+  async getChatsData() {
+    return $api.get(API_URL + '/messager/chatsData');
   },
 };
 

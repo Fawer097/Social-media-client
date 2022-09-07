@@ -13,6 +13,10 @@ import ProfileGallery from '../ProfileGallery/ProfileGallery';
 const UserInfo = (props) => {
   const state = useSelector((state) => state.userData);
 
+  if (!props.userData) {
+    return null;
+  }
+
   return (
     <div className={styles.userInfoWrapper}>
       <div className="text-lg text-gray-700 flex justify-between items-center">

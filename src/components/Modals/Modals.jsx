@@ -1,6 +1,7 @@
 import React from 'react';
 import AvatarModal from './AvatarModal/AvatarModal';
 import ErrorModal from './ErrorModal/ErrorModal';
+import MessageModal from './MessageModal/MessageModal';
 import SuccessModal from './SuccessModal/SuccessModal';
 
 const Modals = () => {
@@ -9,6 +10,7 @@ const Modals = () => {
       <SuccessModal />
       <ErrorModal />
       <AvatarModal />
+      <MessageModal />
     </>
   );
 };

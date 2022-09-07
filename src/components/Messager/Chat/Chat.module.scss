@@ -1,0 +1,12 @@
+.messageInput {
+  @apply border border-gray-300 rounded-lg px-2 py-1 h-9 w-11/12 
+  focus:outline-none focus:border-brightGreen;
+}
+
+.otherUserMessage {
+  @apply flex w-fit m-2 px-4 py-1 border border-gray-100 rounded-xl relative left-0;
+}
+
+.myMessage {
+  @apply flex w-fit m-2 px-4 py-1 border border-gray-100 rounded-xl relative left-2/3;
+}

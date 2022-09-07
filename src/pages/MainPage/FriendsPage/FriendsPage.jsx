@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
-import FriendsBoard from '../../../components/Friends/FriendsBoard/FriendsBoard';
+import FriendsList from '../../../components/Friends/FriendsList/FriendsList';
 import FriendsFilter from '../../../components/Friends/FriendsFilter/FriendsFilter';
-import FriendsRequestsBoard from '../../../components/Friends/FriendsRequestsBoard/FriendsRequestsBoard';
+import FriendsRequestsList from '../../../components/Friends/FriendsRequestsList/FriendsRequestsList';
 import styles from './FriendsPage.module.scss';
 
 const FriendsPage = () => {
@@ -36,8 +36,8 @@ const FriendsPage = () => {
           </ul>
         </div>
         <hr />
-        {section === 'friends' && <FriendsBoard />}
-        {section === 'requests' && <FriendsRequestsBoard />}
+        {section === 'friends' && <FriendsList />}
+        {section === 'requests' && <FriendsRequestsList />}
       </div>
       <FriendsFilter />
     </div>

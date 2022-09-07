@@ -8,23 +8,15 @@ export const friendsSlice = createSlice({
     outgoingRequests: [],
   },
   reducers: {
-    setAllFriendsData: (state, action) => {
+    setFriendsData: (state, action) => {
       return action.payload;
     },
-    setFriends: (state, action) => {
-      return { ...state, friends: action.payload };
-    },
-    setIncomingRequests: (state, action) => {
-      return { ...state, incomingRequests: action.payload };
-    },
-    setOutgoingRequests: (state, action) => {
-      return { ...state, outgoingRequests: action.payload };
+    resetFriendsData: (state, action) => {
+      return null;
     },
   },
 });
 
-export const { setAllFriendsData } = friendsSlice.actions;
-export const { setFriends } = friendsSlice.actions;
-export const { setIncomingRequests } = friendsSlice.actions;
-export const { setOutgoingRequests } = friendsSlice.actions;
+export const { setFriendsData } = friendsSlice.actions;
+export const { resetFriendsData } = friendsSlice.actions;
 export default friendsSlice.reducer;

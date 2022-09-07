@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import UserProfile from '../../../components/Profile/UserProfile';
 import OtherUserProfile from '../../../components/Profile/OtherUserProfile';
 
 const ProfilePage = (props) => {
   const { uid } = useSelector((state) => state.userData);
+
+  if (!props.userData) {
+    return null;
+  }
 
   return (
     <div className="w-full h-full mx-4">

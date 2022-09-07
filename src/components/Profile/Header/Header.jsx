@@ -8,6 +8,10 @@ const Header = (props) => {
   const state = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
+  if (!props.userData) {
+    return null;
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className="flex absolute top-24 left-10">
