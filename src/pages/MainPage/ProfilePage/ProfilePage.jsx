@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import UserProfile from '../../../components/Profile/UserProfile';
+import MyProfile from '../../../components/Profile/MyProfile';
 import OtherUserProfile from '../../../components/Profile/OtherUserProfile';
 
 const ProfilePage = (props) => {
@@ -13,7 +13,7 @@ const ProfilePage = (props) => {
   return (
     <div className="w-full h-full mx-4">
       {uid === props.userData.uid ? (
-        <UserProfile userData={props.userData} />
+        <MyProfile userData={props.userData} />
       ) : (
         <OtherUserProfile userData={props.userData} />
       )}

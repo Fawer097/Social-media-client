@@ -62,6 +62,14 @@ const ApiService = {
   async getChatsData() {
     return $api.get(API_URL + '/messager/chatsData');
   },
+
+  async createPost(data) {
+    return $api.post(API_URL + '/posts/createPost', data);
+  },
+
+  async getPosts() {
+    return $api.get(API_URL + '/posts/getPosts');
+  },
 };
 
 export default ApiService;

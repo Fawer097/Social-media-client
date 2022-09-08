@@ -55,12 +55,8 @@ const Chat = () => {
       .catch((error) => console.log(error));
   };
 
-  if (loading) {
-    return null;
-  }
-
-  if (!messages || !messages.length) {
-    return null;
+  if (!messages || !messages.length || loading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -97,7 +93,9 @@ const Chat = () => {
           <div
             key={index}
             className={
-              message.uid === uid ? styles.myMessage : styles.otherUserMessage
+              message.senderUid === uid
+                ? styles.myMessage
+                : styles.otherUserMessage
             }
           >
             <div>
@@ -107,7 +105,7 @@ const Chat = () => {
                 className="w-9 h-9 rounded-full"
               />
             </div>
-            <div className="ml-2 w-60 text-sm overflow-scroll">
+            <div className="ml-3 w-60 text-sm overflow-scroll">
               <p className="text-darkGreen">{message.fullName}</p>
               <p className="text-gray-700">{message.message}</p>
             </div>

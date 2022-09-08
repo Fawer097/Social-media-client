@@ -4,7 +4,7 @@ import Counter from './Counter/Counter';
 import UserInfo from './UserInfo/UserInfo';
 import UserBoard from './UserBoard/UserBoard';
 
-const UserProfile = (props) => {
+const MyProfile = (props) => {
   if (!props.userData) {
     return null;
   }
@@ -28,4 +28,4 @@ const UserProfile = (props) => {
   );
 };
 
-export default UserProfile;
+export default MyProfile;

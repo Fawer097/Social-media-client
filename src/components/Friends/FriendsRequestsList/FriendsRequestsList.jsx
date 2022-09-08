@@ -42,8 +42,8 @@ const FriendsRequestsBoard = () => {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center text-center mt-8 text-gray-400">
-          <p className="w-60">No friend requests yet.</p>
+        <div className="flex justify-center mt-8 text-gray-400">
+          <p>No friend requests yet.</p>
         </div>
       )}
     </>
