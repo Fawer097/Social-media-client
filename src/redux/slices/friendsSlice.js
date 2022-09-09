@@ -12,7 +12,11 @@ export const friendsSlice = createSlice({
       return action.payload;
     },
     resetFriendsData: (state, action) => {
-      return null;
+      return {
+        friends: [],
+        incomingRequests: [],
+        outgoingRequests: [],
+      };
     },
   },
 });

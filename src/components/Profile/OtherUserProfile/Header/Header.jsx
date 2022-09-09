@@ -1,15 +1,14 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styles from './Header.module.scss';
-import defaultAvatar from '../../../images/defaultAvatar.jpeg';
-import { setAvatarModal } from '../../../redux/slices/modalsSlice';
+import defaultAvatar from '../../../../images/defaultAvatar.jpeg';
+import { setAvatarModal } from '../../../../redux/slices/modalsSlice';
 
 const Header = (props) => {
-  const state = useSelector((state) => state.userData);
   const dispatch = useDispatch();
 
   if (!props.userData) {
-    return null;
+    return;
   }
 
   return (

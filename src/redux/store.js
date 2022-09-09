@@ -8,7 +8,7 @@ import messagerReducer from './slices/messagerSlice';
 export const store = configureStore({
   reducer: {
     userData: userReducer,
-    otherUserData: otherUserReducer,
+    otherUser: otherUserReducer,
     modals: modalsReducer,
     friendsData: friendsReducer,
     messagerData: messagerReducer,

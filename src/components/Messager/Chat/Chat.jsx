@@ -1,24 +1,31 @@
 import {
-  ChevronDoubleRightIcon,
+  PaperAirplaneIcon,
   ChevronLeftIcon,
-} from '@heroicons/react/outline';
+} from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveChat } from '../../../redux/slices/messagerSlice';
+import {
+  setActiveChat,
+  setLastMessage,
+} from '../../../redux/slices/messagerSlice';
 import ApiService from '../../../services/ApiService';
 import styles from './Chat.module.scss';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useEffect } from 'react';
-import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
+import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import { useNavigate } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
+import MyMessage from '../MyMessage/MyMessage';
+import InterlocutorMessage from '../InterlocutorMessage/InterlocutorMessage';
 
 const Chat = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
-  const { uid } = useSelector((state) => state.userData);
+  const { userData } = useSelector((state) => state);
   const [messages, setMessages] = useState([]);
+  const [interlocutorData, setInterlocutorData] = useState({});
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -30,9 +37,6 @@ const Chat = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const [interlocutorData, setInterlocutorData] = useState({});
-  const [loading, setLoading] = useState(false);
-
   const { register, handleSubmit, reset } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
@@ -40,24 +44,19 @@ const Chat = () => {
     reset();
   };
 
-  onSnapshot(doc(db, 'Chats', uid), (doc) => {
-    const messages = Object.values(doc.data()[activeChat]);
-    messages.sort((prev, next) => prev.createdAt - next.createdAt);
-    setMessages(messages);
-  });
+  useEffect(() => {
+    onSnapshot(doc(db, 'Chats', userData.uid), (doc) => {
+      const messages = Object.values(doc.data()[activeChat]);
+      messages.sort((prev, next) => prev.createdAt - next.createdAt);
+      setMessages(messages);
+      dispatch(setLastMessage(messages[messages.length - 1].message));
+    });
+  }, []);
 
-  const openOtherUserProfile = (uid) => {
-    ApiService.getOtherUserData(uid)
-      .then((data) => {
-        dispatch(setOtherUserData(data.data));
-        navigate(`/profile${data.data.uid}`);
-      })
-      .catch((error) => console.log(error));
+  const openOtherUserProfile = () => {
+    dispatch(setOtherUser(interlocutorData.uid));
+    navigate(`/profile${interlocutorData.uid}`);
   };
-
-  if (!messages || !messages.length || loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div className="w-full relative">
@@ -71,7 +70,7 @@ const Chat = () => {
         </div>
         <div
           className="text-darkGreen cursor-pointer hover:text-gray-800"
-          onClick={() => openOtherUserProfile(interlocutorData.uid)}
+          onClick={openOtherUserProfile}
         >
           <p>{interlocutorData.fullName}</p>
         </div>
@@ -83,34 +82,28 @@ const Chat = () => {
                 : defaultAvatar
             }
             alt="avatar"
-            className="border border-gray-300 w-12 h-12 rounded-full cursor-pointer"
-            onClick={() => openOtherUserProfile(interlocutorData.uid)}
+            className="w-12 h-12 rounded-full cursor-pointer"
+            onClick={openOtherUserProfile}
           />
         </div>
       </div>
       <div className="w-full h-[65vh] border-b border-gray-200 p-4 overflow-y-auto relative">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={
-              message.senderUid === uid
-                ? styles.myMessage
-                : styles.otherUserMessage
-            }
-          >
-            <div>
-              <img
-                src={message.avatarUrl ? message.avatarUrl : defaultAvatar}
-                alt="avatar"
-                className="w-9 h-9 rounded-full"
-              />
-            </div>
-            <div className="ml-3 w-60 text-sm overflow-scroll">
-              <p className="text-darkGreen">{message.fullName}</p>
-              <p className="text-gray-700">{message.message}</p>
-            </div>
-          </div>
-        ))}
+        {messages.length && !loading
+          ? messages.map((message, index) =>
+              message.senderUid === userData.uid ? (
+                <MyMessage
+                  key={message.createdAt.seconds}
+                  messageData={message}
+                />
+              ) : (
+                <InterlocutorMessage
+                  key={message.createdAt.seconds}
+                  userData={interlocutorData}
+                  messageData={message}
+                />
+              )
+            )
+          : null}
       </div>
       <form
         className="flex w-full items-center py-4"
@@ -125,7 +118,7 @@ const Chat = () => {
           {...register('message', { required: true })}
         />
         <button type="submit">
-          <ChevronDoubleRightIcon className="w-8 ml-8 text-darkGreen cursor-pointer" />
+          <PaperAirplaneIcon className="w-8 ml-8 text-darkGreen cursor-pointer" />
         </button>
       </form>
     </div>

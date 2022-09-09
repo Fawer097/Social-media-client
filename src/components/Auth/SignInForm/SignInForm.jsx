@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './SignInForm.module.scss';
 import { useForm } from 'react-hook-form';
-import { ExclamationCircleIcon } from '@heroicons/react/outline';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../images/logo_black.png';
@@ -76,7 +76,7 @@ const SignInForm = () => {
         <div className={styles.errorWrapper}>
           {(errors.email || errors.password || signError) && (
             <div className="flex items-center">
-              <ExclamationCircleIcon width={20} />
+              <ExclamationTriangleIcon width={20} />
               <p className="ml-1">
                 {(errors.email && errors.email.message) ||
                   (errors.password && errors.password.message) ||

@@ -1,15 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import MyPost from '../../Posts/MyPost';
-import OtherUserPost from '../../Posts/OtherUserPost';
+import MyPost from '../../../Posts/MyPost/MyPost';
 import styles from './UserBoard.module.scss';
 import { useForm } from 'react-hook-form';
-import ApiService from '../../../services/ApiService';
+import ApiService from '../../../../services/ApiService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const UserBoard = (props) => {
-  const { uid } = useSelector((state) => state.userData);
+const UserBoard = () => {
   let [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -24,6 +21,8 @@ const UserBoard = (props) => {
       .catch((error) => console.log(error));
   };
 
+  const updatePosts = (data) => setPosts(data);
+
   useEffect(() => {
     setLoading(true);
     ApiService.getPosts()
@@ -37,30 +36,28 @@ const UserBoard = (props) => {
     );
   }
 
-  if (!props.userData) {
-    return null;
-  }
-
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
     <div className="ml-8 p-5 rounded-lg w-full border border-gray-300">
-      {uid === props.userData.uid ? (
-        <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
-          <input
-            type="text"
-            placeholder="Enter your message"
-            className={styles.createPostInput}
-            {...register('postData', { required: true })}
-          />
-          <button type="submit">Publish post</button>
-        </form>
-      ) : null}
+      <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
+        <input
+          type="text"
+          placeholder="Enter your message"
+          className={styles.createPostInput}
+          {...register('postData', { required: true })}
+        />
+        <button type="submit">Publish post</button>
+      </form>
       {posts.length ? (
         posts.map((post) => (
-          <MyPost key={post.createdAt._seconds} postData={post} />
+          <MyPost
+            key={post.createdAt._seconds}
+            postData={post}
+            updatePosts={updatePosts}
+          />
         ))
       ) : (
         <div className="flex justify-center mt-8 text-gray-400">

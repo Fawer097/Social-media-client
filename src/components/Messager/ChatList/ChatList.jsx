@@ -2,10 +2,6 @@ import React from 'react';
 import ChatCard from '../ChatCard/ChatCard';
 
 const ChatList = (props) => {
-  if (!props.chatsData) {
-    return null;
-  }
-
   return (
     <div>
       {props.chatsData.map((chat) => (

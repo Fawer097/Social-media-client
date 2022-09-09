@@ -1,7 +1,7 @@
 import React from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSuccessModal } from '../../../redux/slices/modalsSlice';
@@ -44,7 +44,7 @@ const SuccessModal = () => {
             >
               <Dialog.Panel className={styles.dialogWrapper}>
                 <Dialog.Title className="flex items-center justify-center w-11 h-11 rounded-full bg-green-100">
-                  <CheckIcon className="w-7 text-green-600" />
+                  <CheckCircleIcon className="w-7 text-green-600" />
                 </Dialog.Title>
                 <Dialog.Title
                   as="h3"

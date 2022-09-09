@@ -24,6 +24,33 @@ const UserService = {
     }
     return `${mounthArr[dateArr[1] - 1]} ${dateArr[2]}, ${dateArr[0]}`;
   },
+
+  postTimestampConversion(seconds) {
+    const dateArr = new Date(seconds * 1000).toString().split(' ');
+    const timeArr = dateArr[4].split(':');
+    timeArr.length -= 1;
+    return `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]} in ${timeArr.join(':')}`;
+  },
+
+  messageTimestampConversion(seconds) {
+    const date = new Date(seconds * 1000);
+    const dateArr = date.toString().split(' ');
+
+    let day = date.getDate();
+    let mounth = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const timeArr = dateArr[4].split(':');
+    timeArr.length -= 1;
+
+    if (day < 10) {
+      day = `0${day}`;
+    }
+    if (mounth < 10) {
+      mounth = `0${mounth}`;
+    }
+
+    return `${day}.${mounth}.${year}, ${timeArr.join(':')}`;
+  },
 };
 
 export default UserService;

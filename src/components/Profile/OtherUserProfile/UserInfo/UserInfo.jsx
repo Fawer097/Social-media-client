@@ -1,20 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import styles from './UserInfo.module.scss';
 import {
   BriefcaseIcon,
   CalendarIcon,
   GlobeAltIcon,
-  LocationMarkerIcon,
-} from '@heroicons/react/outline';
-import UserService from '../../../services/UserService';
+  MapPinIcon,
+} from '@heroicons/react/24/outline';
+import UserService from '../../../../services/UserService';
 import ProfileGallery from '../ProfileGallery/ProfileGallery';
 
 const UserInfo = (props) => {
-  const state = useSelector((state) => state.userData);
-
   if (!props.userData) {
-    return null;
+    return;
   }
 
   return (
@@ -37,7 +34,7 @@ const UserInfo = (props) => {
         {props.userData.city || props.userData.country ? (
           <div className={styles.listItemWrapper}>
             <div className={styles.iconWrapper}>
-              <LocationMarkerIcon />
+              <MapPinIcon />
             </div>
             <div className={styles.textListWrapper}>
               {props.userData.city}

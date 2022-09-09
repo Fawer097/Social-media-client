@@ -4,15 +4,15 @@ export const otherUserSlice = createSlice({
   name: 'otherUserData',
   initialState: null,
   reducers: {
-    setOtherUserData: (state, action) => {
-      return action.payload;
+    setOtherUser: (state, action) => {
+      return { uid: action.payload };
     },
-    resetOtherUserData: (state, action) => {
+    resetOtherUser: (state, action) => {
       return null;
     },
   },
 });
 
-export const { setOtherUserData } = otherUserSlice.actions;
-export const { resetOtherUserData } = otherUserSlice.actions;
+export const { setOtherUser } = otherUserSlice.actions;
+export const { resetOtherUser } = otherUserSlice.actions;
 export default otherUserSlice.reducer;

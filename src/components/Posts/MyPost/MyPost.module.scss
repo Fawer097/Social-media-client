@@ -1,0 +1,7 @@
+.like {
+  @apply w-6 text-gray-400 hover:scale-110 active:scale-90 duration-300 cursor-pointer;
+}
+
+.isLiked {
+  @apply w-6 text-red-500 bg-contain hover:scale-110 active:scale-90 duration-300 cursor-pointer;
+}

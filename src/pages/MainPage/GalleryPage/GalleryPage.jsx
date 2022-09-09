@@ -1,5 +1,5 @@
 import React from 'react';
-import { images } from '../../../components/Profile/ProfileGallery/ProfileGallery';
+import { images } from '../../../components/Profile/MyProfile/ProfileGallery/ProfileGallery';
 
 const GalleryPage = () => {
   return (

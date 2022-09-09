@@ -1,13 +1,15 @@
-import { EmojiSadIcon } from '@heroicons/react/outline';
+import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import FriendCard from '../FriendCard/FriendCard';
 import { useEffect } from 'react';
 import ApiService from '../../../services/ApiService';
 import { useState } from 'react';
 
-const FriendsBoard = () => {
+const Friendslist = () => {
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const updateFriends = (data) => setFriendsData(data);
 
   useEffect(() => {
     setLoading(true);
@@ -33,12 +35,16 @@ const FriendsBoard = () => {
             />
           </div>
           {friendsData.map((friend) => (
-            <FriendCard key={friend.uid} data={friend} />
+            <FriendCard
+              key={friend.uid}
+              data={friend}
+              updateFriends={updateFriends}
+            />
           ))}
         </div>
       ) : (
         <div className="flex flex-col items-center text-center mt-8 text-gray-400">
-          <EmojiSadIcon className="w-8 mb-2" />
+          <FaceFrownIcon className="w-8 mb-2" />
           <p className="w-60">
             You don't have any friends yet. Use search to find them.
           </p>
@@ -48,4 +54,4 @@ const FriendsBoard = () => {
   );
 };
 
-export default FriendsBoard;
+export default Friendslist;

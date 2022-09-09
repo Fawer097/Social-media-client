@@ -4,16 +4,16 @@ import logo from '../../../images/logo_black.png';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   BellIcon,
-  CogIcon,
-  LogoutIcon,
-  SearchIcon,
-} from '@heroicons/react/outline';
+  Cog8ToothIcon,
+  ArrowRightOnRectangleIcon,
+  MagnifyingGlassIcon,
+} from '@heroicons/react/24/outline';
 import ApiService from '../../../services/ApiService';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetUserData } from '../../../redux/slices/userSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import HeaderSearch from '../../Searches/HeaderSearch/HeaderSearch';
-import { resetOtherUserData } from '../../../redux/slices/otherUserSlice';
+import { resetOtherUser } from '../../../redux/slices/otherUserSlice';
 import { resetFriendsData } from '../../../redux/slices/friendsSlice';
 import { resetChatsData } from '../../../redux/slices/messagerSlice';
 
@@ -27,7 +27,7 @@ const MainHeader = () => {
       .then((response) => {
         localStorage.removeItem('token');
         dispatch(resetUserData());
-        dispatch(resetOtherUserData());
+        dispatch(resetOtherUser());
         dispatch(resetFriendsData());
         dispatch(resetChatsData());
         navigate('/');
@@ -46,7 +46,7 @@ const MainHeader = () => {
         <div className={styles.searchWrapper}>
           <div className="relative w-2/3 max-w-[400px]">
             <HeaderSearch />
-            <SearchIcon className="w-5 text-gray-400 absolute top-2 left-3" />
+            <MagnifyingGlassIcon className="w-5 text-gray-400 absolute top-2 left-3" />
           </div>
         </div>
         <div className={styles.userPanel}>
@@ -66,11 +66,11 @@ const MainHeader = () => {
           </div>
           <div className={styles.settingsIconWrapper}>
             <Link to="/settings">
-              <CogIcon />
+              <Cog8ToothIcon />
             </Link>
           </div>
           <div className={styles.logoIconWrapper}>
-            <LogoutIcon onClick={logout} />
+            <ArrowRightOnRectangleIcon onClick={logout} />
           </div>
         </div>
       </div>

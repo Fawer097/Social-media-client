@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { setActiveChat } from '../../../redux/slices/messagerSlice';
 import styles from './ChatCard.module.scss';

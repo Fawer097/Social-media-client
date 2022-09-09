@@ -2,17 +2,18 @@ import React from 'react';
 import Header from './Header/Header';
 import Counter from './Counter/Counter';
 import UserInfo from './UserInfo/UserInfo';
-import UserBoard from './UserBoard/UserBoard';
 import styles from './OtherUserProfile.module.scss';
 import { useDispatch } from 'react-redux';
-import { CheckIcon } from '@heroicons/react/outline';
-import { setMessageModal } from '../../redux/slices/modalsSlice';
-import ApiService from '../../services/ApiService';
+import { CheckIcon } from '@heroicons/react/24/outline';
+import { setMessageModal } from '../../../redux/slices/modalsSlice';
+import ApiService from '../../../services/ApiService';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import UserBoard from './UserBoard/UserBoard';
 
 const OtherUserProfile = (props) => {
   const { uid } = props.userData;
+  const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [friends, setFriends] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
@@ -22,18 +23,21 @@ const OtherUserProfile = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getAllFriendsData()
+    ApiService.getOtherUserData(uid)
       .then((data) => {
-        const { friends, incomingRequests, outgoingRequests } = data.data;
-        setFriends(friends);
-        setIncomingRequests(incomingRequests);
-        setOutgoingRequests(outgoingRequests);
+        setUserData(data.data);
+        ApiService.getAllFriendsData().then((data) => {
+          const { friends, incomingRequests, outgoingRequests } = data.data;
+          setFriends(friends);
+          setIncomingRequests(incomingRequests);
+          setOutgoingRequests(outgoingRequests);
+        });
       })
       .finally(() => setLoading(false));
   }, []);
 
   const friendRequest = () => {
-    ApiService.friendsRequest(uid).then(() => {
+    ApiService.friendRequest(uid).then(() => {
       ApiService.getAllFriendsData().then((data) => {
         const { friends, incomingRequests, outgoingRequests } = data.data;
         setFriends(friends);
@@ -43,13 +47,17 @@ const OtherUserProfile = (props) => {
     });
   };
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   if (!props.userData) {
     return null;
   }
 
   return (
     <div className="w-full relative">
-      <Header userData={props.userData} />
+      <Header userData={userData} />
       <div className="flex w-full h-20">
         <div className="flex items-end justify-between px-4 max-w-[300px] w-1/2 h-full">
           <button
@@ -95,8 +103,8 @@ const OtherUserProfile = (props) => {
         </div>
       </div>
       <div className="flex w-full mt-4">
-        <UserInfo userData={props.userData} />
-        <UserBoard userData={props.userData} />
+        <UserInfo userData={userData} />
+        <UserBoard userData={userData} />
       </div>
     </div>
   );

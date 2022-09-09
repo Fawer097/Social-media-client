@@ -36,8 +36,24 @@ const ApiService = {
     });
   },
 
-  async friendsRequest(receiverUid) {
+  async friendRequest(receiverUid) {
     return $api.post(API_URL + '/friends/friendRequest', { receiverUid });
+  },
+
+  async removeOutgoingRequest(receiverUid) {
+    return $api.post(API_URL + '/friends/removeOutgoingRequest', {
+      receiverUid,
+    });
+  },
+
+  async removeIncomingRequest(receiverUid) {
+    return $api.post(API_URL + '/friends/removeIncomingRequest', {
+      receiverUid,
+    });
+  },
+
+  async removeFriend(receiverUid) {
+    return $api.post(API_URL + '/friends/removeFriend', { receiverUid });
   },
 
   async sendMessage(receiverUid, message) {
@@ -59,6 +75,10 @@ const ApiService = {
     return $api.get(API_URL + '/friends/candidatesData');
   },
 
+  async getOutgoingCandidatesData() {
+    return $api.get(API_URL + '/friends/outgoingCandidatesData');
+  },
+
   async getChatsData() {
     return $api.get(API_URL + '/messager/chatsData');
   },
@@ -68,7 +88,21 @@ const ApiService = {
   },
 
   async getPosts() {
-    return $api.get(API_URL + '/posts/getPosts');
+    return $api.get(API_URL + '/posts/userPosts');
+  },
+
+  async likePost(postId, ownerPost) {
+    return $api.post(API_URL + '/posts/likePost', { postId, ownerPost });
+  },
+
+  async getOtherUserPosts(uid) {
+    return $api.get(API_URL + '/posts/otherUserPosts', {
+      headers: { data: uid },
+    });
+  },
+
+  async getFeedPosts() {
+    return $api.get(API_URL + '/posts/feedPosts');
   },
 };
 

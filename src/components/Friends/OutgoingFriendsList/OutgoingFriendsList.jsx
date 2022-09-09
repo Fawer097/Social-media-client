@@ -1,10 +1,10 @@
 import React from 'react';
-import FriendRequestCard from '../FriendRequestCard/FriendRequestCard';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import ApiService from '../../../services/ApiService';
+import OutgoingFriendCard from '../OutgoingFriendCard/OutgoingFriendCard';
 
-const FriendsRequestsBoard = () => {
+const OutgoingFriendsList = () => {
   const [candidatesData, setCandidatesData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -12,7 +12,7 @@ const FriendsRequestsBoard = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getCandidatesData()
+    ApiService.getOutgoingCandidatesData()
       .then((data) => setCandidatesData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
@@ -34,7 +34,7 @@ const FriendsRequestsBoard = () => {
             />
           </div>
           {candidatesData.map((candidate) => (
-            <FriendRequestCard
+            <OutgoingFriendCard
               key={candidate.uid}
               data={candidate}
               updateCandidates={updateCandidates}
@@ -50,4 +50,4 @@ const FriendsRequestsBoard = () => {
   );
 };
 
-export default FriendsRequestsBoard;
+export default OutgoingFriendsList;

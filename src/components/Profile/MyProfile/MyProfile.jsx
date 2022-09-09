@@ -4,14 +4,10 @@ import Counter from './Counter/Counter';
 import UserInfo from './UserInfo/UserInfo';
 import UserBoard from './UserBoard/UserBoard';
 
-const MyProfile = (props) => {
-  if (!props.userData) {
-    return null;
-  }
-
+const MyProfile = () => {
   return (
     <div className="w-full relative">
-      <Header userData={props.userData} />
+      <Header />
       <div className="flex w-full h-16">
         <div className="max-w-[300px] w-1/2 h-full"></div>
         <div className="flex ml-8 h-full">
@@ -21,8 +17,8 @@ const MyProfile = (props) => {
         </div>
       </div>
       <div className="flex w-full mt-4">
-        <UserInfo userData={props.userData} />
-        <UserBoard userData={props.userData} />
+        <UserInfo />
+        <UserBoard />
       </div>
     </div>
   );

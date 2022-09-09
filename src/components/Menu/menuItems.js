@@ -1,15 +1,15 @@
 import {
   UserCircleIcon,
-  PhotographIcon,
+  PhotoIcon,
   ClipboardIcon,
   UsersIcon,
-  ChatIcon,
-} from '@heroicons/react/outline';
+  ChatBubbleLeftIcon,
+} from '@heroicons/react/24/outline';
 
 export const menuItems = [
   { name: 'Profile', icon: <UserCircleIcon /> },
-  { name: 'Gallery', icon: <PhotographIcon /> },
+  { name: 'Gallery', icon: <PhotoIcon /> },
   { name: 'Friends', icon: <UsersIcon /> },
   { name: 'Feed', icon: <ClipboardIcon /> },
-  { name: 'Messager', icon: <ChatIcon /> },
+  { name: 'Messager', icon: <ChatBubbleLeftIcon /> },
 ];

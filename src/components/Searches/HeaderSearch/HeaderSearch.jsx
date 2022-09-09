@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import ApiService from '../../../services/ApiService';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useDispatch } from 'react-redux';
-import { setOtherUserData } from '../../../redux/slices/otherUserSlice';
+import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import { useNavigate } from 'react-router-dom';
 
 const HeaderSearch = () => {
@@ -26,12 +26,8 @@ const HeaderSearch = () => {
   }, [query]);
 
   const openUserProfile = (uid) => {
-    ApiService.getOtherUserData(uid)
-      .then((data) => {
-        dispatch(setOtherUserData(data.data));
-        navigate(`profile${data.data.uid}`);
-      })
-      .catch((error) => console.log(error));
+    dispatch(setOtherUser(uid));
+    setTimeout(() => navigate(`profile${uid}`));
   };
 
   return (

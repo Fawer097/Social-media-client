@@ -1,7 +1,7 @@
 import React from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
-import { ExclamationIcon } from '@heroicons/react/outline';
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { useDispatch, useSelector } from 'react-redux';
 import { setErrorModal } from '../../../redux/slices/modalsSlice';
 import styles from './ErrorModal.module.scss';
@@ -42,7 +42,7 @@ const ErrorModal = () => {
             >
               <Dialog.Panel className={styles.dialogWrapper}>
                 <Dialog.Title className="flex items-center justify-center w-11 h-11 rounded-full bg-red-100">
-                  <ExclamationIcon className="w-7 text-red-600" />
+                  <ExclamationTriangleIcon className="w-7 text-red-600" />
                 </Dialog.Title>
                 <Dialog.Title
                   as="h3"
