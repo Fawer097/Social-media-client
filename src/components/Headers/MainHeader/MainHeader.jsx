@@ -8,7 +8,7 @@ import {
   ArrowRightOnRectangleIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/outline';
-import ApiService from '../../../services/ApiService';
+import authService from '../../../services/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetUserData } from '../../../redux/slices/userSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
@@ -23,7 +23,8 @@ const MainHeader = () => {
   const userData = useSelector((state) => state.userData);
 
   const logout = () => {
-    ApiService.logout(userData.uid)
+    authService
+      .logout(userData.uid)
       .then((response) => {
         localStorage.removeItem('token');
         dispatch(resetUserData());

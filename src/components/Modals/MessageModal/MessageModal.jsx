@@ -7,7 +7,8 @@ import { setMessageModal } from '../../../redux/slices/modalsSlice';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useForm } from 'react-hook-form';
-import ApiService from '../../../services/ApiService';
+import messagerService from '../../../services/messagerService';
+import userService from '../../../services/userService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -22,14 +23,14 @@ const MessageModal = () => {
 
   useEffect(() => {
     if (state.otherUser) {
-      ApiService.getOtherUserData(state.otherUser.uid).then((data) =>
-        setInterlocutorData(data.data)
-      );
+      userService
+        .getOtherUserData(state.otherUser.uid)
+        .then((data) => setInterlocutorData(data.data));
     }
   }, [state.modals.messageModal.active]);
 
   const onSubmit = (data) => {
-    ApiService.sendMessage(state.otherUser.uid, data);
+    messagerService.sendMessage(state.otherUser.uid, data);
     dispatch(setMessageModal({ active: false }));
     reset();
   };

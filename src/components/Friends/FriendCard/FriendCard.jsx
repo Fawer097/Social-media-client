@@ -1,7 +1,7 @@
 import React from 'react';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useNavigate } from 'react-router-dom';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import { useDispatch } from 'react-redux';
 import { setMessageModal } from '../../../redux/slices/modalsSlice';
@@ -21,9 +21,13 @@ const FriendCard = (props) => {
   };
 
   const removeFriend = () => {
-    ApiService.removeFriend(props.data.uid).then(() =>
-      ApiService.getFriendsData().then((data) => props.updateFriends(data.data))
-    );
+    friendsService
+      .removeFriend(props.data.uid)
+      .then(() =>
+        friendsService
+          .getFriendsData()
+          .then((data) => props.updateFriends(data.data))
+      );
   };
 
   if (!props.data) {

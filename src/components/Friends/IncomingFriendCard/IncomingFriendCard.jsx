@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
 
 const IncomingFriendCard = (props) => {
   const dispatch = useDispatch();
@@ -15,19 +15,23 @@ const IncomingFriendCard = (props) => {
   };
 
   const acceptRequest = () => {
-    ApiService.friendRequest(props.data.uid).then(() =>
-      ApiService.getCandidatesData().then((data) =>
-        props.updateCandidates(data.data)
-      )
-    );
+    friendsService
+      .friendRequest(props.data.uid)
+      .then(() =>
+        friendsService
+          .getCandidatesData()
+          .then((data) => props.updateCandidates(data.data))
+      );
   };
 
   const removeIncomingRequest = () => {
-    ApiService.removeIncomingRequest(props.data.uid).then(() =>
-      ApiService.getCandidatesData().then((data) =>
-        props.updateCandidates(data.data)
-      )
-    );
+    friendsService
+      .removeIncomingRequest(props.data.uid)
+      .then(() =>
+        friendsService
+          .getCandidatesData()
+          .then((data) => props.updateCandidates(data.data))
+      );
   };
 
   if (!props.data) {

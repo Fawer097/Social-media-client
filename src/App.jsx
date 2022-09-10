@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useEffect } from 'react';
-import ApiService from './services/ApiService';
+import authService from './services/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from './redux/slices/userSlice';
 import { useState } from 'react';
@@ -22,7 +22,8 @@ const App = () => {
   useEffect(() => {
     if (token) {
       setLoading(true);
-      ApiService.checkAuth()
+      authService
+        .checkAuth()
         .then((data) => {
           dispatch(setUserData(data.data));
         })

@@ -18,12 +18,12 @@ const ChatCard = (props) => {
     >
       <div>
         <img
-          className="w-16 h-16 rounded-full "
+          className="w-12 h-12 rounded-full "
           src={props.data.avatarUrl ? props.data.avatarUrl : defaultAvatar}
           alt="avatar"
         />
       </div>
-      <div className="h-full ml-4 pt-5">
+      <div className="ml-4">
         <p className="text-gray-700">{props.data.fullName}</p>
         <p className="text-gray-400 text-sm mt-0.5"></p>
       </div>

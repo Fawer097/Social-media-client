@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
-import UserService from '../../../services/UserService';
+import userService from '../../../services/userService';
 
 const MyMessage = (props) => {
   const { userData } = useSelector((state) => state);
@@ -21,7 +21,7 @@ const MyMessage = (props) => {
       </div>
       <div className="text-gray-400 font-extralight text-[9px] absolute right-2">
         <p>
-          {UserService.messageTimestampConversion(
+          {userService.messageTimestampConversion(
             props.messageData.createdAt.seconds
           )}
         </p>

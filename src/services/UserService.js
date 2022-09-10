@@ -1,4 +1,16 @@
-const UserService = {
+import { $api, API_URL } from '../http';
+
+const userService = {
+  async searchUsers(query) {
+    return $api.get(API_URL + `/users/searchUsers?q=${query}`);
+  },
+
+  async getOtherUserData(uid) {
+    return $api.get(API_URL + '/users/otherUser', {
+      headers: { data: uid },
+    });
+  },
+
   dateConversion(date) {
     const mounthArr = [
       'January',
@@ -53,4 +65,4 @@ const UserService = {
   },
 };
 
-export default UserService;
+export default userService;

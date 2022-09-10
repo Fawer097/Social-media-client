@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { $api } from '../../../../http';
-import ValidationService from '../../../../services/ValidationService';
+import validationService from '../../../../services/validationService';
 import FormErrorParagraph from '../../../FormErrorParagraph/FormErrorParagraph';
 import styles from '../Styles.module.scss';
 
@@ -38,7 +38,7 @@ const ChangePasswordForm = () => {
                 ? [styles.input, styles.inputError, 'w-full'].join(' ')
                 : [styles.input, 'w-full'].join(' ')
             }
-            {...register('password', ValidationService.passwordValidation())}
+            {...register('password', validationService.passwordValidation())}
           />
           {errors.password ? (
             <FormErrorParagraph message={errors.password.message} />
@@ -64,7 +64,7 @@ const ChangePasswordForm = () => {
                 ? [styles.input, styles.inputError, 'w-full'].join(' ')
                 : [styles.input, 'w-full'].join(' ')
             }
-            {...register('newPassword', ValidationService.passwordValidation())}
+            {...register('newPassword', validationService.passwordValidation())}
           />
           {errors.newPassword ? (
             <FormErrorParagraph message={errors.newPassword.message} />

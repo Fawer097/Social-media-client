@@ -1,6 +1,6 @@
 import React from 'react';
-import OtherUserPost from '../../../Posts/OtherUserPost';
-import ApiService from '../../../../services/ApiService';
+import OtherUserPost from '../../../Posts/OtherUserPost/OtherUserPost';
+import postsService from '../../../../services/postsService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,9 +10,12 @@ const UserBoard = (props) => {
   let [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const updatePosts = (data) => setPosts(data);
+
   useEffect(() => {
     setLoading(true);
-    ApiService.getOtherUserPosts(uid)
+    postsService
+      .getOtherUserPosts(uid)
       .then((data) => setPosts(data.data))
       .finally(() => setLoading(false));
   }, []);
@@ -39,6 +42,7 @@ const UserBoard = (props) => {
             key={post.createdAt._seconds}
             postData={post}
             userData={props.userData}
+            updatePosts={updatePosts}
           />
         ))
       ) : (

@@ -7,7 +7,7 @@ import {
   GlobeAltIcon,
   MapPinIcon,
 } from '@heroicons/react/24/outline';
-import UserService from '../../../../services/UserService';
+import userService from '../../../../services/userService';
 import ProfileGallery from '../ProfileGallery/ProfileGallery';
 
 const UserInfo = () => {
@@ -27,7 +27,7 @@ const UserInfo = () => {
             <CalendarIcon />
           </div>
           <div className={styles.textListWrapper}>
-            Born on {UserService.dateConversion(userData.dateOfBirth)}
+            Born on {userService.dateConversion(userData.dateOfBirth)}
           </div>
         </div>
         {userData.city || userData.country ? (
@@ -48,7 +48,7 @@ const UserInfo = () => {
               <GlobeAltIcon />
             </div>
             <div className={styles.textListWrapper}>
-              <a href="state.site" target="_blank">
+              <a href={userData.site} target="_blank">
                 {userData.site}
               </a>
             </div>

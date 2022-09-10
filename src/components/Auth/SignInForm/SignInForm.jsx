@@ -7,8 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../../images/logo_black.png';
 import { useDispatch } from 'react-redux';
 import { setUserData } from '../../../redux/slices/userSlice';
-import ApiService from '../../../services/ApiService';
-import ValidationService from '../../../services/ValidationService';
+import authService from '../../../services/authService';
+import validationService from '../../../services/validationService';
 
 const SignInForm = () => {
   const [signError, setSignError] = useState();
@@ -23,7 +23,8 @@ const SignInForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    ApiService.signIn(data)
+    authService
+      .signIn(data)
       .then((response) => {
         localStorage.setItem('token', response.data.accessToken);
         dispatch(setUserData(response.data.userData));
@@ -55,7 +56,7 @@ const SignInForm = () => {
                 ? [styles.emailInput, styles.inputError].join(' ')
                 : styles.emailInput
             }
-            {...register('email', ValidationService.emailValidation())}
+            {...register('email', validationService.emailValidation())}
           />
         </div>
         <div>
@@ -69,7 +70,7 @@ const SignInForm = () => {
                 ? [styles.passwordInput, styles.inputError].join(' ')
                 : styles.passwordInput
             }
-            {...register('password', ValidationService.passwordValidation())}
+            {...register('password', validationService.passwordValidation())}
           />
         </div>
 

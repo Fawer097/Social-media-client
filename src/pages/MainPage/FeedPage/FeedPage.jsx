@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import MyPost from '../../../components/Posts/MyPost/MyPost';
-import OtherUserPost from '../../../components/Posts/OtherUserPost';
+import OtherUserPost from '../../../components/Posts/OtherUserPost/OtherUserPost';
 import { db } from '../../../firebase';
-import ApiService from '../../../services/ApiService';
+import postsService from '../../../services/postsService';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 
 const Feed = () => {
@@ -15,7 +15,8 @@ const Feed = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getFeedPosts()
+    postsService
+      .getFeedPosts()
       .then((data) => setPosts(data.data))
       .finally(() => setLoading(false));
   }, []);
@@ -23,7 +24,7 @@ const Feed = () => {
   useEffect(() => {
     const q = query(collection(db, 'Posts'));
     onSnapshot(q, () =>
-      ApiService.getFeedPosts().then((data) => setPosts(data.data))
+      postsService.getFeedPosts().then((data) => setPosts(data.data))
     );
   }, []);
 

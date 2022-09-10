@@ -1,6 +1,6 @@
 import React from 'react';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
-import UserService from '../../../services/UserService';
+import userService from '../../../services/userService';
 
 const InterlocutorMessage = (props) => {
   return (
@@ -20,7 +20,7 @@ const InterlocutorMessage = (props) => {
       </div>
       <div className="text-gray-400 font-extralight text-[9px] absolute right-2">
         <p>
-          {UserService.messageTimestampConversion(
+          {userService.messageTimestampConversion(
             props.messageData.createdAt.seconds
           )}
         </p>

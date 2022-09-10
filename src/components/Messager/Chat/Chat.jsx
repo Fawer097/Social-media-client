@@ -9,7 +9,7 @@ import {
   setActiveChat,
   setLastMessage,
 } from '../../../redux/slices/messagerSlice';
-import ApiService from '../../../services/ApiService';
+import messagerService from '../../../services/messagerService';
 import styles from './Chat.module.scss';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useEffect } from 'react';
@@ -19,6 +19,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import MyMessage from '../MyMessage/MyMessage';
 import InterlocutorMessage from '../InterlocutorMessage/InterlocutorMessage';
+import userService from '../../../services/userService';
 
 const Chat = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
@@ -31,7 +32,8 @@ const Chat = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getOtherUserData(activeChat)
+    userService
+      .getOtherUserData(activeChat)
       .then((data) => setInterlocutorData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
@@ -40,7 +42,7 @@ const Chat = () => {
   const { register, handleSubmit, reset } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    ApiService.sendMessage(activeChat, data);
+    messagerService.sendMessage(activeChat, data);
     reset();
   };
 

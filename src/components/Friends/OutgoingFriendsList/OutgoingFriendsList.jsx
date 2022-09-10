@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
 import OutgoingFriendCard from '../OutgoingFriendCard/OutgoingFriendCard';
 
 const OutgoingFriendsList = () => {
@@ -12,7 +12,8 @@ const OutgoingFriendsList = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getOutgoingCandidatesData()
+    friendsService
+      .getOutgoingCandidatesData()
       .then((data) => setCandidatesData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));

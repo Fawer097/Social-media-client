@@ -1,16 +1,12 @@
 import React from 'react';
-import {
-  EllipsisHorizontalIcon,
-  ChatBubbleOvalLeftIcon,
-} from '@heroicons/react/24/outline';
-import { HeartIcon } from '@heroicons/react/24/outline';
+import { ChatBubbleOvalLeftIcon, HeartIcon } from '@heroicons/react/24/outline';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
-import { useSelector } from 'react-redux';
 import userService from '../../../services/userService';
+import styles from './OtherUserPost.module.scss';
 import postsService from '../../../services/postsService';
-import styles from './MyPost.module.scss';
+import { useSelector } from 'react-redux';
 
-const MyPost = (props) => {
+const OtherUserPost = (props) => {
   const { postData } = props;
   const { userData } = useSelector((state) => state);
 
@@ -19,7 +15,9 @@ const MyPost = (props) => {
       postsService
         .likePost(postData.postId, postData.uid)
         .then(() =>
-          postsService.getPosts().then((data) => props.updatePosts(data.data))
+          postsService
+            .getOtherUserPosts(postData.uid)
+            .then((data) => props.updatePosts(data.data))
         );
       return;
     }
@@ -27,7 +25,9 @@ const MyPost = (props) => {
     postsService
       .removeLikePost(postData.postId, postData.uid)
       .then(() =>
-        postsService.getPosts().then((data) => props.updatePosts(data.data))
+        postsService
+          .getOtherUserPosts(postData.uid)
+          .then((data) => props.updatePosts(data.data))
       );
   };
 
@@ -37,22 +37,24 @@ const MyPost = (props) => {
         <div>
           <img
             className="w-12 h-12 rounded-full"
-            src={userData.avatarUrl ? userData.avatarUrl : defaultAvatar}
+            src={
+              props.userData.avatarUrl
+                ? props.userData.avatarUrl
+                : defaultAvatar
+            }
             alt="avatar"
           />
         </div>
         <div className="ml-4">
-          <p className="text-gray-800">{userData.fullName}</p>
+          <p className="text-gray-800">{props.userData.fullName}</p>
           <p className="text-gray-400 text-sm">
-            {userService.postTimestampConversion(postData.createdAt._seconds)}
+            {userService.postTimestampConversion(
+              props.postData.createdAt._seconds
+            )}
           </p>
         </div>
-
-        <div className="w-5 text-gray-400 absolute right-4">
-          <EllipsisHorizontalIcon />
-        </div>
       </div>
-      <div className="my-4 text-gray-800">{postData.postData}</div>
+      <div className="my-4">{props.postData.postData}</div>
       <div className="flex">
         <div className="flex">
           {postData.likes.includes(userData.uid) ? (
@@ -72,11 +74,13 @@ const MyPost = (props) => {
         </div>
         <div className="flex ml-2">
           <ChatBubbleOvalLeftIcon className="w-6 text-gray-400" />
-          <p className="ml-1 w-6 text-gray-800">{postData.comments.length}</p>
+          <p className="ml-1 w-6 text-gray-800">
+            {props.postData.comments.length}
+          </p>
         </div>
       </div>
     </div>
   );
 };
 
-export default MyPost;
+export default OtherUserPost;

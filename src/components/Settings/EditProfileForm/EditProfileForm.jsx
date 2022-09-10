@@ -6,7 +6,7 @@ import { storage } from '../../../firebase';
 import styles from './EditProfileForm.module.scss';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useForm } from 'react-hook-form';
-import ValidationService from '../../../services/ValidationService';
+import validationService from '../../../services/validationService';
 import { $api } from '../../../http/index';
 import { setUserData } from '../../../redux/slices/userSlice';
 import FormErrorParagraph from '../../FormErrorParagraph/FormErrorParagraph';
@@ -117,7 +117,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-40'].join(' ')
                     : [styles.input, 'w-40'].join(' ')
                 }
-                {...register('firstName', ValidationService.nameValidation())}
+                {...register('firstName', validationService.nameValidation())}
               />
               {errors.firstName ? (
                 <FormErrorParagraph message={errors.firstName.message} />
@@ -143,7 +143,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-42'].join(' ')
                     : [styles.input, 'w-42'].join(' ')
                 }
-                {...register('lastName', ValidationService.nameValidation())}
+                {...register('lastName', validationService.nameValidation())}
               />
               {errors.lastName ? (
                 <FormErrorParagraph message={errors.lastName.message} />
@@ -230,7 +230,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-42'].join(' ')
                     : [styles.input, 'w-42'].join(' ')
                 }
-                {...register('city', ValidationService.latinValidation())}
+                {...register('city', validationService.latinValidation())}
               />
               {errors.city ? (
                 <FormErrorParagraph message={errors.city.message} />
@@ -256,7 +256,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-42'].join(' ')
                     : [styles.input, 'w-42'].join(' ')
                 }
-                {...register('country', ValidationService.latinValidation())}
+                {...register('country', validationService.latinValidation())}
               />
               {errors.country ? (
                 <FormErrorParagraph message={errors.country.message} />
@@ -288,7 +288,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-42'].join(' ')
                     : [styles.input, 'w-42'].join(' ')
                 }
-                {...register('company', ValidationService.latinValidation())}
+                {...register('company', validationService.latinValidation())}
               />
               {errors.company ? (
                 <FormErrorParagraph message={errors.company.message} />
@@ -311,7 +311,7 @@ const EditProfileForm = () => {
                     ? [styles.input, styles.inputError, 'w-42'].join(' ')
                     : [styles.input, 'w-42'].join(' ')
                 }
-                {...register('post', ValidationService.latinValidation())}
+                {...register('post', validationService.latinValidation())}
               />
               {errors.post ? (
                 <FormErrorParagraph message={errors.post.message} />

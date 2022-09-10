@@ -1,4 +1,4 @@
-const ValidationService = {
+const validationService = {
   upperFirstLetter(event) {
     if (event.target.value) {
       const arr = event.target.value.split('');
@@ -88,4 +88,4 @@ const ValidationService = {
   },
 };
 
-export default ValidationService;
+export default validationService;

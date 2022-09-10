@@ -2,7 +2,7 @@ import React from 'react';
 import MyPost from '../../../Posts/MyPost/MyPost';
 import styles from './UserBoard.module.scss';
 import { useForm } from 'react-hook-form';
-import ApiService from '../../../../services/ApiService';
+import postsService from '../../../../services/postsService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -13,10 +13,11 @@ const UserBoard = () => {
   const { register, handleSubmit, reset } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    ApiService.createPost(data)
+    postsService
+      .createPost(data)
       .then(() => {
         reset();
-        ApiService.getPosts().then((data) => setPosts(data.data));
+        postsService.getPosts().then((data) => setPosts(data.data));
       })
       .catch((error) => console.log(error));
   };
@@ -25,7 +26,8 @@ const UserBoard = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getPosts()
+    postsService
+      .getPosts()
       .then((data) => setPosts(data.data))
       .finally(() => setLoading(false));
   }, []);

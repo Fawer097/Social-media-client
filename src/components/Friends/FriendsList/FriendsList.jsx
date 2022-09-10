@@ -2,7 +2,7 @@ import { FaceFrownIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import FriendCard from '../FriendCard/FriendCard';
 import { useEffect } from 'react';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
 import { useState } from 'react';
 
 const Friendslist = () => {
@@ -13,7 +13,8 @@ const Friendslist = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getFriendsData()
+    friendsService
+      .getFriendsData()
       .then((data) => setFriendsData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));

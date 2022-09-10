@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { $api } from '../../../../http';
 import { setUserEmail } from '../../../../redux/slices/userSlice';
-import ValidationService from '../../../../services/ValidationService';
+import validationService from '../../../../services/validationService';
 import FormErrorParagraph from '../../../FormErrorParagraph/FormErrorParagraph';
 import styles from '../Styles.module.scss';
 
@@ -42,7 +42,7 @@ const ChangeEmailForm = () => {
                 ? [styles.input, styles.inputError, 'w-full'].join(' ')
                 : [styles.input, 'w-full'].join(' ')
             }
-            {...register('email', ValidationService.emailValidation())}
+            {...register('email', validationService.emailValidation())}
           />
           {errors.email ? (
             <FormErrorParagraph message={errors.email.message} />
@@ -68,7 +68,7 @@ const ChangeEmailForm = () => {
                 ? [styles.input, styles.inputError, 'w-full'].join(' ')
                 : [styles.input, 'w-full'].join(' ')
             }
-            {...register('password', ValidationService.passwordValidation())}
+            {...register('password', validationService.passwordValidation())}
           />
           {errors.password ? (
             <FormErrorParagraph message={errors.password.message} />

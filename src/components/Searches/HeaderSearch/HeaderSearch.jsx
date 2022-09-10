@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import styles from './HeaderSearch.module.scss';
 import { useEffect } from 'react';
-import ApiService from '../../../services/ApiService';
+import userService from '../../../services/userService';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useDispatch } from 'react-redux';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
@@ -17,7 +17,8 @@ const HeaderSearch = () => {
 
   useEffect(() => {
     if (query.length > 0) {
-      ApiService.searchUsers(query)
+      userService
+        .searchUsers(query)
         .then((data) => {
           setUsers(data.data);
         })

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
 
 const OutgoingFriendCard = (props) => {
   const dispatch = useDispatch();
@@ -15,10 +15,10 @@ const OutgoingFriendCard = (props) => {
   };
 
   const removeOutgoingRequest = () => {
-    ApiService.removeOutgoingRequest(props.data.uid).then(() => {
-      ApiService.getOutgoingCandidatesData().then((data) =>
-        props.updateCandidates(data.data)
-      );
+    friendsService.removeOutgoingRequest(props.data.uid).then(() => {
+      friendsService
+        .getOutgoingCandidatesData()
+        .then((data) => props.updateCandidates(data.data));
     });
   };
 

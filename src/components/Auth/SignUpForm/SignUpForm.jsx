@@ -3,8 +3,8 @@ import styles from './SignUpForm.module.scss';
 import logo from '../../../images/logo_black.png';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import ApiService from '../../../services/ApiService';
-import ValidationService from '../../../services/ValidationService';
+import authService from '../../../services/authService';
+import validationService from '../../../services/validationService';
 import { useDispatch } from 'react-redux';
 import {
   setSuccessModal,
@@ -23,7 +23,8 @@ const SignUpForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    ApiService.signUp(data)
+    authService
+      .signUp(data)
       .then((response) => {
         dispatch(setSuccessModal({ active: true }));
         reset();
@@ -68,7 +69,7 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-4/5'].join(' ')
                       : [styles.input, 'w-4/5'].join(' ')
                   }
-                  {...register('firstName', ValidationService.nameValidation())}
+                  {...register('firstName', validationService.nameValidation())}
                 />
                 {errors.firstName ? (
                   <FormErrorParagraph message={errors.firstName.message} />
@@ -94,7 +95,7 @@ const SignUpForm = () => {
                       ? [styles.input, styles.inputError, 'w-4/5'].join(' ')
                       : [styles.input, 'w-4/5'].join(' ')
                   }
-                  {...register('lastName', ValidationService.nameValidation())}
+                  {...register('lastName', validationService.nameValidation())}
                 />
                 {errors.lastName ? (
                   <FormErrorParagraph message={errors.lastName.message} />
@@ -118,8 +119,8 @@ const SignUpForm = () => {
                   type="date"
                   name="date-of-birth"
                   id="date-of-birth"
-                  min={ValidationService.minDate()}
-                  max={ValidationService.maxDate()}
+                  min={validationService.minDate()}
+                  max={validationService.maxDate()}
                   className={
                     errors.dateOfBirth
                       ? [styles.input, styles.inputError, 'w-full'].join(' ')
@@ -191,7 +192,7 @@ const SignUpForm = () => {
                     ? [styles.input, styles.inputError, 'w-64'].join(' ')
                     : [styles.input, 'w-64'].join(' ')
                 }
-                {...register('email', ValidationService.emailValidation())}
+                {...register('email', validationService.emailValidation())}
               />
               {errors.email ? (
                 <FormErrorParagraph message={errors.email.message} />
@@ -220,7 +221,7 @@ const SignUpForm = () => {
                   }
                   {...register(
                     'createPassword',
-                    ValidationService.passwordValidation()
+                    validationService.passwordValidation()
                   )}
                 />
                 {errors.createPassword ? (
@@ -249,7 +250,7 @@ const SignUpForm = () => {
                   }
                   {...register(
                     'confirmPassword',
-                    ValidationService.passwordsMatchValidation(getValues)
+                    validationService.passwordsMatchValidation(getValues)
                   )}
                 />
                 {errors.confirmPassword ? (

@@ -6,7 +6,8 @@ import styles from './OtherUserProfile.module.scss';
 import { useDispatch } from 'react-redux';
 import { CheckIcon } from '@heroicons/react/24/outline';
 import { setMessageModal } from '../../../redux/slices/modalsSlice';
-import ApiService from '../../../services/ApiService';
+import friendsService from '../../../services/friendsService';
+import userService from '../../../services/userService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import UserBoard from './UserBoard/UserBoard';
@@ -23,10 +24,11 @@ const OtherUserProfile = (props) => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getOtherUserData(uid)
+    userService
+      .getOtherUserData(uid)
       .then((data) => {
         setUserData(data.data);
-        ApiService.getAllFriendsData().then((data) => {
+        friendsService.getAllFriendsData().then((data) => {
           const { friends, incomingRequests, outgoingRequests } = data.data;
           setFriends(friends);
           setIncomingRequests(incomingRequests);
@@ -37,8 +39,8 @@ const OtherUserProfile = (props) => {
   }, []);
 
   const friendRequest = () => {
-    ApiService.friendRequest(uid).then(() => {
-      ApiService.getAllFriendsData().then((data) => {
+    friendsService.friendRequest(uid).then(() => {
+      friendsService.getAllFriendsData().then((data) => {
         const { friends, incomingRequests, outgoingRequests } = data.data;
         setFriends(friends);
         setIncomingRequests(incomingRequests);

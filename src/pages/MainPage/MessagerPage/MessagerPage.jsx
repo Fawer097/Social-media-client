@@ -4,7 +4,7 @@ import ChatList from '../../../components/Messager/ChatList/ChatList';
 import Chat from '../../../components/Messager/Chat/Chat';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import ApiService from '../../../services/ApiService';
+import messagerService from '../../../services/messagerService';
 
 const MessagerPage = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
@@ -13,7 +13,8 @@ const MessagerPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    ApiService.getChatsData()
+    messagerService
+      .getChatsData()
       .then((data) => setChatsData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
