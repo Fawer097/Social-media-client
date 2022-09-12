@@ -11,6 +11,18 @@ const userService = {
     });
   },
 
+  async updateUserData(data) {
+    return $api.post('/updateUserData', data);
+  },
+
+  async changeEmail(data) {
+    return $api.post('/changeEmail', data);
+  },
+
+  async changePassword(data) {
+    return $api.post('/changePassword', data);
+  },
+
   dateConversion(date) {
     const mounthArr = [
       'January',

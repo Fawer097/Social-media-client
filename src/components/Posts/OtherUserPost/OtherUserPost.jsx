@@ -4,31 +4,39 @@ import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import userService from '../../../services/userService';
 import styles from './OtherUserPost.module.scss';
 import postsService from '../../../services/postsService';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import Comment from '../Comment/Comment';
+import CommentInput from '../Comment/CommentInput/CommentInput';
+import { setImageModal } from '../../../redux/slices/modalsSlice';
 
 const OtherUserPost = (props) => {
-  const { postData } = props;
+  const [postData, setPostData] = useState(props.postData);
   const { userData } = useSelector((state) => state);
+  const [comments, setComments] = useState([]);
+  const [openInput, setOpenInput] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    postsService
+      .getComments(postData.uid, postData.postId)
+      .then((data) => setComments(data.data));
+  }, []);
+
+  const updateComments = (data) => setComments(data);
 
   const setLike = () => {
     if (!postData.likes.includes(userData.uid)) {
       postsService
         .likePost(postData.postId, postData.uid)
-        .then(() =>
-          postsService
-            .getOtherUserPosts(postData.uid)
-            .then((data) => props.updatePosts(data.data))
-        );
+        .then((data) => setPostData(data.data));
       return;
     }
 
     postsService
-      .removeLikePost(postData.postId, postData.uid)
-      .then(() =>
-        postsService
-          .getOtherUserPosts(postData.uid)
-          .then((data) => props.updatePosts(data.data))
-      );
+      .deleteLikePost(postData.postId, postData.uid)
+      .then((data) => setPostData(data.data));
   };
 
   return (
@@ -54,7 +62,24 @@ const OtherUserPost = (props) => {
           </p>
         </div>
       </div>
-      <div className="my-4">{props.postData.postData}</div>
+      <div className="my-4">
+        {postData.imageUrl && (
+          <img
+            src={postData.imageUrl}
+            alt="Post image"
+            className="max-h-[400px] rounded-lg mb-3 cursor-pointer"
+            onClick={() =>
+              dispatch(
+                setImageModal({
+                  active: true,
+                  url: postData.imageUrl,
+                })
+              )
+            }
+          />
+        )}
+        {props.postData.message}
+      </div>
       <div className="flex">
         <div className="flex">
           {postData.likes.includes(userData.uid) ? (
@@ -73,12 +98,26 @@ const OtherUserPost = (props) => {
           <p className="ml-1 w-6 text-gray-800">{postData.likes.length}</p>
         </div>
         <div className="flex ml-2">
-          <ChatBubbleOvalLeftIcon className="w-6 text-gray-400" />
-          <p className="ml-1 w-6 text-gray-800">
-            {props.postData.comments.length}
-          </p>
+          <ChatBubbleOvalLeftIcon
+            className="w-6 text-gray-400 cursor-pointer"
+            onClick={() => setOpenInput(true)}
+          />
+          <p className="ml-1 w-6 text-gray-800">{comments.length}</p>
         </div>
       </div>
+      <div className="w-full mt-4">
+        {comments.map((comment, index) => (
+          <Comment
+            key={index}
+            commentData={comment}
+            postData={props.postData}
+            updateComments={updateComments}
+          />
+        ))}
+      </div>
+      {openInput || comments.length ? (
+        <CommentInput postData={postData} updateComments={updateComments} />
+      ) : null}
     </div>
   );
 };

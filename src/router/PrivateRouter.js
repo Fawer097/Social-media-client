@@ -23,7 +23,13 @@ const PrivateRouter = () => {
           element={<OtherUserPage userData={otherUser} />}
         />
       )}
-      <Route path="gallery" element={<GalleryPage />} />
+      <Route path="gallery" element={<GalleryPage uid={userData.uid} />} />
+      {otherUser && (
+        <Route
+          path={`gallery${otherUser.uid}`}
+          element={<GalleryPage uid={otherUser.uid} />}
+        />
+      )}
       <Route path="friends" element={<FriendsPage />} />
       <Route path="messager" element={<MessagerPage />} />
       <Route path="settings" element={<SettingsPage />} />

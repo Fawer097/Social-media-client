@@ -7,9 +7,11 @@ import styles from './EditProfileForm.module.scss';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useForm } from 'react-hook-form';
 import validationService from '../../../services/validationService';
-import { $api } from '../../../http/index';
 import { setUserData } from '../../../redux/slices/userSlice';
 import FormErrorParagraph from '../../FormErrorParagraph/FormErrorParagraph';
+import userService from '../../../services/userService';
+import postsService from '../../../services/postsService';
+import galleryService from '../../../services/galleryService';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
@@ -44,33 +46,26 @@ const EditProfileForm = () => {
     if (state.uid) {
       const metadata = {
         contentType: avatar.type,
-        name: 'avatar',
       };
-      uploadBytes(avatarRef, avatar, metadata)
-        .then(() => {
-          getDownloadURL(avatarRef)
-            .then((url) => {
-              $api
-                .post('/updateUserData', { avatarUrl: '' })
-                .then((response) => {
-                  setAvatarUrl(url);
-                  setValue('avatarUrl', url);
-                })
-                .catch((error) => console.log(error));
-            })
-            .catch((error) => {});
-        })
-        .catch((error) => console.log(error));
+      uploadBytes(avatarRef, avatar, metadata).then(() => {
+        getDownloadURL(avatarRef).then((url) => {
+          userService.updateUserData({ avatarUrl: '' }).then(() => {
+            setAvatarUrl(url);
+            setValue('avatarUrl', url);
+          });
+        });
+      });
     }
   };
 
   const onSubmit = (data) => {
-    $api
-      .post('/updateUserData', data)
-      .then((response) => {
-        dispatch(setUserData(response.data));
-      })
-      .catch((error) => console.log(error));
+    userService.updateUserData(data).then((response) => {
+      dispatch(setUserData(response.data));
+    });
+    if (avatarUrl) {
+      galleryService.setImageLink(avatarUrl);
+      postsService.createPost({ imageUrl: data.avatarUrl, message: '' });
+    }
   };
 
   return (

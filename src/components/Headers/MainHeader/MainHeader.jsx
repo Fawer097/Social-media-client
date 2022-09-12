@@ -25,7 +25,7 @@ const MainHeader = () => {
   const logout = () => {
     authService
       .logout(userData.uid)
-      .then((response) => {
+      .then(() => {
         localStorage.removeItem('token');
         dispatch(resetUserData());
         dispatch(resetOtherUser());

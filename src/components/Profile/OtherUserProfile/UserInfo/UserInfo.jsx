@@ -49,7 +49,7 @@ const UserInfo = (props) => {
               <GlobeAltIcon />
             </div>
             <div className={styles.textListWrapper}>
-              <a href="state.site" target="_blank">
+              <a href={props.userData.site} target="_blank">
                 {props.userData.site}
               </a>
             </div>

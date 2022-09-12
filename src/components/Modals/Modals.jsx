@@ -1,5 +1,5 @@
 import React from 'react';
-import AvatarModal from './AvatarModal/AvatarModal';
+import ImageModal from './ImageModal/ImageModal';
 import ErrorModal from './ErrorModal/ErrorModal';
 import MessageModal from './MessageModal/MessageModal';
 import SuccessModal from './SuccessModal/SuccessModal';
@@ -9,7 +9,7 @@ const Modals = () => {
     <>
       <SuccessModal />
       <ErrorModal />
-      <AvatarModal />
+      <ImageModal />
       <MessageModal />
     </>
   );

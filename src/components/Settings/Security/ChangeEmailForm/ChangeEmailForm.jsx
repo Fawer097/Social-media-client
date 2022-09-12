@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { $api } from '../../../../http';
 import { setUserEmail } from '../../../../redux/slices/userSlice';
+import userService from '../../../../services/userService';
 import validationService from '../../../../services/validationService';
 import FormErrorParagraph from '../../../FormErrorParagraph/FormErrorParagraph';
 import styles from '../Styles.module.scss';
@@ -17,8 +17,8 @@ const ChangeEmailForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    $api
-      .post('/changeEmail', data)
+    userService
+      .changeEmail(data)
       .then((response) => {
         reset();
         dispatch(setUserEmail(response.data));

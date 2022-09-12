@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './Header.module.scss';
 import defaultAvatar from '../../../../images/defaultAvatar.jpeg';
-import { setAvatarModal } from '../../../../redux/slices/modalsSlice';
+import { setImageModal } from '../../../../redux/slices/modalsSlice';
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Header = (props) => {
               props.userData.avatarUrl
                 ? () =>
                     dispatch(
-                      setAvatarModal({
+                      setImageModal({
                         active: true,
                         url: props.userData.avatarUrl,
                       })

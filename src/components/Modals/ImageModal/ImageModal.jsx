@@ -2,10 +2,10 @@ import React from 'react';
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './AvatarModal.module.scss';
-import { setAvatarModal } from '../../../redux/slices/modalsSlice';
+import styles from './ImageModal.module.scss';
+import { setImageModal } from '../../../redux/slices/modalsSlice';
 
-const AvatarModal = () => {
+const ImageModal = () => {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
@@ -18,7 +18,7 @@ const AvatarModal = () => {
       <Dialog
         as="div"
         className="relative z-50 font-sans-serif"
-        onClose={() => dispatch(setAvatarModal({ active: false }))}
+        onClose={() => dispatch(setImageModal({ active: false }))}
       >
         <Transition.Child
           as={Fragment}
@@ -60,4 +60,4 @@ const AvatarModal = () => {
   );
 };
 
-export default AvatarModal;
+export default ImageModal;

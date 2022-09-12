@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Header.module.scss';
 import defaultAvatar from '../../../../images/defaultAvatar.jpeg';
-import { setAvatarModal } from '../../../../redux/slices/modalsSlice';
+import { setImageModal } from '../../../../redux/slices/modalsSlice';
 
 const Header = () => {
   const { userData } = useSelector((state) => state);
@@ -21,7 +21,7 @@ const Header = () => {
               userData.avatarUrl
                 ? () =>
                     dispatch(
-                      setAvatarModal({
+                      setImageModal({
                         active: true,
                         url: userData.avatarUrl,
                       })

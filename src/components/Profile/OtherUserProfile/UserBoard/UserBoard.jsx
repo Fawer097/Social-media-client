@@ -10,8 +10,6 @@ const UserBoard = (props) => {
   let [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const updatePosts = (data) => setPosts(data);
-
   useEffect(() => {
     setLoading(true);
     postsService
@@ -42,7 +40,6 @@ const UserBoard = (props) => {
             key={post.createdAt._seconds}
             postData={post}
             userData={props.userData}
-            updatePosts={updatePosts}
           />
         ))
       ) : (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { $api } from '../../../../http';
+import userService from '../../../../services/userService';
 import validationService from '../../../../services/validationService';
 import FormErrorParagraph from '../../../FormErrorParagraph/FormErrorParagraph';
 import styles from '../Styles.module.scss';
@@ -14,9 +14,9 @@ const ChangePasswordForm = () => {
   } = useForm({ mode: 'onSubmit' });
 
   const onSubmit = (data) => {
-    $api
-      .post('/changePassword', data)
-      .then((response) => {
+    userService
+      .changePassword(data)
+      .then(() => {
         reset();
       })
       .catch((error) => console.log(error));

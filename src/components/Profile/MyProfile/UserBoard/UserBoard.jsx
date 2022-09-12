@@ -1,27 +1,13 @@
 import React from 'react';
 import MyPost from '../../../Posts/MyPost/MyPost';
-import styles from './UserBoard.module.scss';
-import { useForm } from 'react-hook-form';
 import postsService from '../../../../services/postsService';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import PostInput from '../../../Posts/MyPost/PostInput/PostInput';
 
 const UserBoard = () => {
-  let [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  const { register, handleSubmit, reset } = useForm({ mode: 'onSubmit' });
-
-  const onSubmit = (data) => {
-    postsService
-      .createPost(data)
-      .then(() => {
-        reset();
-        postsService.getPosts().then((data) => setPosts(data.data));
-      })
-      .catch((error) => console.log(error));
-  };
-
   const updatePosts = (data) => setPosts(data);
 
   useEffect(() => {
@@ -44,15 +30,7 @@ const UserBoard = () => {
 
   return (
     <div className="ml-8 p-5 rounded-lg w-full border border-gray-300">
-      <form className={styles.wrapper} onSubmit={handleSubmit(onSubmit)}>
-        <input
-          type="text"
-          placeholder="Enter your message"
-          className={styles.createPostInput}
-          {...register('postData', { required: true })}
-        />
-        <button type="submit">Publish post</button>
-      </form>
+      <PostInput updatePosts={updatePosts} />
       {posts.length ? (
         posts.map((post) => (
           <MyPost
