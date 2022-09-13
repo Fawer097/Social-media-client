@@ -1,16 +1,7 @@
-import {
-  PaperAirplaneIcon,
-  ChevronLeftIcon,
-} from '@heroicons/react/24/outline';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  setActiveChat,
-  setLastMessage,
-} from '../../../redux/slices/messagerSlice';
-import messagerService from '../../../services/messagerService';
-import styles from './Chat.module.scss';
+import { setActiveChat } from '../../../redux/slices/messagerSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { useEffect } from 'react';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
@@ -20,6 +11,7 @@ import { db } from '../../../firebase';
 import MyMessage from '../MyMessage/MyMessage';
 import InterlocutorMessage from '../InterlocutorMessage/InterlocutorMessage';
 import userService from '../../../services/userService';
+import MessageInput from '../MessageInput/MessageInput';
 
 const Chat = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
@@ -39,19 +31,11 @@ const Chat = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const { register, handleSubmit, reset } = useForm({ mode: 'onSubmit' });
-
-  const onSubmit = (data) => {
-    messagerService.sendMessage(activeChat, data);
-    reset();
-  };
-
   useEffect(() => {
     onSnapshot(doc(db, 'Chats', userData.uid), (doc) => {
       const messages = Object.values(doc.data()[activeChat]);
       messages.sort((prev, next) => prev.createdAt - next.createdAt);
       setMessages(messages);
-      dispatch(setLastMessage(messages[messages.length - 1].message));
     });
   }, []);
 
@@ -91,7 +75,7 @@ const Chat = () => {
       </div>
       <div className="w-full h-[65vh] border-b border-gray-200 p-4 overflow-y-auto relative">
         {messages.length && !loading
-          ? messages.map((message, index) =>
+          ? messages.map((message) =>
               message.senderUid === userData.uid ? (
                 <MyMessage
                   key={message.createdAt.seconds}
@@ -107,22 +91,7 @@ const Chat = () => {
             )
           : null}
       </div>
-      <form
-        className="flex w-full items-center py-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <textarea
-          style={{ resize: 'none' }}
-          type="text"
-          name="message"
-          id="message"
-          className={styles.messageInput}
-          {...register('message', { required: true })}
-        />
-        <button type="submit">
-          <PaperAirplaneIcon className="w-8 ml-8 text-darkGreen cursor-pointer" />
-        </button>
-      </form>
+      <MessageInput />
     </div>
   );
 };

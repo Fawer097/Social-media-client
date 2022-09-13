@@ -4,24 +4,55 @@ import ChatList from '../../../components/Messager/ChatList/ChatList';
 import Chat from '../../../components/Messager/Chat/Chat';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import messagerService from '../../../services/messagerService';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../../../firebase';
+import userService from '../../../services/userService';
 
 const MessagerPage = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
+  const { uid } = useSelector((state) => state.userData);
   const [chatsData, setChatsData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    messagerService
-      .getChatsData()
-      .then((data) => setChatsData(data.data))
-      .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
+    onSnapshot(doc(db, 'Chats', uid), async (doc) => {
+      if (!doc.data()) {
+        return;
+      }
+      const lastMessagesArr = [];
+
+      Object.values(doc.data()).forEach((messageObj) => {
+        const messagesArr = Object.values(messageObj);
+        messagesArr.sort(
+          (prev, next) => next.createdAt.seconds - prev.createdAt.seconds
+        );
+        lastMessagesArr.push(messagesArr[0]);
+      });
+
+      const chatsData = [];
+      for (let lastMessage of lastMessagesArr) {
+        const { receiverUid, imageUrl, message, createdAt } = lastMessage;
+        await userService.getOtherUserData(receiverUid).then((data) => {
+          const userData = data.data;
+          const { avatarUrl, uid, fullName } = userData;
+          chatsData.push({
+            avatarUrl,
+            uid,
+            fullName,
+            lastMessage: message,
+            createdAt,
+            imageUrl,
+          });
+        });
+      }
+
+      setChatsData(chatsData);
+    });
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (chatsData.length) {
+    chatsData.sort(
+      (prev, next) => next.createdAt.seconds - prev.createdAt.seconds
+    );
   }
 
   return (

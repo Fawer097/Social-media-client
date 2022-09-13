@@ -11,13 +11,13 @@ import { setUserData } from '../../../redux/slices/userSlice';
 import FormErrorParagraph from '../../FormErrorParagraph/FormErrorParagraph';
 import userService from '../../../services/userService';
 import postsService from '../../../services/postsService';
-import galleryService from '../../../services/galleryService';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 const EditProfileForm = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.userData);
   const [avatarUrl, setAvatarUrl] = useState(state.avatarUrl);
-  const avatarRef = ref(storage, `${state.uid}/avatar/avatar`);
+  const avatarRef = ref(storage, `${state.uid}/avatar/avatar${Date.now()}`);
 
   const {
     register,
@@ -49,13 +49,16 @@ const EditProfileForm = () => {
       };
       uploadBytes(avatarRef, avatar, metadata).then(() => {
         getDownloadURL(avatarRef).then((url) => {
-          userService.updateUserData({ avatarUrl: '' }).then(() => {
-            setAvatarUrl(url);
-            setValue('avatarUrl', url);
-          });
+          setAvatarUrl(url);
+          setValue('avatarUrl', url);
         });
       });
     }
+  };
+
+  const deleteAvatar = () => {
+    setAvatarUrl('');
+    setValue('avatarUrl', '');
   };
 
   const onSubmit = (data) => {
@@ -63,7 +66,6 @@ const EditProfileForm = () => {
       dispatch(setUserData(response.data));
     });
     if (avatarUrl) {
-      galleryService.setImageLink(avatarUrl);
       postsService.createPost({ imageUrl: data.avatarUrl, message: '' });
     }
   };
@@ -72,6 +74,10 @@ const EditProfileForm = () => {
     <div className="flex flex-col items-center px-6 pt-12">
       <form className="w-[550px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center mb-10">
+          <XCircleIcon
+            className="w-7 ml-36 text-gray-500 cursor-pointer hover:scale-110 active:scale-100 duration-300"
+            onClick={deleteAvatar}
+          />
           <label htmlFor="uploadAvatar">
             <img
               className="w-32 h-32 rounded-full cursor-pointer border border-gray-300"

@@ -8,16 +8,28 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import postsService from '../../../../services/postsService';
 import { storage } from '../../../../firebase';
-import galleryService from '../../../../services/galleryService';
 
 const PostInput = (props) => {
   const { uid } = useSelector((state) => state.userData);
   const [postImage, setPostImage] = useState('');
-  const imageRef = ref(storage, `${uid}/images/${Date.now()}`);
+  const imageRef = ref(storage, `${uid}/gallery/${Date.now()}`);
 
   const { register, handleSubmit, reset, setValue } = useForm({
     mode: 'onSubmit',
   });
+
+  const uploadImage = (event) => {
+    const image = event.target.files[0];
+    const metadata = {
+      contentType: image.type,
+    };
+    uploadBytes(imageRef, image, metadata).then(() => {
+      getDownloadURL(imageRef).then((url) => {
+        setPostImage(url);
+        setValue('imageUrl', url);
+      });
+    });
+  };
 
   const onSubmit = (data) => {
     let { message, imageUrl } = data;
@@ -33,22 +45,6 @@ const PostInput = (props) => {
       props.updatePosts(data.data);
       setPostImage('');
       reset();
-    });
-    if (data.imageUrl.length) {
-      galleryService.setImageLink(data.imageUrl);
-    }
-  };
-
-  const uploadImage = (event) => {
-    const image = event.target.files[0];
-    const metadata = {
-      contentType: image.type,
-    };
-    uploadBytes(imageRef, image, metadata).then(() => {
-      getDownloadURL(imageRef).then((url) => {
-        setPostImage(url);
-        setValue('imageUrl', url);
-      });
     });
   };
 

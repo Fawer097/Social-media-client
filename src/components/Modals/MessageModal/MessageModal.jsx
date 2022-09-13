@@ -11,13 +11,20 @@ import messagerService from '../../../services/messagerService';
 import userService from '../../../services/userService';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import { PhotoIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../../firebase';
 
 const MessageModal = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [interlocutorData, setInterlocutorData] = useState({});
+  const [messageImage, setMessageImage] = useState('');
+  const imageRef = state.userData
+    ? ref(storage, `${state.userData.uid}/messager/${Date.now()}`)
+    : null;
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset, setValue } = useForm({
     mode: 'onSubmit',
   });
 
@@ -29,10 +36,40 @@ const MessageModal = () => {
     }
   }, [state.modals.messageModal.active]);
 
+  const uploadImage = (event) => {
+    const image = event.target.files[0];
+    const metadata = {
+      contentType: image.type,
+    };
+
+    uploadBytes(imageRef, image, metadata).then(() => {
+      getDownloadURL(imageRef).then((url) => {
+        setMessageImage(url);
+        setValue('imageUrl', url);
+      });
+    });
+  };
+
   const onSubmit = (data) => {
-    messagerService.sendMessage(state.otherUser.uid, data);
-    dispatch(setMessageModal({ active: false }));
-    reset();
+    let { message, imageUrl } = data;
+    if (message && !imageUrl.length) {
+      data = { message, imageUrl: '' };
+    } else if (!message && imageUrl.length) {
+      data = { message: '', imageUrl };
+    } else if (!message && !imageUrl.length) {
+      return;
+    }
+
+    messagerService.sendMessage(state.otherUser.uid, data).then(() => {
+      dispatch(setMessageModal({ active: false }));
+      setMessageImage('');
+      reset();
+    });
+  };
+
+  const deleteImage = () => {
+    setMessageImage('');
+    setValue('imageUrl', '');
   };
 
   return (
@@ -104,10 +141,36 @@ const MessageModal = () => {
                       name="message"
                       id="message"
                       className={styles.messageInput}
-                      {...register('message', { required: true })}
+                      {...register('message')}
                     />
                   </div>
-                  <div className="mt-4 w-full relative">
+                  <div className="flex items-center justify-end mt-4 w-full relative">
+                    {messageImage && (
+                      <div className="mb-4 mr-64">
+                        <XCircleIcon
+                          className="w-6 mb-1 cursor-pointer hover:scale-110 duration-200 active:scale-100"
+                          onClick={deleteImage}
+                        />
+                        <img
+                          src={messageImage}
+                          alt="Post image"
+                          className="max-w-[200px] max-h-[100px] rounded-lg"
+                        ></img>
+                      </div>
+                    )}
+                    <div className="w-8 text-gray-600 mr-6">
+                      <label htmlFor="modalMessageImage">
+                        <PhotoIcon className="cursor-pointer" />
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="modalMessageImage"
+                        id="modalMessageImage"
+                        className="hidden"
+                        {...register('imageUrl', { onChange: uploadImage })}
+                      />
+                    </div>
                     <button type="submit" className={styles.button}>
                       Send
                     </button>

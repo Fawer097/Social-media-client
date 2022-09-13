@@ -1,4 +1,5 @@
 import React from 'react';
+
 import ChatCard from '../ChatCard/ChatCard';
 
 const ChatList = (props) => {

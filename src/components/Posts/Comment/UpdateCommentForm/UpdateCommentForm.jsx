@@ -5,17 +5,25 @@ import { useForm } from 'react-hook-form';
 import postsService from '../../../../services/postsService';
 
 const UpdateCommentForm = (props) => {
-  const { register, handleSubmit, setValue } = useForm({
+  const { register, handleSubmit } = useForm({
     mode: 'onSubmit',
+    defaultValues: {
+      message: props.commentData.message,
+    },
   });
 
   const onSubmit = (data) => {
+    if (!data.message) {
+      return;
+    }
+
     data = {
       message: data.message,
       commentId: props.commentData.commentId,
       postId: props.postData.postId,
       ownerUid: props.postData.uid,
     };
+
     postsService.updateComment(data).then((data) => {
       props.openUpdateForm(false);
       props.updateThisComment(data.data);
@@ -30,7 +38,6 @@ const UpdateCommentForm = (props) => {
           placeholder="Write a comment..."
           className={styles.updateCommentInput}
           {...register('message')}
-          {...setValue('message', props.commentData.message)}
         />
         <button
           type="submit"

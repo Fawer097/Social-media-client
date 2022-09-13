@@ -12,15 +12,26 @@ const ProfileGallery = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    onSnapshot(doc(db, 'Gallery', uid), (doc) => {
+    onSnapshot(doc(db, 'Posts', uid), (doc) => {
       if (doc.data()) {
-        setImages(Object.values(doc.data()));
+        const posts = Object.values(doc.data());
+        const images = posts.map((post) => {
+          return {
+            url: post.imageUrl,
+            createdAt: post.createdAt,
+          };
+        });
+        setImages(images);
       }
     });
   }, []);
 
   if (images.length) {
     images.sort((prev, next) => next.createdAt - prev.createdAt);
+  }
+
+  if (!images.length || !images[0].url) {
+    return;
   }
 
   return (
@@ -36,17 +47,19 @@ const ProfileGallery = () => {
       <div className="flex flex-wrap w-full max-h-[190px] overflow-hidden pt-3">
         {images.map((image) => {
           return (
-            <div
-              key={image.createdAt}
-              className="m-1 cursor-pointer"
-              onClick={() => navigate('/gallery')}
-            >
-              <img
-                src={image.link}
-                alt="User image"
-                className="rounded-md w-20 h-20"
-              />
-            </div>
+            image.url && (
+              <div
+                key={image.createdAt}
+                className="m-1 cursor-pointer"
+                onClick={() => navigate('/gallery')}
+              >
+                <img
+                  src={image.url}
+                  alt="User image"
+                  className="rounded-md w-20 h-20"
+                />
+              </div>
+            )
           );
         })}
       </div>

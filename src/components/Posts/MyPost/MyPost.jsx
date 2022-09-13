@@ -113,7 +113,7 @@ const MyPost = (props) => {
           ) : (
             <HeartIcon className={styles.like} onClick={setLike} />
           )}
-          <p className="ml-1 w-6 text-gray-800">{postData.likes.length}</p>
+          <p className="w-6 text-gray-800">{postData.likes.length}</p>
         </div>
         <div className="flex ml-2">
           <ChatBubbleOvalLeftIcon

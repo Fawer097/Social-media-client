@@ -1,15 +1,22 @@
 import { $api, API_URL } from '../http';
 
 const messagerService = {
-  async sendMessage(receiverUid, message) {
+  async sendMessage(receiverUid, data) {
     return $api.post(API_URL + '/messager/message', {
       receiverUid,
-      ...message,
+      data,
     });
   },
 
-  async getChatsData() {
-    return $api.get(API_URL + '/messager/chatsData');
+  async deleteChat(interlocutor) {
+    return $api.post(API_URL + '/messager/deleteChat', { interlocutor });
+  },
+
+  async deleteMessage(receiverUid, messageId) {
+    return $api.post(API_URL + '/messager/deleteMessage', {
+      receiverUid,
+      messageId,
+    });
   },
 };
 

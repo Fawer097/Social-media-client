@@ -2,29 +2,36 @@ import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import galleryService from '../../../../services/galleryService';
 import { useSelector } from 'react-redux';
+import { db } from '../../../../firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 const ProfileGallery = () => {
   const { uid } = useSelector((state) => state.otherUser);
   const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    galleryService
-      .getImageLinks(uid)
-      .then((data) => setImages(data.data))
-      .finally(() => setLoading(false));
+    onSnapshot(doc(db, 'Posts', uid), (doc) => {
+      if (doc.data()) {
+        const posts = Object.values(doc.data());
+        const images = posts.map((post) => {
+          return {
+            url: post.imageUrl,
+            createdAt: post.createdAt,
+          };
+        });
+        setImages(images);
+      }
+    });
   }, []);
 
   if (images.length) {
     images.sort((prev, next) => next.createdAt - prev.createdAt);
   }
 
-  if (loading) {
-    return <p>Loading...</p>;
+  if (!images.length || !images[0].url) {
+    return;
   }
 
   return (
@@ -46,7 +53,7 @@ const ProfileGallery = () => {
               onClick={() => navigate(`/gallery${uid}`)}
             >
               <img
-                src={image.link}
+                src={image.url}
                 alt="User image"
                 className="rounded-md w-20 h-20"
               />

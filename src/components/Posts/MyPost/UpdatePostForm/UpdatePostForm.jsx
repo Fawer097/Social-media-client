@@ -8,17 +8,20 @@ import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import postsService from '../../../../services/postsService';
 import { storage } from '../../../../firebase';
-import galleryService from '../../../../services/galleryService';
 
 const UpdatePostForm = (props) => {
   const { uid } = useSelector((state) => state.userData);
   const [updatepostImage, setUpdatePostImage] = useState(
     props.postData.imageUrl
   );
-  const imageRef = ref(storage, `${uid}/images/${Date.now()}`);
+  const imageRef = ref(storage, `${uid}/gallery/${Date.now()}`);
 
   const { register, handleSubmit, setValue } = useForm({
     mode: 'onSubmit',
+    defaultValues: {
+      message: props.postData.message,
+      imageUrl: props.postData.imageUrl,
+    },
   });
 
   const onSubmit = (data) => {
@@ -41,9 +44,6 @@ const UpdatePostForm = (props) => {
       props.updateThisPost(data.data);
       setUpdatePostImage('');
     });
-    if (imageUrl.length) {
-      galleryService.setImageLink(data.imageUrl);
-    }
   };
 
   const uploadImage = (event) => {
@@ -85,7 +85,6 @@ const UpdatePostForm = (props) => {
           placeholder="Enter your message"
           className={styles.updatePostInput}
           {...register('message')}
-          {...setValue('message', props.postData.message)}
         />
         <label htmlFor="updatePostImage">
           <PhotoIcon className="w-6 -ml-8 text-gray-600 cursor-pointer" />
@@ -97,7 +96,6 @@ const UpdatePostForm = (props) => {
           id="updatePostImage"
           className="hidden"
           {...register('imageUrl', { onChange: uploadImage })}
-          {...setValue('imageUrl', updatepostImage)}
         ></input>
         <button
           type="submit"

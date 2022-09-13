@@ -9,8 +9,8 @@ const Modals = () => {
     <>
       <SuccessModal />
       <ErrorModal />
-      <ImageModal />
       <MessageModal />
+      <ImageModal />
     </>
   );
 };
