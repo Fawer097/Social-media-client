@@ -8,7 +8,7 @@ import { useState } from 'react';
 import messagerService from '../../../services/messagerService';
 
 const ChatCard = (props) => {
-  const { fullName, uid, avatarUrl } = props.data;
+  const { fullName, uid, avatarUrl, lastMessage, imageUrl } = props.data;
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
 
   const deleteChat = (event) => {
@@ -33,6 +33,11 @@ const ChatCard = (props) => {
       </div>
       <div className="ml-4">
         <p className="text-gray-700">{fullName}</p>
+        <p className="text-gray-400 text-sm max-w-[300px] h-5 overflow-hidden">
+          {imageUrl && lastMessage ? lastMessage : null}
+          {!imageUrl && lastMessage ? lastMessage : null}
+          {imageUrl && !lastMessage ? 'Image' : null}
+        </p>
       </div>
       {showDeleteIcon && (
         <div

@@ -12,10 +12,13 @@ const MessagerPage = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
   const { uid } = useSelector((state) => state.userData);
   const [chatsData, setChatsData] = useState([]);
+  const [loading, setLoaging] = useState(false);
 
   useEffect(() => {
+    setLoaging(true);
     onSnapshot(doc(db, 'Chats', uid), async (doc) => {
       if (!doc.data()) {
+        setLoaging(false);
         return;
       }
       const lastMessagesArr = [];
@@ -44,8 +47,8 @@ const MessagerPage = () => {
           });
         });
       }
-
       setChatsData(chatsData);
+      setLoaging(false);
     });
   }, []);
 
@@ -53,6 +56,10 @@ const MessagerPage = () => {
     chatsData.sort(
       (prev, next) => next.createdAt.seconds - prev.createdAt.seconds
     );
+  }
+
+  if (loading) {
+    return <p>Loading...</p>;
   }
 
   return (
