@@ -1,14 +1,14 @@
 import React from 'react';
 import { useState } from 'react';
-import EditProfileForm from '../../../components/Settings/EditProfileForm/EditProfileForm';
-import Security from '../../../components/Settings/Security/Security';
+import EditProfileForm from '../../../components/ProfileSettings/EditProfileForm/EditProfileForm';
+import Security from '../../../components/ProfileSettings/Security/Security';
 import styles from './SettingsPage.module.scss';
 
 const SettingsPage = () => {
   const [section, setSection] = useState('profile');
 
   return (
-    <div className="mx-4 pb-10 w-full">
+    <div className={styles.wrapper}>
       <div className="text-xl text-gray-800 tracking-wide ml-6 mb-4">
         <h2>Settings</h2>
       </div>

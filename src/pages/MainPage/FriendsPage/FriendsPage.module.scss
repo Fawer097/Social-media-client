@@ -1,7 +1,19 @@
+.wrapper {
+  @apply flex w-full mx-4 rounded-xl bg-white border border-gray-100 shadow-custom;
+}
+
 .sectionName {
-  @apply pb-2 cursor-pointer text-gray-400;
+  @apply pb-2 cursor-pointer text-gray-400 relative;
 }
 
 .activeSection {
-  @apply pb-2 cursor-pointer border-b-2 border-y-darkGreen;
+  @apply pb-2 cursor-pointer border-b-2 border-y-darkGreen relative;
+}
+
+.incomingRequestsCounter {
+  @apply flex items-center justify-center absolute text-[11px] text-white p-2 -top-3 -right-4 h-4 w-4 rounded-full bg-red-500;
+}
+
+.outgoingRequestsCounter {
+  @apply flex items-center justify-center absolute text-[11px] text-white p-2 -top-3 -right-4 h-4 w-4 rounded-full bg-darkGreen bg-opacity-90;
 }

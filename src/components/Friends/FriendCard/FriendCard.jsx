@@ -5,41 +5,41 @@ import friendsService from '../../../services/friendsService';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import { useDispatch } from 'react-redux';
 import { setMessageModal } from '../../../redux/slices/modalsSlice';
+import styles from './FriendCard.module.scss';
 
 const FriendCard = (props) => {
+  const { data, updateFriends } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const openMessageModal = () => {
-    dispatch(setOtherUser(props.data.uid));
+    dispatch(setOtherUser(data.uid));
     dispatch(setMessageModal({ active: true }));
   };
 
   const openOtherUserProfile = () => {
-    dispatch(setOtherUser(props.data.uid));
-    navigate(`/profile${props.data.uid}`);
+    dispatch(setOtherUser(data.uid));
+    navigate(`/profile${data.uid}`);
   };
 
   const removeFriend = () => {
     friendsService
-      .removeFriend(props.data.uid)
+      .removeFriend(data.uid)
       .then(() =>
-        friendsService
-          .getFriendsData()
-          .then((data) => props.updateFriends(data.data))
+        friendsService.getFriendsData().then((data) => updateFriends(data.data))
       );
   };
 
-  if (!props.data) {
+  if (!data) {
     return null;
   }
 
   return (
-    <div className="flex items-center w-full h-28 border-b px-6 border-gray-200 relative">
+    <div className={styles.wrapper}>
       <div>
         <img
           className="w-20 h-20 rounded-full cursor-pointer"
-          src={props.data.avatarUrl ? props.data.avatarUrl : defaultAvatar}
+          src={data.avatarUrl ? data.avatarUrl : defaultAvatar}
           alt="avatar"
           onClick={openOtherUserProfile}
         />
@@ -49,17 +49,21 @@ const FriendCard = (props) => {
           className="text-darkGreen cursor-pointer hover:text-gray-800"
           onClick={openOtherUserProfile}
         >
-          {props.data.fullName}
+          {data.fullName}
         </p>
         <p className="text-gray-500 text-sm mt-0.5">
-          {props.data.city}
-          {props.data.city && props.data.country && ', '}
-          {props.data.country}
+          {data.city}
+          {data.city && data.country && ', '}
+          {data.country}
         </p>
       </div>
       <div className="flex flex-col absolute right-10">
-        <button onClick={openMessageModal}>Message</button>
-        <button onClick={removeFriend}>Remove</button>
+        <p onClick={openMessageModal} className={styles.options}>
+          Message
+        </p>
+        <p onClick={removeFriend} className={styles.options}>
+          Remove
+        </p>
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import MyMessage from '../MyMessage/MyMessage';
 import InterlocutorMessage from '../InterlocutorMessage/InterlocutorMessage';
 import userService from '../../../services/userService';
 import MessageInput from '../MessageInput/MessageInput';
+import messagerService from '../../../services/messagerService';
 
 const Chat = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
@@ -19,6 +20,7 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [interlocutorData, setInterlocutorData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [query, setQuery] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -54,13 +56,18 @@ const Chat = () => {
           <ChevronLeftIcon className="w-6" />
           <p>Return</p>
         </div>
+        <div className="w-1/4 border-b border-gray-200 h-7">
+          <input
+            type="search"
+            placeholder="Find messages"
+            className="w-full px-2 outline-none text-sm"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </div>
         <div
-          className="text-darkGreen cursor-pointer hover:text-gray-800"
+          className="flex min-w-1/3 items-center pr-2 cursor-pointer text-darkGreen text-sm hover:text-gray-800"
           onClick={openOtherUserProfile}
         >
-          <p>{interlocutorData.fullName}</p>
-        </div>
-        <div className="w-20 flex justify-end">
           <img
             src={
               interlocutorData.avatarUrl
@@ -68,27 +75,29 @@ const Chat = () => {
                 : defaultAvatar
             }
             alt="avatar"
-            className="w-12 h-12 rounded-full cursor-pointer"
-            onClick={openOtherUserProfile}
+            className="w-8 h-8 rounded-full mr-4"
           />
+          <p>{interlocutorData.fullName}</p>
         </div>
       </div>
-      <div className="w-full h-[65vh] border-b border-gray-200 p-4 overflow-y-auto relative">
+      <div className="w-full h-[65vh] max-h-[800px] border-b border-gray-200 py-2 pl-4 pr-8 overflow-y-auto relative">
         {messages.length && !loading
-          ? messages.map((message) =>
-              message.senderUid === userData.uid ? (
-                <MyMessage
-                  key={message.createdAt.seconds}
-                  messageData={message}
-                />
-              ) : (
-                <InterlocutorMessage
-                  key={message.createdAt.seconds}
-                  userData={interlocutorData}
-                  messageData={message}
-                />
+          ? messagerService
+              .filterMessages(messages, query)
+              .map((message) =>
+                message.senderUid === userData.uid ? (
+                  <MyMessage
+                    key={message.createdAt.seconds}
+                    messageData={message}
+                  />
+                ) : (
+                  <InterlocutorMessage
+                    key={message.createdAt.seconds}
+                    userData={interlocutorData}
+                    messageData={message}
+                  />
+                )
               )
-            )
           : null}
       </div>
       <MessageInput />

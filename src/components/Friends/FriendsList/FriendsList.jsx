@@ -4,10 +4,14 @@ import FriendCard from '../FriendCard/FriendCard';
 import { useEffect } from 'react';
 import friendsService from '../../../services/friendsService';
 import { useState } from 'react';
+import SearchInput from '../SearchInput/SearchInput';
+import Loader from '../../Loader/Loader';
 
 const Friendslist = () => {
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [genderQuery, setGenderQuery] = useState('');
 
   const updateFriends = (data) => setFriendsData(data);
 
@@ -21,27 +25,31 @@ const Friendslist = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <Loader size={32} />
+      </div>
+    );
   }
 
   return (
     <>
       {friendsData.length ? (
         <div className="mt-6">
-          <div className="w-full border-b border-gray-200 mb-4 h-10">
-            <input
-              type="search"
-              placeholder="Find friends"
-              className="w-full h-3/4 px-6 outline-none"
-            />
-          </div>
-          {friendsData.map((friend) => (
-            <FriendCard
-              key={friend.uid}
-              data={friend}
-              updateFriends={updateFriends}
-            />
-          ))}
+          <SearchInput
+            searchQuery={setSearchQuery}
+            genderQuery={setGenderQuery}
+            placeholder="Find friends"
+          />
+          {friendsService
+            .friendsFilter(friendsData, searchQuery, genderQuery)
+            .map((friend) => (
+              <FriendCard
+                key={friend.uid}
+                data={friend}
+                updateFriends={updateFriends}
+              />
+            ))}
         </div>
       ) : (
         <div className="flex flex-col items-center text-center mt-8 text-gray-400">

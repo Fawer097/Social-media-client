@@ -3,32 +3,38 @@ import Header from './Header/Header';
 import Counter from './Counter/Counter';
 import UserInfo from './UserInfo/UserInfo';
 import styles from './OtherUserProfile.module.scss';
-import { useDispatch } from 'react-redux';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import { CheckIcon } from '@heroicons/react/24/solid';
 import { setMessageModal } from '../../../redux/slices/modalsSlice';
 import friendsService from '../../../services/friendsService';
 import userService from '../../../services/userService';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import UserBoard from './UserBoard/UserBoard';
+import PostsField from './PostsField/PostsField';
+import postsService from '../../../services/postsService';
+import { Link } from 'react-router-dom';
 
 const OtherUserProfile = (props) => {
-  const { uid } = props.userData;
+  const myUid = useSelector((state) => state.userData.uid);
+  const otherUid = props.userData.uid;
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [friends, setFriends] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
+  const [friendsCounter, setFriendsCounter] = useState(0);
+  const [postsCounter, setPostsCounter] = useState(0);
+  const [imagesCounter, setImagesCounter] = useState(0);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     setLoading(true);
     userService
-      .getOtherUserData(uid)
+      .getOtherUserData(otherUid)
       .then((data) => {
         setUserData(data.data);
-        friendsService.getAllFriendsData().then((data) => {
+        friendsService.getFriendsUid(myUid).then((data) => {
           const { friends, incomingRequests, outgoingRequests } = data.data;
           setFriends(friends);
           setIncomingRequests(incomingRequests);
@@ -36,11 +42,21 @@ const OtherUserProfile = (props) => {
         });
       })
       .finally(() => setLoading(false));
+
+    friendsService
+      .getFriendsUid(otherUid)
+      .then((data) => setFriendsCounter(data.data.friends.length));
+
+    postsService.getPosts(otherUid).then((data) => {
+      setPostsCounter(data.data.length);
+      const images = data.data.filter((post) => post.imageUrl);
+      setImagesCounter(images.length);
+    });
   }, []);
 
   const friendRequest = () => {
-    friendsService.friendRequest(uid).then(() => {
-      friendsService.getAllFriendsData().then((data) => {
+    friendsService.friendRequest(otherUid).then(() => {
+      friendsService.getFriendsUid(myUid).then((data) => {
         const { friends, incomingRequests, outgoingRequests } = data.data;
         setFriends(friends);
         setIncomingRequests(incomingRequests);
@@ -68,30 +84,30 @@ const OtherUserProfile = (props) => {
           >
             Send message
           </button>
-          {!friends.includes(uid) &&
-            !incomingRequests.includes(uid) &&
-            !outgoingRequests.includes(uid) && (
+          {!friends.includes(otherUid) &&
+            !incomingRequests.includes(otherUid) &&
+            !outgoingRequests.includes(otherUid) && (
               <button className={styles.button} onClick={friendRequest}>
                 Add as friend
               </button>
             )}
-          {outgoingRequests.includes(uid) &&
-            !friends.includes(uid) &&
-            !incomingRequests.includes(uid) && (
+          {outgoingRequests.includes(otherUid) &&
+            !friends.includes(otherUid) &&
+            !incomingRequests.includes(otherUid) && (
               <button className={styles.button} disabled={true}>
                 Request sended
               </button>
             )}
-          {incomingRequests.includes(uid) &&
-            !friends.includes(uid) &&
-            !outgoingRequests.includes(uid) && (
+          {incomingRequests.includes(otherUid) &&
+            !friends.includes(otherUid) &&
+            !outgoingRequests.includes(otherUid) && (
               <button className={styles.button} onClick={friendRequest}>
                 Accept request
               </button>
             )}
-          {friends.includes(uid) &&
-            !outgoingRequests.includes(uid) &&
-            !incomingRequests.includes(uid) && (
+          {friends.includes(otherUid) &&
+            !outgoingRequests.includes(otherUid) &&
+            !incomingRequests.includes(otherUid) && (
               <button className={styles.button} disabled={true}>
                 <CheckIcon className="w-5 mr-2" />
                 Your friend
@@ -99,14 +115,27 @@ const OtherUserProfile = (props) => {
             )}
         </div>
         <div className="flex ml-8 h-full">
-          <Counter title={'Posts'} count={12} />
-          <Counter title={'Friends'} count={28} />
-          <Counter title={'Photos'} count={4} />
+          <a href="#posts-field">
+            <Counter title={'Posts'} count={postsCounter} />
+          </a>
+          <Counter title={'Friends'} count={friendsCounter} />
+          <Link to={`/gallery${otherUid}`}>
+            <Counter title={'Images'} count={imagesCounter} />
+          </Link>
         </div>
       </div>
+      {incomingRequests.includes(otherUid) &&
+      !friends.includes(otherUid) &&
+      !outgoingRequests.includes(otherUid) ? (
+        <div className="text-sm text-gray-400 h-5 mt-4 mx-6">
+          This user wants to add you as a friend.
+        </div>
+      ) : (
+        <div className="h-5 mt-4 mx-6"></div>
+      )}
       <div className="flex w-full mt-4">
         <UserInfo userData={userData} />
-        <UserBoard userData={userData} />
+        <PostsField userData={userData} />
       </div>
     </div>
   );

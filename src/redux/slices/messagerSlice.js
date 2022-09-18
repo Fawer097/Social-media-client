@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const messagerSlice = createSlice({
-  name: 'friendsData',
+  name: 'messager',
   initialState: {
     activeChat: null,
   },

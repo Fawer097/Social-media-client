@@ -1,9 +1,10 @@
 import React from 'react';
 import OtherUserProfile from '../../../components/Profile/OtherUserProfile/OtherUserProfile';
+import styles from './OtherUserPage.module.scss';
 
 const ProfilePage = (props) => {
   return (
-    <div className="w-full h-full mx-4">
+    <div className={styles.wrapper}>
       <OtherUserProfile userData={props.userData} />
     </div>
   );

@@ -32,7 +32,9 @@ const Header = () => {
         </div>
         <div className="ml-5 mt-4 tracking-wide">
           <p className="text-2xl text-gray-800">{userData.fullName}</p>
-          <p className="text-sm ml-0.5 text-gray-100">{userData.email}</p>
+          {userData.showEmail && (
+            <p className="text-sm ml-0.5 text-gray-100">{userData.email}</p>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { $api, API_URL } from '../http';
+import userService from './userService';
 
 const friendsService = {
   async friendRequest(receiverUid) {
@@ -21,8 +22,10 @@ const friendsService = {
     return $api.post(API_URL + '/friends/removeFriend', { receiverUid });
   },
 
-  async getAllFriendsData() {
-    return $api.get(API_URL + '/friends/allData');
+  async getFriendsUid(uid) {
+    return $api.get(API_URL + '/friends/friendsUid', {
+      headers: { data: uid },
+    });
   },
 
   async getFriendsData() {
@@ -35,6 +38,27 @@ const friendsService = {
 
   async getOutgoingCandidatesData() {
     return $api.get(API_URL + '/friends/outgoingCandidatesData');
+  },
+
+  friendsFilter(users, searchQuery, genderQuery) {
+    let filterFriends = [];
+    if (searchQuery && genderQuery) {
+      const nameFilter = userService.filterUsers(users, searchQuery);
+      filterFriends = nameFilter.filter(
+        (user) => user.gender.toLowerCase() === genderQuery
+      );
+      return filterFriends;
+    } else if (searchQuery && !genderQuery) {
+      filterFriends = userService.filterUsers(users, searchQuery);
+      return filterFriends;
+    } else if (!searchQuery && genderQuery) {
+      filterFriends = users.filter(
+        (user) => user.gender.toLowerCase() === genderQuery
+      );
+      return filterFriends;
+    }
+
+    return users;
   },
 };
 

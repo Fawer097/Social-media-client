@@ -5,12 +5,13 @@ import authService from './services/authService';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from './redux/slices/userSlice';
 import { useState } from 'react';
-import LoadingPage from './pages/LoadingPage/LoadingPage';
 import MainHeader from './components/Headers/MainHeader/MainHeader';
 import Menu from './components/Menu/Menu';
 import PrivateRouter from './router/PrivateRouter';
 import PublicRouter from './router/PublicRouter';
 import Modals from './components/Modals/Modals';
+import Counters from './components/Counters/Counters';
+import Loader from './components/Loader/Loader';
 
 const token = localStorage.getItem('token');
 
@@ -33,16 +34,21 @@ const App = () => {
   }, []);
 
   if (loading) {
-    return <LoadingPage />;
+    return (
+      <div className="w-screen h-screen flex justify-center items-center bg-black bg-opacity-20">
+        <Loader size={96} />
+      </div>
+    );
   }
 
   if (user) {
     return (
-      <div className="w-screen h-screen font-sans-serif">
+      <div className="w-screen min-h-[85vh] font-sans-serif">
         <BrowserRouter>
           <MainHeader />
           <Modals />
-          <div className="flex m-auto max-w-[1520px] min-h-[940px] mt-24">
+          <Counters />
+          <div className="flex m-auto max-w-[1520px] min-h-[600px] mt-24">
             <Menu />
             <PrivateRouter />
           </div>

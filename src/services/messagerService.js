@@ -18,6 +18,17 @@ const messagerService = {
       messageId,
     });
   },
+
+  filterMessages(messages, query) {
+    const regexp = /\s+/g;
+    const filterUsers = messages.filter((message) =>
+      message.message
+        .toLowerCase()
+        .replace(regexp, '')
+        .includes(query.toLowerCase().replace(regexp, ''))
+    );
+    return filterUsers;
+  },
 };
 
 export default messagerService;

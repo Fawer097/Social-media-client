@@ -77,6 +77,17 @@ const validationService = {
     };
   },
 
+  passwordsNotMatchValidation(value) {
+    return {
+      required: 'This field must be filled',
+      validate: () => {
+        if (value('password') === value('newPassword')) {
+          return 'The new password must not match the current one';
+        }
+      },
+    };
+  },
+
   latinValidation() {
     return {
       pattern: {

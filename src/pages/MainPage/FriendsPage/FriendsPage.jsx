@@ -1,19 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
 import FriendsList from '../../../components/Friends/FriendsList/FriendsList';
-import FriendsFilter from '../../../components/Friends/FriendsFilter/FriendsFilter';
 import IncomingFriendsList from '../../../components/Friends/IncomingFriendsList/IncomingFriendsList';
 import styles from './FriendsPage.module.scss';
 import OutgoingFriendsList from '../../../components/Friends/OutgoingFriendsList/OutgoingFriendsList';
+import { useSelector } from 'react-redux';
 
 const FriendsPage = () => {
   const [section, setSection] = useState('friends');
+  const { friends, incomingRequests } = useSelector((state) => state.counters);
 
   return (
-    <div className="flex w-full">
-      <div className="mx-4 p-4 w-full h-full border border-gray-300 rounded-t-lg">
+    <div className={styles.wrapper}>
+      <div className="mx-4 p-4 w-full h-full">
         <div className="mx-6 mt-1.5">
-          <ul className="flex justify-between w-[450px] tracking-wide">
+          <ul className="flex justify-between w-[460px] tracking-wide">
             <li
               onClick={() => setSection('friends')}
               className={
@@ -22,7 +23,10 @@ const FriendsPage = () => {
                   : styles.sectionName
               }
             >
-              All friends
+              <div className="flex">
+                <h3>All friends</h3>
+                <span className="ml-2 text-gray-400">{friends}</span>
+              </div>
             </li>
             <li
               onClick={() => setSection('incomingRequests')}
@@ -32,7 +36,12 @@ const FriendsPage = () => {
                   : styles.sectionName
               }
             >
-              Incoming requests
+              <h3>Incoming requests</h3>
+              {incomingRequests ? (
+                <div className={styles.incomingRequestsCounter}>
+                  {incomingRequests}
+                </div>
+              ) : null}
             </li>
             <li
               onClick={() => setSection('outgoingRequests')}
@@ -42,7 +51,7 @@ const FriendsPage = () => {
                   : styles.sectionName
               }
             >
-              Outgoing requests
+              <h3>Outgoing requests</h3>
             </li>
           </ul>
         </div>
@@ -51,7 +60,6 @@ const FriendsPage = () => {
         {section === 'incomingRequests' && <IncomingFriendsList />}
         {section === 'outgoingRequests' && <OutgoingFriendsList />}
       </div>
-      <FriendsFilter />
     </div>
   );
 };

@@ -4,7 +4,7 @@
 }
 
 .logoWrapper {
-  @apply max-w-[250px] h-full flex items-center pl-1;
+  @apply w-80 h-full flex items-center pl-1;
 }
 
 .searchWrapper {
@@ -12,7 +12,7 @@
 }
 
 .userPanel {
-  @apply flex items-center justify-evenly min-w-[240px] h-full;
+  @apply flex items-center justify-evenly w-80 h-full;
 }
 
 .settingsIconWrapper {

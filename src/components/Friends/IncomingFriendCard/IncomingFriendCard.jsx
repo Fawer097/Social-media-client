@@ -4,46 +4,48 @@ import { useNavigate } from 'react-router-dom';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import friendsService from '../../../services/friendsService';
+import styles from './IncomingFriendCard.module.scss';
 
 const IncomingFriendCard = (props) => {
+  const { data, updateCandidates } = props;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const openUserProfile = () => {
-    dispatch(setOtherUser(props.data.uid));
-    navigate(`/profile${props.data.uid}`);
+    dispatch(setOtherUser(data.uid));
+    navigate(`/profile${data.uid}`);
   };
 
   const acceptRequest = () => {
     friendsService
-      .friendRequest(props.data.uid)
+      .friendRequest(data.uid)
       .then(() =>
         friendsService
           .getCandidatesData()
-          .then((data) => props.updateCandidates(data.data))
+          .then((data) => updateCandidates(data.data))
       );
   };
 
   const removeIncomingRequest = () => {
     friendsService
-      .removeIncomingRequest(props.data.uid)
+      .removeIncomingRequest(data.uid)
       .then(() =>
         friendsService
           .getCandidatesData()
-          .then((data) => props.updateCandidates(data.data))
+          .then((data) => updateCandidates(data.data))
       );
   };
 
-  if (!props.data) {
+  if (!data) {
     return null;
   }
 
   return (
-    <div className="flex items-center w-full h-28 border-b px-6 border-gray-200 relative">
+    <div className={styles.wrapper}>
       <div>
         <img
           className="w-20 h-20 rounded-full  cursor-pointer"
-          src={props.data.avatarUrl ? props.data.avatarUrl : defaultAvatar}
+          src={data.avatarUrl ? data.avatarUrl : defaultAvatar}
           alt="avatar"
           onClick={openUserProfile}
         />
@@ -53,17 +55,21 @@ const IncomingFriendCard = (props) => {
           className="text-darkGreen cursor-pointer hover:text-gray-800"
           onClick={openUserProfile}
         >
-          {props.data.fullName}
+          {data.fullName}
         </p>
         <p className="text-gray-500 text-sm mt-0.5">
-          {props.data.city}
-          {props.data.city && props.data.country && ', '}
-          {props.data.country}
+          {data.city}
+          {data.city && data.country && ', '}
+          {data.country}
         </p>
       </div>
       <div className="flex flex-col absolute right-10">
-        <button onClick={acceptRequest}>Add as Friend</button>
-        <button onClick={removeIncomingRequest}>Reject the request</button>
+        <p onClick={acceptRequest} className={styles.options}>
+          Add as Friend
+        </p>
+        <p onClick={removeIncomingRequest} className={styles.options}>
+          Reject the request
+        </p>
       </div>
     </div>
   );

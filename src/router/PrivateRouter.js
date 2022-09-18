@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import MyProfilePage from '../pages/MainPage/ProfilePage/MyProfilePage';
 import OtherUserPage from '../pages/MainPage/OtherUserPage/OtherUserPage';

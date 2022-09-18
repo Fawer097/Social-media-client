@@ -1,4 +1,9 @@
 .messageInput {
-  @apply border border-gray-300 rounded-lg px-2 py-1 h-9 w-5/6 
-    focus:outline-none focus:border-brightGreen;
+  @apply border-b border-gray-300 p-2 w-5/6 
+    focus:outline-none;
+}
+
+.button {
+  @apply m-auto flex justify-center items-center py-2.5 ml-10 w-24 bg-darkGreen text-sm rounded-xl
+  hover:shadow-lg active:scale-95 text-white duration-300;
 }

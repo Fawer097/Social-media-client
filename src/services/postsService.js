@@ -5,8 +5,8 @@ const postsService = {
     return $api.post(API_URL + '/posts/createPost', data);
   },
 
-  async getPosts() {
-    return $api.get(API_URL + '/posts/userPosts');
+  async getPosts(uid) {
+    return $api.get(API_URL + '/posts/userPosts', { headers: { data: uid } });
   },
 
   async deletePost(postId) {
@@ -23,12 +23,6 @@ const postsService = {
 
   async deleteLikePost(postId, ownerPost) {
     return $api.post(API_URL + '/posts/deleteLikePost', { postId, ownerPost });
-  },
-
-  async getOtherUserPosts(uid) {
-    return $api.get(API_URL + '/posts/otherUserPosts', {
-      headers: { data: uid },
-    });
   },
 
   async getFeedPosts() {

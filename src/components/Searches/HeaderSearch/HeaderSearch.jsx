@@ -35,6 +35,7 @@ const HeaderSearch = () => {
     <Combobox value={selected} onChange={setSelected}>
       <Combobox.Input
         className={styles.searchInput}
+        placeholder="Search users..."
         onChange={(event) => setQuery(event.target.value)}
       />
 

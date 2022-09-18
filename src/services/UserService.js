@@ -75,6 +75,17 @@ const userService = {
 
     return `${day}.${mounth}.${year}, ${timeArr.join(':')}`;
   },
+
+  filterUsers(users, query) {
+    const regexp = /\s+/g;
+    const filterUsers = users.filter((user) =>
+      user.fullName
+        .toLowerCase()
+        .replace(regexp, '')
+        .includes(query.toLowerCase().replace(regexp, ''))
+    );
+    return filterUsers;
+  },
 };
 
 export default userService;

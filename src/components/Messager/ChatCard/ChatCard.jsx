@@ -8,7 +8,7 @@ import { useState } from 'react';
 import messagerService from '../../../services/messagerService';
 
 const ChatCard = (props) => {
-  const { fullName, uid, avatarUrl, lastMessage, imageUrl } = props.data;
+  const { fullName, uid, avatarUrl, lastMessage } = props.data;
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
 
   const deleteChat = (event) => {
@@ -17,6 +17,7 @@ const ChatCard = (props) => {
   };
 
   const dispatch = useDispatch();
+
   return (
     <div
       className={styles.wrapper}
@@ -32,12 +33,27 @@ const ChatCard = (props) => {
         />
       </div>
       <div className="ml-4">
-        <p className="text-gray-700">{fullName}</p>
-        <p className="text-gray-400 text-sm max-w-[300px] h-5 overflow-hidden">
-          {imageUrl && lastMessage ? lastMessage : null}
-          {!imageUrl && lastMessage ? lastMessage : null}
-          {imageUrl && !lastMessage ? 'Image' : null}
-        </p>
+        <p className="text-gray-700 mb-0.5">{fullName}</p>
+        <div className="flex items-center text-gray-400 text-sm max-w-[300px] h-6 overflow-hidden">
+          {lastMessage.avatarUrl !== false && (
+            <img
+              src={
+                lastMessage.avatarUrl ? lastMessage.avatarUrl : defaultAvatar
+              }
+              alt="avatar"
+              className="w-5 h-5 rounded-full mr-2"
+            />
+          )}
+          <p>
+            {lastMessage.imageUrl && lastMessage.message
+              ? lastMessage.message
+              : null}
+            {!lastMessage.imageUrl && lastMessage.message
+              ? lastMessage.message
+              : null}
+            {lastMessage.imageUrl && !lastMessage.message ? 'Image' : null}
+          </p>
+        </div>
       </div>
       {showDeleteIcon && (
         <div

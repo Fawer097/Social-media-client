@@ -15,12 +15,12 @@ const ProfileGallery = () => {
     onSnapshot(doc(db, 'Posts', uid), (doc) => {
       if (doc.data()) {
         const posts = Object.values(doc.data());
-        const images = posts.map((post) => {
-          return {
+        const images = posts
+          .filter((post) => post.imageUrl)
+          .map((post) => ({
             url: post.imageUrl,
             createdAt: post.createdAt,
-          };
-        });
+          }));
         setImages(images);
       }
     });
@@ -45,21 +45,19 @@ const ProfileGallery = () => {
         </div>
       </div>
       <div className="flex flex-wrap w-full max-h-[190px] overflow-hidden pt-3">
-        {images.map((image) => {
-          return (
-            <div
-              key={image.createdAt}
-              className="w-20 h-20 m-1 cursor-pointer"
-              onClick={() => navigate(`/gallery${uid}`)}
-            >
-              <img
-                src={image.url}
-                alt="User image"
-                className="rounded-md w-20 h-20"
-              />
-            </div>
-          );
-        })}
+        {images.map((image) => (
+          <div
+            key={image.createdAt}
+            className="w-20 h-20 m-1 cursor-pointer"
+            onClick={() => navigate(`/gallery${uid}`)}
+          >
+            <img
+              src={image.url}
+              alt="User image"
+              className="rounded-md w-20 h-20"
+            />
+          </div>
+        ))}
       </div>
     </div>
   );

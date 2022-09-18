@@ -3,10 +3,14 @@ import IncomingFriendCard from '../IncomingFriendCard/IncomingFriendCard';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import friendsService from '../../../services/friendsService';
+import SearchInput from '../SearchInput/SearchInput';
+import Loader from '../../Loader/Loader';
 
 const IncomingFriendsList = () => {
   const [candidatesData, setCandidatesData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [genderQuery, setGenderQuery] = useState('');
 
   const updateCandidates = (data) => setCandidatesData(data);
 
@@ -20,27 +24,31 @@ const IncomingFriendsList = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <Loader size={32} />
+      </div>
+    );
   }
 
   return (
     <>
       {candidatesData.length ? (
         <div className="mt-6">
-          <div className="w-full border-b border-gray-200 mb-4 h-10">
-            <input
-              type="search"
-              placeholder="Find user"
-              className="w-full h-3/4 px-6 outline-none"
-            />
-          </div>
-          {candidatesData.map((candidate) => (
-            <IncomingFriendCard
-              key={candidate.uid}
-              data={candidate}
-              updateCandidates={updateCandidates}
-            />
-          ))}
+          <SearchInput
+            searchQuery={setSearchQuery}
+            genderQuery={setGenderQuery}
+            placeholder="Find users"
+          />
+          {friendsService
+            .friendsFilter(candidatesData, searchQuery, genderQuery)
+            .map((candidate) => (
+              <IncomingFriendCard
+                key={candidate.uid}
+                data={candidate}
+                updateCandidates={updateCandidates}
+              />
+            ))}
         </div>
       ) : (
         <div className="flex justify-center mt-8 text-gray-400">

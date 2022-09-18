@@ -7,7 +7,7 @@ export const modalsSlice = createSlice({
       active: false,
     },
     errorModal: { active: false },
-    avatarModal: { active: false },
+    imageModal: { active: false },
     messageModal: { active: false },
   },
   reducers: {
@@ -18,7 +18,7 @@ export const modalsSlice = createSlice({
       return { ...state, errorModal: action.payload };
     },
     setImageModal: (state, action) => {
-      return { ...state, avatarModal: action.payload };
+      return { ...state, imageModal: action.payload };
     },
     setMessageModal: (state, action) => {
       return { ...state, messageModal: action.payload };

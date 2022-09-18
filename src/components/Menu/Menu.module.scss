@@ -1,3 +1,11 @@
 .wrapper {
-  @apply flex flex-col items-center pt-7 min-w-[250px] w-[250px] bg-gray-100 rounded-tr-lg font-light;
+  @apply flex flex-col items-center pt-7 min-w-[250px] w-[250px] bg-white rounded-xl border border-gray-100 font-light shadow-custom;
+}
+
+.menuItem {
+  @apply flex pl-2 items-center cursor-pointer hover:border-l-4 hover:border-darkGreen duration-100;
+}
+
+.activeMenuItem {
+  @apply flex pl-2 items-center cursor-pointer border-l-4 border-darkGreen duration-200;
 }

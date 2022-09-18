@@ -9,12 +9,12 @@ const ImageModal = () => {
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  if (!state.modals.avatarModal.url) {
+  if (!state.modals.imageModal.url) {
     return null;
   }
 
   return (
-    <Transition appear show={state.modals.avatarModal.active} as={Fragment}>
+    <Transition appear show={state.modals.imageModal.active} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-50 font-sans-serif"
@@ -47,8 +47,8 @@ const ImageModal = () => {
                 {state.userData && (
                   <img
                     className="w-full h-full"
-                    src={state.modals.avatarModal.url}
-                    alt="avatar"
+                    src={state.modals.imageModal.url}
+                    alt="image"
                   />
                 )}
               </Dialog.Panel>

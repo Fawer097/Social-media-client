@@ -7,22 +7,23 @@ import { useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../../../firebase';
 import userService from '../../../services/userService';
+import styles from './MessagerPage.module.scss';
+import Loader from '../../../components/Loader/Loader';
 
 const MessagerPage = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
-  const { uid } = useSelector((state) => state.userData);
+  const { userData } = useSelector((state) => state);
   const [chatsData, setChatsData] = useState([]);
   const [loading, setLoaging] = useState(false);
 
   useEffect(() => {
     setLoaging(true);
-    onSnapshot(doc(db, 'Chats', uid), async (doc) => {
+    onSnapshot(doc(db, 'Chats', userData.uid), async (doc) => {
       if (!doc.data()) {
         setLoaging(false);
         return;
       }
       const lastMessagesArr = [];
-
       Object.values(doc.data()).forEach((messageObj) => {
         const messagesArr = Object.values(messageObj);
         messagesArr.sort(
@@ -33,19 +34,26 @@ const MessagerPage = () => {
 
       const chatsData = [];
       for (let lastMessage of lastMessagesArr) {
-        const { receiverUid, imageUrl, message, createdAt } = lastMessage;
-        await userService.getOtherUserData(receiverUid).then((data) => {
-          const userData = data.data;
-          const { avatarUrl, uid, fullName } = userData;
-          chatsData.push({
-            avatarUrl,
-            uid,
-            fullName,
-            lastMessage: message,
-            createdAt,
-            imageUrl,
+        if (lastMessage) {
+          const { senderUid, receiverUid, imageUrl, message, createdAt } =
+            lastMessage;
+          let interlocutor =
+            senderUid === userData.uid ? receiverUid : senderUid;
+
+          await userService.getOtherUserData(interlocutor).then((data) => {
+            const { avatarUrl, uid, fullName } = data.data;
+            chatsData.push({
+              avatarUrl,
+              uid,
+              fullName,
+              lastMessage:
+                senderUid === userData.uid
+                  ? { message, imageUrl, avatarUrl: userData.avatarUrl }
+                  : { message, imageUrl, avatarUrl: false },
+              createdAt,
+            });
           });
-        });
+        }
       }
       setChatsData(chatsData);
       setLoaging(false);
@@ -59,11 +67,17 @@ const MessagerPage = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className={styles.wrapper}>
+        <div className="w-full h-full flex items-center justify-center">
+          <Loader size={32} />
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="mx-4 p-4 w-full border border-gray-300 rounded-t-lg">
+    <div className={styles.wrapper}>
       {chatsData.length ? (
         activeChat ? (
           <Chat />

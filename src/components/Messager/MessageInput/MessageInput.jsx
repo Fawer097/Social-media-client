@@ -73,7 +73,7 @@ const MessageInput = () => {
       )}
       <div className="flex w-full items-center py-4">
         <label htmlFor="messageImage">
-          <PhotoIcon className="w-7 mr-4 text-gray-600 cursor-pointer" />
+          <PhotoIcon className="w-7 mr-4 text-gray-600 cursor-pointer hover:scale-110 duration-200" />
         </label>
         <input
           type="file"
@@ -87,11 +87,12 @@ const MessageInput = () => {
           type="text"
           name="message"
           id="message"
+          placeholder="Send message..."
           className={styles.messageInput}
           {...register('message')}
         />
-        <button type="submit">
-          <PaperAirplaneIcon className="w-8 ml-8 text-darkGreen cursor-pointer" />
+        <button type="submit" className={styles.button}>
+          Send
         </button>
       </div>
     </form>

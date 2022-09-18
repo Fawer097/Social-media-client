@@ -7,11 +7,16 @@ import OtherUserPost from '../../../components/Posts/OtherUserPost/OtherUserPost
 import { db } from '../../../firebase';
 import postsService from '../../../services/postsService';
 import { collection, query, onSnapshot } from 'firebase/firestore';
+import userService from '../../../services/userService';
+import messagerService from '../../../services/messagerService';
+import Loader from '../../../components/Loader/Loader';
+import styles from './FeedPage.module.scss';
 
 const Feed = () => {
   const { uid } = useSelector((state) => state.userData);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [inputQuery, setInputQuery] = useState('');
 
   useEffect(() => {
     setLoading(true);
@@ -35,31 +40,45 @@ const Feed = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className={styles.wrapper}>
+        <div className="w-full h-full flex items-center justify-center">
+          <Loader size={32} />
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="flex w-full">
-      <div className="mx-4 p-4 w-full h-full border border-gray-300 rounded-t-lg">
-        {posts.length ? (
-          posts.map((post) =>
-            post.uid === uid ? (
-              <MyPost key={post.createdAt._seconds} postData={post} />
-            ) : (
-              <OtherUserPost
-                key={post.createdAt._seconds}
-                postData={post}
-                userData={post}
-              />
-            )
-          )
-        ) : (
-          <div className="flex justify-center mt-8 text-gray-400">
-            <p>No news yet.</p>
-          </div>
-        )}
+    <div className={styles.wrapper}>
+      <div className="w-full border-b border-gray-200 mb-4 h-10">
+        <input
+          type="search"
+          placeholder="Find posts"
+          className="w-full h-3/4 px-6 outline-none"
+          onChange={(event) => setInputQuery(event.target.value)}
+        />
       </div>
-      <div className="min-w-[240px] border border-gray-300 rounded-tl-lg"></div>
+      {posts.length ? (
+        (userService.filterUsers(posts, inputQuery).length
+          ? userService.filterUsers(posts, inputQuery)
+          : messagerService.filterMessages(posts, inputQuery)
+        ).map((post) =>
+          post.uid === uid ? (
+            <MyPost key={post.createdAt._seconds} postData={post} />
+          ) : (
+            <OtherUserPost
+              key={post.createdAt._seconds}
+              postData={post}
+              userData={post}
+            />
+          )
+        )
+      ) : (
+        <div className="flex justify-center mt-8 text-gray-400">
+          <p>No news yet.</p>
+        </div>
+      )}
     </div>
   );
 };

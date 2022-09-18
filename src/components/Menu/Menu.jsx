@@ -1,11 +1,12 @@
 import React from 'react';
 import styles from './Menu.module.scss';
 import { menuItems } from './menuItems';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 const Menu = () => {
   const userData = useSelector((state) => state.userData);
+  const location = useLocation();
 
   return (
     <div className={styles.wrapper}>
@@ -18,7 +19,11 @@ const Menu = () => {
                   ? `/${item.name.toLowerCase()}${userData.uid}`
                   : `/${item.name.toLowerCase()}`
               }
-              className="flex items-center cursor-pointer"
+              className={
+                location.pathname.includes(item.name.toLowerCase())
+                  ? styles.activeMenuItem
+                  : styles.menuItem
+              }
             >
               <div className="w-6 mr-4 text-gray-500">{item.icon}</div>
               <p className="tracking-wide text-lg text-gray-800">{item.name}</p>

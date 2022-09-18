@@ -3,7 +3,6 @@ import styles from './MainHeader.module.scss';
 import logo from '../../../images/logo_black.png';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  BellIcon,
   Cog8ToothIcon,
   ArrowRightOnRectangleIcon,
   MagnifyingGlassIcon,
@@ -14,7 +13,6 @@ import { resetUserData } from '../../../redux/slices/userSlice';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import HeaderSearch from '../../Searches/HeaderSearch/HeaderSearch';
 import { resetOtherUser } from '../../../redux/slices/otherUserSlice';
-import { resetFriendsData } from '../../../redux/slices/friendsSlice';
 import { resetChatsData } from '../../../redux/slices/messagerSlice';
 
 const MainHeader = () => {
@@ -29,7 +27,6 @@ const MainHeader = () => {
         localStorage.removeItem('token');
         dispatch(resetUserData());
         dispatch(resetOtherUser());
-        dispatch(resetFriendsData());
         dispatch(resetChatsData());
         navigate('/');
       })
@@ -47,7 +44,7 @@ const MainHeader = () => {
         <div className={styles.searchWrapper}>
           <div className="relative w-2/3 max-w-[400px]">
             <HeaderSearch />
-            <MagnifyingGlassIcon className="w-5 text-gray-400 absolute top-2 left-3" />
+            <MagnifyingGlassIcon className="w-5 text-gray-400 absolute top-1.5 left-3" />
           </div>
         </div>
         <div className={styles.userPanel}>
@@ -61,9 +58,6 @@ const MainHeader = () => {
                 />
               )}
             </Link>
-          </div>
-          <div className="w-7 h-7 text-gray-500">
-            <BellIcon />
           </div>
           <div className={styles.settingsIconWrapper}>
             <Link to="/settings">

@@ -1,10 +1,11 @@
 import React from 'react';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import userService from '../../../services/userService';
+import styles from './InterlocutorMessage.module.scss';
 
 const InterlocutorMessage = (props) => {
   return (
-    <div className="flex w-fit m-2 px-4 py-1 border border-gray-100 rounded-xl relative">
+    <div className={styles.wrapper}>
       <div>
         <img
           src={
