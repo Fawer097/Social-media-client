@@ -40,7 +40,7 @@ const OtherUserPost = (props) => {
   };
 
   return (
-    <div className="w-full mb-4 px-4 py-2 border border-gray-300 rounded-xl">
+    <div className="w-full mb-4 px-4 py-2 border-2 border-gray-100 shadow-custom rounded-xl">
       <div className="flex items-center relative">
         <div>
           <img
@@ -97,7 +97,7 @@ const OtherUserPost = (props) => {
           )}
           <p className="w-6 ml-1 text-gray-800">{postData.likes.length}</p>
         </div>
-        <div className="flex ml-2">
+        <div className="flex">
           <ChatBubbleOvalLeftIcon
             className="w-6 text-gray-400 cursor-pointer"
             onClick={() => setOpenInput(true)}

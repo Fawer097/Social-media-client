@@ -16,6 +16,7 @@ const Comment = (props) => {
 
   useEffect(() => {
     setLoading(true);
+    setCommentData(props.commentData);
     setOwnerData(userData);
     if (commentData.senderUid !== userData.uid) {
       userService
@@ -24,7 +25,7 @@ const Comment = (props) => {
         .finally(() => setLoading(false));
     }
     setLoading(false);
-  }, []);
+  }, [props.commentData]);
 
   const openingUpdateForm = (data) => setOpenUpdateForm(data);
 

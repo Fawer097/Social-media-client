@@ -50,10 +50,14 @@ const userService = {
   },
 
   postTimestampConversion(seconds) {
-    const dateArr = new Date(seconds * 1000).toString().split(' ');
-    const timeArr = dateArr[4].split(':');
-    timeArr.length -= 1;
-    return `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]} in ${timeArr.join(':')}`;
+    if (seconds) {
+      const dateArr = new Date(seconds * 1000).toString().split(' ');
+      const timeArr = dateArr[4].split(':');
+      timeArr.length -= 1;
+      return `${dateArr[1]} ${dateArr[2]}, ${dateArr[3]} in ${timeArr.join(
+        ':'
+      )}`;
+    }
   },
 
   messageTimestampConversion(seconds) {

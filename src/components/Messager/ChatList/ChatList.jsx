@@ -12,8 +12,8 @@ const ChatList = (props) => {
       <div className="w-full border-b border-gray-200 mb-4 h-10">
         <input
           type="search"
-          placeholder="Find chats"
-          className="w-full h-3/4 px-6 outline-none"
+          placeholder="Search chats..."
+          className="w-full h-full px-6 outline-none"
           onChange={(event) => setQuery(event.target.value)}
         />
       </div>

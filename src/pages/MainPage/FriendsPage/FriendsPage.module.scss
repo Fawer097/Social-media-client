@@ -13,7 +13,3 @@
 .incomingRequestsCounter {
   @apply flex items-center justify-center absolute text-[11px] text-white p-2 -top-3 -right-4 h-4 w-4 rounded-full bg-red-500;
 }
-
-.outgoingRequestsCounter {
-  @apply flex items-center justify-center absolute text-[11px] text-white p-2 -top-3 -right-4 h-4 w-4 rounded-full bg-darkGreen bg-opacity-90;
-}

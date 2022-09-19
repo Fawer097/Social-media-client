@@ -19,12 +19,14 @@ const GalleryPage = (props) => {
     onSnapshot(doc(db, 'Posts', props.uid), (doc) => {
       if (doc.data()) {
         const posts = Object.values(doc.data());
-        const images = posts.map((post) => {
-          return {
-            url: post.imageUrl,
-            createdAt: post.createdAt,
-          };
-        });
+        const images = posts
+          .filter((post) => post.imageUrl)
+          .map((post) => {
+            return {
+              url: post.imageUrl,
+              createdAt: post.createdAt,
+            };
+          });
         setImages(images);
       }
       setLoading(false);
@@ -47,7 +49,7 @@ const GalleryPage = (props) => {
 
   return (
     <div className={styles.wrapper}>
-      {images.length && images[0].url ? (
+      {images.length ? (
         images.map((image) => (
           <div key={image.createdAt} className="m-2">
             <img
@@ -66,7 +68,7 @@ const GalleryPage = (props) => {
           </div>
         ))
       ) : (
-        <EmptyMessage message="No photo here yet." />
+        <EmptyMessage message="No images here yet." />
       )}
     </div>
   );

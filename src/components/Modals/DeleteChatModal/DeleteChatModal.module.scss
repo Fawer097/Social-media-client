@@ -1,0 +1,11 @@
+.dialogWrapper {
+  @apply flex flex-col items-center w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all;
+}
+
+.deleteButton {
+  @apply outline-none w-24 h-9 rounded-3xl bg-darkGreen text-sm hover:shadow-lg active:scale-95 text-white duration-300;
+}
+
+.returnButton {
+  @apply outline-none w-24 h-9 rounded-3xl text-sm border border-gray-600 hover:shadow-lg active:scale-95 hover:bg-darkGreen hover:text-white hover:border-darkGreen duration-300;
+}

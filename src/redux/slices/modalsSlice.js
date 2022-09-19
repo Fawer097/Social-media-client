@@ -9,6 +9,7 @@ export const modalsSlice = createSlice({
     errorModal: { active: false },
     imageModal: { active: false },
     messageModal: { active: false },
+    deleteChatModal: { active: false },
   },
   reducers: {
     setSuccessModal: (state, action) => {
@@ -23,6 +24,9 @@ export const modalsSlice = createSlice({
     setMessageModal: (state, action) => {
       return { ...state, messageModal: action.payload };
     },
+    setDeleteChatModal: (state, action) => {
+      return { ...state, deleteChatModal: action.payload };
+    },
   },
 });
 
@@ -30,4 +34,5 @@ export const { setSuccessModal } = modalsSlice.actions;
 export const { setErrorModal } = modalsSlice.actions;
 export const { setImageModal } = modalsSlice.actions;
 export const { setMessageModal } = modalsSlice.actions;
+export const { setDeleteChatModal } = modalsSlice.actions;
 export default modalsSlice.reducer;

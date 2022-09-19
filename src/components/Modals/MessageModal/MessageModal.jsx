@@ -158,9 +158,9 @@ const MessageModal = () => {
                         ></img>
                       </div>
                     )}
-                    <div className="w-8 text-gray-600 mr-6">
+                    <div className="w-7 text-gray-600 mr-6">
                       <label htmlFor="modalMessageImage">
-                        <PhotoIcon className="cursor-pointer" />
+                        <PhotoIcon className="cursor-pointer hover:scale-105 duration-200" />
                       </label>
                       <input
                         type="file"

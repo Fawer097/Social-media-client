@@ -6,6 +6,7 @@ import friendsService from '../../../services/friendsService';
 import { useState } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import Loader from '../../Loader/Loader';
+import EmptyMessage from '../../EmptyMessage/EmptyMessage';
 
 const Friendslist = () => {
   const [friendsData, setFriendsData] = useState([]);
@@ -52,12 +53,7 @@ const Friendslist = () => {
             ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center text-center mt-8 text-gray-400">
-          <FaceFrownIcon className="w-8 mb-2" />
-          <p className="w-60">
-            You don't have any friends yet. Use search to find them.
-          </p>
-        </div>
+        <EmptyMessage message="You don't have any friends yet. Use search to find them" />
       )}
     </>
   );

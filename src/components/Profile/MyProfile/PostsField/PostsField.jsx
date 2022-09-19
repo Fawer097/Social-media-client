@@ -5,12 +5,13 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import PostInput from '../../../Posts/MyPost/PostInput/PostInput';
 import { useSelector } from 'react-redux';
+import Loader from '../../../Loader/Loader';
+import EmptyMessage from '../../../EmptyMessage/EmptyMessage';
 
 const PostsField = () => {
   const { uid } = useSelector((state) => state.userData);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const updatePosts = (data) => setPosts(data);
 
   useEffect(() => {
     setLoading(true);
@@ -20,6 +21,8 @@ const PostsField = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const updatePosts = (data) => setPosts(data);
+
   if (posts.length) {
     posts.sort(
       (prev, next) => next.createdAt._seconds - prev.createdAt._seconds
@@ -27,12 +30,16 @@ const PostsField = () => {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full flex items-start justify-center">
+        <Loader size={20} />
+      </div>
+    );
   }
 
   return (
     <div
-      className="ml-8 p-5 rounded-lg w-full border border-gray-300"
+      className="ml-8 px-4 pb-4 w-full border-l border-gray-200"
       id="posts-field"
     >
       <PostInput updatePosts={updatePosts} />
@@ -45,9 +52,7 @@ const PostsField = () => {
           />
         ))
       ) : (
-        <div className="flex justify-center mt-8 text-gray-400">
-          <p>You don't have any entries yet.</p>
-        </div>
+        <EmptyMessage message="You don't have any entries yet." />
       )}
     </div>
   );

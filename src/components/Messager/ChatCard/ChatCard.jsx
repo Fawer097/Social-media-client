@@ -5,18 +5,17 @@ import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import { setActiveChat } from '../../../redux/slices/messagerSlice';
 import styles from './ChatCard.module.scss';
 import { useState } from 'react';
-import messagerService from '../../../services/messagerService';
+import { setDeleteChatModal } from '../../../redux/slices/modalsSlice';
 
 const ChatCard = (props) => {
   const { fullName, uid, avatarUrl, lastMessage } = props.data;
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
+  const dispatch = useDispatch();
 
   const deleteChat = (event) => {
     event.stopPropagation();
-    messagerService.deleteChat(uid);
+    dispatch(setDeleteChatModal({ active: true, uid }));
   };
-
-  const dispatch = useDispatch();
 
   return (
     <div

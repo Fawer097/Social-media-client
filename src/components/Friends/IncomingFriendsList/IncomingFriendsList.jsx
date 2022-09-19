@@ -51,7 +51,7 @@ const IncomingFriendsList = () => {
             ))}
         </div>
       ) : (
-        <div className="flex justify-center mt-8 text-gray-400">
+        <div className="flex justify-center mt-10 text-gray-400">
           <p>No friend requests yet.</p>
         </div>
       )}

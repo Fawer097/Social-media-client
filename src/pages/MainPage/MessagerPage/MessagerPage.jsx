@@ -9,6 +9,7 @@ import { db } from '../../../firebase';
 import userService from '../../../services/userService';
 import styles from './MessagerPage.module.scss';
 import Loader from '../../../components/Loader/Loader';
+import EmptyMessage from '../../../components/EmptyMessage/EmptyMessage';
 
 const MessagerPage = () => {
   const { activeChat } = useSelector((state) => state.messagerData);
@@ -85,9 +86,7 @@ const MessagerPage = () => {
           <ChatList chatsData={chatsData} />
         )
       ) : (
-        <div className="flex flex-col items-center text-center mt-8 text-gray-400">
-          <p className="w-60">You don't have any chats yet.</p>
-        </div>
+        <EmptyMessage message="You don't have any chats yet." />
       )}
     </div>
   );

@@ -6,9 +6,14 @@ import postsService from '../../../../services/postsService';
 
 const PostPopover = (props) => {
   const deletePost = () => {
-    postsService
-      .deletePost(props.postId)
-      .then((data) => props.updatePosts(data.data));
+    postsService.deletePost(props.postId).then((data) => {
+      if (props.updatePosts) {
+        props.updatePosts(data.data);
+      }
+      if (props.updateFeedPosts) {
+        props.updateFeedPosts();
+      }
+    });
   };
 
   return (

@@ -30,7 +30,7 @@ const ProfileGallery = () => {
     images.sort((prev, next) => next.createdAt - prev.createdAt);
   }
 
-  if (!images.length || !images[0].url) {
+  if (!images.length) {
     return;
   }
 

@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-  PaperAirplaneIcon,
-  XCircleIcon,
-  PhotoIcon,
-} from '@heroicons/react/24/outline';
+import { XCircleIcon, PhotoIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import styles from './MessageInput.module.scss';
 import messagerService from '../../../services/messagerService';
@@ -73,7 +69,7 @@ const MessageInput = () => {
       )}
       <div className="flex w-full items-center py-4">
         <label htmlFor="messageImage">
-          <PhotoIcon className="w-7 mr-4 text-gray-600 cursor-pointer hover:scale-110 duration-200" />
+          <PhotoIcon className="w-7 mr-4 text-gray-600 cursor-pointer hover:scale-105 duration-200" />
         </label>
         <input
           type="file"

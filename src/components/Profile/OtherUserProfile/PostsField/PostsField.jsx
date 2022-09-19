@@ -4,6 +4,8 @@ import postsService from '../../../../services/postsService';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import Loader from '../../../Loader/Loader';
+import EmptyMessage from '../../../EmptyMessage/EmptyMessage';
 
 const PostsField = (props) => {
   const { uid } = useSelector((state) => state.otherUser);
@@ -29,12 +31,16 @@ const PostsField = (props) => {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full flex items-start justify-center">
+        <Loader size={20} />
+      </div>
+    );
   }
 
   return (
     <div
-      className="ml-8 p-5 rounded-lg w-full border border-gray-300"
+      className="ml-8 px-4 pb-4 w-full border-l border-gray-200"
       id="posts-field"
     >
       {posts.length ? (
@@ -46,9 +52,7 @@ const PostsField = (props) => {
           />
         ))
       ) : (
-        <div className="flex justify-center mt-8 text-gray-400">
-          <p>This user has no posts yet.</p>
-        </div>
+        <EmptyMessage message="This user has no posts yet." />
       )}
     </div>
   );

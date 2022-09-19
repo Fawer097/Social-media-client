@@ -24,7 +24,7 @@ const Security = () => {
   };
 
   const toAnimation = {
-    transform: 'translateY(-150%)',
+    transform: 'translateY(-180%)',
     position: 'fixed',
     left: '240px',
     right: '0px',

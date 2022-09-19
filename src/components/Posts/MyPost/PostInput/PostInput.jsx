@@ -54,7 +54,10 @@ const PostInput = (props) => {
   };
 
   return (
-    <form className="w-full pl-1 pr-6 mb-6" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="w-full pl-1 pr-6 mb-6 border-2 border-gray-50 rounded-lg shadow-custom"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       {postImage && (
         <div className="mb-4 ml-3">
           <XCircleIcon
@@ -64,19 +67,19 @@ const PostInput = (props) => {
           <img
             src={postImage}
             alt="Post image"
-            className="max-w-[500px] max-h-[300px] rounded-lg"
+            className="max-w-[400px] max-h-[200px] rounded-lg"
           ></img>
         </div>
       )}
       <div className="flex items-center w-full h-10">
         <input
           type="text"
-          placeholder="Enter your message"
+          placeholder="Enter your message..."
           className={styles.createPostInput}
           {...register('message')}
         />
         <label htmlFor="postImage">
-          <PhotoIcon className="w-7 -ml-8 text-gray-600 cursor-pointer" />
+          <PhotoIcon className="w-7 -ml-8 text-gray-600 cursor-pointer hover:scale-105 duration-200" />
         </label>
         <input
           type="file"

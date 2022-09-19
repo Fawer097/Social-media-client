@@ -13,6 +13,7 @@ import { useState } from 'react';
 import PostsField from './PostsField/PostsField';
 import postsService from '../../../services/postsService';
 import { Link } from 'react-router-dom';
+import Loader from '../../Loader/Loader';
 
 const OtherUserProfile = (props) => {
   const myUid = useSelector((state) => state.userData.uid);
@@ -66,7 +67,11 @@ const OtherUserProfile = (props) => {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="w-full flex items-center justify-center">
+        <Loader size={32} />
+      </div>
+    );
   }
 
   if (!props.userData) {
@@ -115,11 +120,14 @@ const OtherUserProfile = (props) => {
             )}
         </div>
         <div className="flex ml-8 h-full">
-          <a href="#posts-field">
+          <a href="#posts-field" className="hover:scale-105 duration-300">
             <Counter title={'Posts'} count={postsCounter} />
           </a>
           <Counter title={'Friends'} count={friendsCounter} />
-          <Link to={`/gallery${otherUid}`}>
+          <Link
+            to={`/gallery${otherUid}`}
+            className="hover:scale-105 duration-300"
+          >
             <Counter title={'Images'} count={imagesCounter} />
           </Link>
         </div>
@@ -133,7 +141,7 @@ const OtherUserProfile = (props) => {
       ) : (
         <div className="h-5 mt-4 mx-6"></div>
       )}
-      <div className="flex w-full mt-4">
+      <div className="flex w-full mt-4 pt-4">
         <UserInfo userData={userData} />
         <PostsField userData={userData} />
       </div>

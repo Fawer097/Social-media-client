@@ -59,7 +59,7 @@ const Chat = () => {
         <div className="w-1/4 border-b border-gray-200 h-7">
           <input
             type="search"
-            placeholder="Find messages"
+            placeholder="Search messages..."
             className="w-full px-2 outline-none text-sm"
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -80,7 +80,7 @@ const Chat = () => {
           <p>{interlocutorData.fullName}</p>
         </div>
       </div>
-      <div className="w-full h-[65vh] max-h-[800px] border-b border-gray-200 py-2 pl-4 pr-8 overflow-y-auto relative">
+      <div className="w-full h-[65vh] max-h-[800px] border-b border-gray-200 py-4 pl-4 pr-8 overflow-y-auto relative">
         {messages.length && !loading
           ? messagerService
               .filterMessages(messages, query)
