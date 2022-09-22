@@ -38,7 +38,7 @@ const IncomingFriendsList = () => {
           <SearchInput
             searchQuery={setSearchQuery}
             genderQuery={setGenderQuery}
-            placeholder="Find users"
+            placeholder="Search users..."
           />
           {friendsService
             .friendsFilter(candidatesData, searchQuery, genderQuery)

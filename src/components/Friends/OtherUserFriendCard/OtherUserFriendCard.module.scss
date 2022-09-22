@@ -1,0 +1,7 @@
+.wrapper {
+  @apply flex items-center w-full h-28 border-b px-6 border-gray-200 relative;
+}
+
+.options {
+  @apply text-darkGreen cursor-pointer text-center m-1 hover:text-gray-800;
+}

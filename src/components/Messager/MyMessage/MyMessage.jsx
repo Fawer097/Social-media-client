@@ -1,17 +1,19 @@
 import { TrashIcon } from '@heroicons/react/24/outline';
 import React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import messagerService from '../../../services/messagerService';
 import userService from '../../../services/userService';
 import styles from './MyMessage.module.scss';
+import { setImageModal } from '../../../redux/slices/modalsSlice';
 
 const MyMessage = (props) => {
   const { message, imageUrl, messageId, createdAt } = props.messageData;
   const { userData } = useSelector((state) => state);
   const { activeChat } = useSelector((state) => state.messagerData);
   const [showTrashIcon, setShowTrashIcon] = useState(false);
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -34,7 +36,15 @@ const MyMessage = (props) => {
             <img
               src={imageUrl}
               alt="Message image"
-              className="max-w-[300px] rounded-lg my-2"
+              className="max-w-[300px] rounded-lg my-2 cursor-pointer"
+              onClick={() =>
+                dispatch(
+                  setImageModal({
+                    active: true,
+                    url: imageUrl,
+                  })
+                )
+              }
             />
           </div>
         )}

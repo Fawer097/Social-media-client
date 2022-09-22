@@ -8,6 +8,7 @@ import FriendsPage from '../pages/MainPage/FriendsPage/FriendsPage';
 import GalleryPage from '../pages/MainPage/GalleryPage/GalleryPage';
 import MessagerPage from '../pages/MainPage/MessagerPage/MessagerPage';
 import { useSelector } from 'react-redux';
+import OtherUserFriendsPage from '../pages/MainPage/OtherUserFriendsPage/OtherUserFriendsPage';
 
 const PrivateRouter = () => {
   const { userData } = useSelector((state) => state);
@@ -31,6 +32,12 @@ const PrivateRouter = () => {
         />
       )}
       <Route path="friends" element={<FriendsPage />} />
+      {otherUser && (
+        <Route
+          path={`friends${otherUser.uid}`}
+          element={<OtherUserFriendsPage uid={otherUser.uid} />}
+        />
+      )}
       <Route path="messager" element={<MessagerPage />} />
       <Route path="settings" element={<SettingsPage />} />
       <Route path="/" element={<Navigate replace to="/feed" />} />

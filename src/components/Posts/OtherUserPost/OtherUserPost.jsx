@@ -10,6 +10,8 @@ import { useEffect } from 'react';
 import Comment from '../Comment/Comment';
 import CommentInput from '../Comment/CommentInput/CommentInput';
 import { setImageModal } from '../../../redux/slices/modalsSlice';
+import { useNavigate } from 'react-router-dom';
+import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 
 const OtherUserPost = (props) => {
   const [postData, setPostData] = useState(props.postData);
@@ -17,6 +19,7 @@ const OtherUserPost = (props) => {
   const [comments, setComments] = useState([]);
   const [openInput, setOpenInput] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     postsService
@@ -39,22 +42,33 @@ const OtherUserPost = (props) => {
       .then((data) => setPostData(data.data));
   };
 
+  const openUserProfile = () => {
+    dispatch(setOtherUser(postData.uid));
+    setTimeout(() => navigate(`/profile${postData.uid}`), 0);
+  };
+
   return (
     <div className="w-full mb-4 px-4 py-2 border-2 border-gray-100 shadow-custom rounded-xl">
       <div className="flex items-center relative">
         <div>
           <img
-            className="w-12 h-12 rounded-full"
+            className="w-12 h-12 rounded-full cursor-pointer"
             src={
               props.userData.avatarUrl
                 ? props.userData.avatarUrl
                 : defaultAvatar
             }
             alt="avatar"
+            onClick={openUserProfile}
           />
         </div>
         <div className="ml-4">
-          <p className="text-gray-800">{props.userData.fullName}</p>
+          <p
+            className="text-gray-700 cursor-pointer hover:text-black"
+            onClick={openUserProfile}
+          >
+            {props.userData.fullName}
+          </p>
           <p className="text-gray-400 text-sm">
             {userService.postTimestampConversion(
               props.postData.createdAt._seconds

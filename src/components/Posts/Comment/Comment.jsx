@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
+import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 import userService from '../../../services/userService';
 import CommentPopover from './CommentPopover/CommentPopover';
 import UpdateCommentForm from './UpdateCommentForm/UpdateCommentForm';
@@ -14,9 +16,11 @@ const Comment = (props) => {
   const [loading, setLoading] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     setLoading(true);
-    setCommentData(props.commentData);
     setOwnerData(userData);
     if (commentData.senderUid !== userData.uid) {
       userService
@@ -25,11 +29,24 @@ const Comment = (props) => {
         .finally(() => setLoading(false));
     }
     setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    setCommentData(props.commentData);
   }, [props.commentData]);
 
   const openingUpdateForm = (data) => setOpenUpdateForm(data);
 
   const updateThisComment = (data) => setCommentData(data);
+
+  const openUserProfile = () => {
+    if (commentData.senderUid === userData.uid) {
+      setTimeout(() => navigate(`/profile${commentData.senderUid}`), 0);
+      return;
+    }
+    dispatch(setOtherUser(commentData.senderUid));
+    setTimeout(() => navigate(`/profile${commentData.senderUid}`), 0);
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -41,11 +58,17 @@ const Comment = (props) => {
         <img
           src={ownerData.avatarUrl ? ownerData.avatarUrl : defaultAvatar}
           alt="avatar"
-          className="w-11 h-11 rounded-full"
+          className="w-11 h-11 rounded-full cursor-pointer"
+          onClick={openUserProfile}
         />
       </div>
       <div className="text-sm ml-3 overflow-scroll">
-        <p className="text-gray-600">{ownerData.fullName}</p>
+        <p
+          className="text-gray-600 cursor-pointer hover:text-black"
+          onClick={openUserProfile}
+        >
+          {ownerData.fullName}
+        </p>
         {openUpdateForm ? (
           <UpdateCommentForm
             commentData={commentData}

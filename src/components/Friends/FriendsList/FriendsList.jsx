@@ -7,8 +7,10 @@ import { useState } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import Loader from '../../Loader/Loader';
 import EmptyMessage from '../../EmptyMessage/EmptyMessage';
+import { useSelector } from 'react-redux';
 
 const Friendslist = () => {
+  const { uid } = useSelector((state) => state.userData);
   const [friendsData, setFriendsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -19,7 +21,7 @@ const Friendslist = () => {
   useEffect(() => {
     setLoading(true);
     friendsService
-      .getFriendsData()
+      .getFriendsData(uid)
       .then((data) => setFriendsData(data.data))
       .catch((error) => console.log(error))
       .finally(() => setLoading(false));
@@ -40,7 +42,7 @@ const Friendslist = () => {
           <SearchInput
             searchQuery={setSearchQuery}
             genderQuery={setGenderQuery}
-            placeholder="Find friends"
+            placeholder="Search friends..."
           />
           {friendsService
             .friendsFilter(friendsData, searchQuery, genderQuery)

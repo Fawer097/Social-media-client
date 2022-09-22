@@ -12,6 +12,8 @@ import { useEffect } from 'react';
 import { setImageModal } from '../../../redux/slices/modalsSlice';
 import PostPopover from './PostPopover/PostPopover';
 import UpdatePostForm from './UpdatePostForm/UpdatePostForm';
+import { useNavigate } from 'react-router-dom';
+import { setOtherUser } from '../../../redux/slices/otherUserSlice';
 
 const MyPost = (props) => {
   const [postData, setPostData] = useState(props.postData);
@@ -20,6 +22,7 @@ const MyPost = (props) => {
   const [openInput, setOpenInput] = useState(false);
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     postsService
@@ -46,18 +49,28 @@ const MyPost = (props) => {
 
   const openingUpdateForm = (data) => setOpenUpdateForm(data);
 
+  const openUserProfile = () => {
+    navigate(`/profile${userData.uid}`);
+  };
+
   return (
     <div className="w-full mb-4 px-4 py-2 border-2 border-gray-100 shadow-custom rounded-xl">
       <div className="flex items-center relative">
         <div>
           <img
-            className="w-14 h-14 rounded-full"
+            className="w-14 h-14 rounded-full cursor-pointer"
             src={userData.avatarUrl ? userData.avatarUrl : defaultAvatar}
             alt="avatar"
+            onClick={openUserProfile}
           />
         </div>
         <div className="ml-4">
-          <p className="text-gray-700 mb-0.5">{userData.fullName}</p>
+          <p
+            className="text-gray-700 mb-0.5 cursor-pointer hover:text-black"
+            onClick={openUserProfile}
+          >
+            {userData.fullName}
+          </p>
           <p className="text-gray-400 text-sm">
             {userService.postTimestampConversion(postData.createdAt._seconds)}
           </p>

@@ -1,29 +1,40 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import defaultAvatar from '../../../images/defaultAvatar.jpeg';
 import userService from '../../../services/userService';
 import styles from './InterlocutorMessage.module.scss';
+import { setImageModal } from '../../../redux/slices/modalsSlice';
 
 const InterlocutorMessage = (props) => {
+  const { userData, messageData } = props;
+  const dispatch = useDispatch();
+
   return (
     <div className={styles.wrapper}>
       <div>
         <img
-          src={
-            props.userData.avatarUrl ? props.userData.avatarUrl : defaultAvatar
-          }
+          src={userData.avatarUrl ? userData.avatarUrl : defaultAvatar}
           alt="avatar"
           className="w-9 h-9 rounded-full"
         />
       </div>
       <div className="ml-3 text-sm overflow-scroll">
-        <p className="text-darkGreen">{props.userData.fullName}</p>
-        <p className="text-gray-700 w-56">{props.messageData.message}</p>
-        {props.messageData.imageUrl && (
+        <p className="text-darkGreen">{userData.fullName}</p>
+        <p className="text-gray-700 w-56">{messageData.message}</p>
+        {messageData.imageUrl && (
           <div className="mt-2">
             <img
-              src={props.messageData.imageUrl}
+              src={messageData.imageUrl}
               alt="Message image"
-              className="max-w-[300px]"
+              className="max-w-[300px] rounded-lg my-2 cursor-pointer"
+              onClick={() =>
+                dispatch(
+                  setImageModal({
+                    active: true,
+                    url: messageData.imageUrl,
+                  })
+                )
+              }
             />
           </div>
         )}

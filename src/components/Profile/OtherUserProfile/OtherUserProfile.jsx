@@ -93,7 +93,7 @@ const OtherUserProfile = (props) => {
             !incomingRequests.includes(otherUid) &&
             !outgoingRequests.includes(otherUid) && (
               <button className={styles.button} onClick={friendRequest}>
-                Add as friend
+                Add as friends
               </button>
             )}
           {outgoingRequests.includes(otherUid) &&
@@ -123,7 +123,12 @@ const OtherUserProfile = (props) => {
           <a href="#posts-field" className="hover:scale-105 duration-300">
             <Counter title={'Posts'} count={postsCounter} />
           </a>
-          <Counter title={'Friends'} count={friendsCounter} />
+          <Link
+            to={`/friends${otherUid}`}
+            className="hover:scale-105 duration-300"
+          >
+            <Counter title={'Friends'} count={friendsCounter} />
+          </Link>
           <Link
             to={`/gallery${otherUid}`}
             className="hover:scale-105 duration-300"

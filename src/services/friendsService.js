@@ -28,8 +28,10 @@ const friendsService = {
     });
   },
 
-  async getFriendsData() {
-    return $api.get(API_URL + '/friends/friendsData');
+  async getFriendsData(uid) {
+    return $api.get(API_URL + '/friends/friendsData', {
+      headers: { data: uid },
+    });
   },
 
   async getCandidatesData() {
