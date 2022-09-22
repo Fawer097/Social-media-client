@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_URL = 'http://localhost:3001/api';
+export const API_URL = 'https://fierce-temple-61421.herokuapp.com/';
 
 export const $api = axios.create({
   withCredentials: true,
